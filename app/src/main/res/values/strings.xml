@@ -2,6 +2,12 @@
 <resources>
 
     <string name="app_name">SmartDring</string>
-    <string name="hello_world">Hello world!</string>
+
+    <string name="fragment_title_profile">Profiles</string>
+    <string name="fragment_title_auto">Auto</string>
+    <string name="fragment_title_action">Action</string>
+
+    <string name="fragment_auto_switchplaces">Places</string>
+    <string name="fragment_auto_switchtime">Time</string>
 
 </resources>
