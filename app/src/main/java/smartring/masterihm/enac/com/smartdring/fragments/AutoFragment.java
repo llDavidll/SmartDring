@@ -83,8 +83,8 @@ public class AutoFragment extends Fragment {
         }
         // Display the right fragment with the right tag.
         fm.beginTransaction()
-                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
-                        android.R.anim.fade_in, android.R.anim.fade_out)
+                .setCustomAnimations(R.anim.fade_in, R.anim.fade_out,
+                        R.anim.fade_in, R.anim.fade_out)
                 .replace(R.id.fragment_auto_container, fragmentToAdd, tagToAdd)
                 .commit();
         fm.executePendingTransactions();

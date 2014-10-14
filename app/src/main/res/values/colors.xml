@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="text_gray">#ff222222</color>
+
+    <color name="dim_gray">#88222222</color>
 </resources>

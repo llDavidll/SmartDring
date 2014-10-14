@@ -2,12 +2,14 @@ package smartring.masterihm.enac.com.smartdring.database;
 
 import android.graphics.Color;
 
+import java.io.Serializable;
+
 /**
  * Created by David on 13/10/2014.
  *
  * Data class, used to store a profile in memory.
  */
-public class Profile {
+public class Profile implements Serializable {
 
     private int mId;
     private String mName;

@@ -9,5 +9,7 @@
 
     <string name="fragment_auto_switchplaces">Places</string>
     <string name="fragment_auto_switchtime">Time</string>
+    <string name="item_profile_special_add_new">Add New</string>
+    <string name="item_profile_special_plus">+</string>
 
 </resources>

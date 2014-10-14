@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="profile_square_size">70dp</dimen>
+    <dimen name="event_square_size">100dp</dimen>
+</resources>
