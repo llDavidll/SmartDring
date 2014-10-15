@@ -1,13 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <Switch
+        android:layout_width="match_parent"
+        android:layout_height="61dp"
+        android:text="SmartDring"
+        android:id="@+id/switch1"
+        android:checked="false"
+        android:layout_marginBottom="50dp"
+        android:textSize="40dp"
+        android:textOff="Off"
+        android:textOn="On" />
+
+    <Switch
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Action"
-        android:textColor="@color/text_gray" />
-</FrameLayout>
+        android:text="Phone flip"
+        android:id="@+id/switch2"
+        android:checked="false"
+        android:layout_marginBottom="30dp"
+        android:textOff="Off"
+        android:textOn="On" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:weightSum="1">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Contact white list"
+            android:id="@+id/buttonConfWhite" />
+
+        <Switch
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/switchWhiteList"
+            android:layout_gravity="center_horizontal"
+            android:checked="false"
+            android:textOff="Off"
+            android:textOn="On" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:weightSum="1">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Contact white list"
+            android:id="@+id/buttonConfBlack" />
+
+        <Switch
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/switchBlackList"
+            android:layout_gravity="center_horizontal"
+            android:checked="false"
+            android:textOff="Off"
+            android:textOn="On" />
+    </LinearLayout>
+
+</LinearLayout>
