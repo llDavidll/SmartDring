@@ -11,11 +11,14 @@
         android:layout_centerHorizontal="true"
         android:layout_margin="20dp"
         android:textOff="@string/fragment_auto_switchplaces"
-        android:textOn="@string/fragment_auto_switchtime" />
+        android:textOn="@string/fragment_auto_switchtime"
+        android:layout_gravity="center_horizontal|bottom" />
 
     <FrameLayout
         android:id="@+id/fragment_auto_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/fragment_auto_switch" />
+        android:layout_below="@id/fragment_auto_switch" >
+    </FrameLayout>
+
 </RelativeLayout>
