@@ -9,7 +9,7 @@ import android.support.v4.view.ViewPager;
 import com.astuetz.PagerSlidingTabStrip;
 
 import smartring.masterihm.enac.com.smartdring.adapters.SmartRingPagerAdapter;
-import smartring.masterihm.enac.com.smartdring.database.SmartRingDB;
+import smartring.masterihm.enac.com.smartdring.data.SmartRingDB;
 
 /**
  * Main activity holding the multiple fragments in a viewpager.

@@ -1,4 +1,4 @@
-package smartring.masterihm.enac.com.smartdring.database;
+package smartring.masterihm.enac.com.smartdring.data;
 
 import android.app.Activity;
 import android.content.Context;
@@ -33,6 +33,7 @@ public class SmartRingDB {
     private final static String DB_FILE_NAME = DB_NAME + ".db";
 
     private final static String DB_TABLE_PROFILES = "Profiles";
+    private final static String DB_TABLE_PLACES = "Places";
 
     private SmartRingDB(Activity pActivity) {
 
@@ -58,10 +59,15 @@ public class SmartRingDB {
         return singleton;
     }
 
+    /**
+     * Retrieve all the profiles from the database.
+     *
+     * @return a list of all the profiles.
+     */
     public List<Profile> getProfiles() {
         String[] columns = {"profileId", "profileName", "profileColor"};
 
-        // Get the user's names from the data base
+        // Get the profile names from the data base
         Cursor cursor = mDatabase.query(DB_TABLE_PROFILES, columns, null, null,
                 null, null, null);
 
@@ -86,6 +92,41 @@ public class SmartRingDB {
         cursor.close();
 
         return profiles;
+    }
+
+    /**
+     * Retrieve all the places from the database.
+     *
+     * @return a list of all the places.
+     */
+    public List<Place> getPlaces() {
+        String[] columns = {"placeId", "placeName", "profileId"};
+
+        // Get the place names from the data base
+        Cursor cursor = mDatabase.query(DB_TABLE_PLACES, columns, null, null,
+                null, null, null);
+
+        // Store into a list
+        ArrayList<Place> places = new ArrayList<Place>();
+
+        if (cursor.moveToFirst()) {
+
+            Place place;
+            do {
+
+                place = new Place();
+                place.setId(cursor.getInt(0));
+                place.setName(cursor.getString(1));
+                place.setAssociatedProfile(cursor.getInt(2));
+
+                places.add(place);
+
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+
+        return places;
     }
 
     @Override

@@ -9,7 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import smartring.masterihm.enac.com.smartdring.R;
-import smartring.masterihm.enac.com.smartdring.database.Profile;
+import smartring.masterihm.enac.com.smartdring.data.Profile;
 
 /**
  * Created by David on 13/10/2014.

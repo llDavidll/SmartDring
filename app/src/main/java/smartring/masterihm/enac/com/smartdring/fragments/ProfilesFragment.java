@@ -14,8 +14,8 @@ import android.widget.GridView;
 
 import smartring.masterihm.enac.com.smartdring.R;
 import smartring.masterihm.enac.com.smartdring.adapters.ProfilesAdapter;
-import smartring.masterihm.enac.com.smartdring.database.Profile;
-import smartring.masterihm.enac.com.smartdring.database.SmartRingDB;
+import smartring.masterihm.enac.com.smartdring.data.Profile;
+import smartring.masterihm.enac.com.smartdring.data.SmartRingDB;
 
 /**
  * Created by David on 13/10/2014.

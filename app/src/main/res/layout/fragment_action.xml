@@ -1,76 +1,151 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="20dp"
-    android:layout_marginRight="20dp"
-    android:orientation="vertical">
-
-    <Switch
-        android:id="@+id/fragment_action_switch_activation"
-        android:layout_width="match_parent"
-        android:layout_height="61dp"
-        android:layout_marginBottom="50dp"
-        android:text="@string/app_name"
-        android:textOff="Off"
-        android:textOn="On"
-        android:textSize="40sp" />
-
-    <Switch
-        android:id="@+id/fragment_action_switch_phoneflip"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
-        android:checked="false"
-        android:text="@string/fragment_action_phoneflip"
-        android:textOff="Off"
-        android:textOn="On" />
+    android:padding="12dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
-        android:orientation="horizontal"
-        android:weightSum="1">
+        android:orientation="vertical">
 
-        <Button
-            android:id="@+id/fragment_action_button_whitelist"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/frament_action_whitelist" />
-
-        <Switch
-            android:id="@+id/fragment_action_switch_whitelist"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_horizontal"
-            android:checked="false"
-            android:textOff="Off"
-            android:textOn="On" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
-        android:orientation="horizontal"
-        android:weightSum="1">
-
-        <Button
-            android:id="@+id/fragment_action_button_blacklist"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/fragment_action_blacklist" />
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="10dp">
 
-        <Switch
-            android:id="@+id/fragment_action_switch_blacklist"
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/fragment_action_switch_activation"
+                android:singleLine="true"
+                android:text="@string/app_name"
+                android:textColor="@color/text_gray"
+                android:textSize="@dimen/text_big" />
+
+            <Switch
+                android:id="@+id/fragment_action_switch_activation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:textOff="Off"
+                android:textOn="On" />
+        </RelativeLayout>
+
+        <View
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_horizontal"
-            android:checked="false"
-            android:textOff="Off"
-            android:textOn="On" />
-    </LinearLayout>
+            android:layout_height="1dp"
+            android:layout_marginBottom="20dp"
+            android:background="@color/text_gray" />
 
-</LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/fragment_action_switch_phoneflip"
+                android:singleLine="true"
+                android:text="@string/fragment_action_phoneflip"
+                android:textColor="@color/text_gray"
+                android:textSize="@dimen/text_normal" />
+
+            <Switch
+                android:id="@+id/fragment_action_switch_phoneflip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:textOff="Off"
+                android:textOn="On" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp">
+
+            <LinearLayout
+                android:id="@+id/fragment_action_whitelist_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/fragment_action_switch_whitelist"
+                android:background="@drawable/ic_background"
+                android:clickable="true"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:padding="12dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_edit" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:text="@string/frament_action_whitelist"
+                    android:textColor="@color/text_gray"
+                    android:textSize="@dimen/text_normal" />
+            </LinearLayout>
+
+
+            <Switch
+                android:id="@+id/fragment_action_switch_whitelist"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:textOff="Off"
+                android:textOn="On" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp">
+
+            <LinearLayout
+                android:id="@+id/fragment_action_blacklist_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/fragment_action_switch_blacklist"
+                android:background="@drawable/ic_background"
+                android:clickable="true"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:padding="12dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_edit" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:text="@string/fragment_action_blacklist"
+                    android:textColor="@color/text_gray"
+                    android:textSize="@dimen/text_normal" />
+            </LinearLayout>
+
+            <Switch
+                android:id="@+id/fragment_action_switch_blacklist"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:textOff="Off"
+                android:textOn="On" />
+        </RelativeLayout>
+
+    </LinearLayout>
+</ScrollView>

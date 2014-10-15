@@ -1,4 +1,4 @@
-package smartring.masterihm.enac.com.smartdring.database;
+package smartring.masterihm.enac.com.smartdring.data;
 
 import android.graphics.Color;
 

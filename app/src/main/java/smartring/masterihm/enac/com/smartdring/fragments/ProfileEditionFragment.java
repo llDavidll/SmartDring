@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import smartring.masterihm.enac.com.smartdring.R;
-import smartring.masterihm.enac.com.smartdring.database.Profile;
+import smartring.masterihm.enac.com.smartdring.data.Profile;
 
 /**
  * Created by David on 14/10/2014.
