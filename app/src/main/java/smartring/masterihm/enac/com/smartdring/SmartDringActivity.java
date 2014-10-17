@@ -1,5 +1,6 @@
 package smartring.masterihm.enac.com.smartdring;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -8,20 +9,25 @@ import android.support.v4.view.ViewPager;
 
 import com.astuetz.PagerSlidingTabStrip;
 
-import smartring.masterihm.enac.com.smartdring.adapters.SmartRingPagerAdapter;
-import smartring.masterihm.enac.com.smartdring.data.SmartRingDB;
+import smartring.masterihm.enac.com.smartdring.adapters.SmartDringPagerAdapter;
+import smartring.masterihm.enac.com.smartdring.data.SmartDringDB;
+import smartring.masterihm.enac.com.smartdring.data.SmartDringPreferences;
+import smartring.masterihm.enac.com.smartdring.service.SmartDringService;
 
 /**
  * Main activity holding the multiple fragments in a viewpager.
  */
-public class SmartRingActivity extends FragmentActivity {
+public class SmartDringActivity extends FragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        SmartRingDB.initializeDB(this);
+        SmartDringDB.initializeDB(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_smartdring);
         initView();
+        if(SmartDringPreferences.getBooleanPreference(this, SmartDringPreferences.SMARTRING_STATE)) {
+            SmartDringService.startService(this);
+        }
     }
 
     /**
@@ -29,7 +35,7 @@ public class SmartRingActivity extends FragmentActivity {
      */
     private void initView() {
         ViewPager mViewPager = (ViewPager) findViewById(R.id.activity_smartdring_viewpager);
-        SmartRingPagerAdapter mAdapter = new SmartRingPagerAdapter(getSupportFragmentManager(), this);
+        SmartDringPagerAdapter mAdapter = new SmartDringPagerAdapter(getSupportFragmentManager(), this);
 
         mViewPager.setOffscreenPageLimit(2);
         mViewPager.setAdapter(mAdapter);
@@ -39,7 +45,7 @@ public class SmartRingActivity extends FragmentActivity {
 
     @Override
     protected void finalize() throws Throwable {
-        SmartRingDB.closeDB();
+        SmartDringDB.closeDB();
         super.finalize();
     }
 

@@ -16,7 +16,7 @@ import java.util.List;
 
 import smartring.masterihm.enac.com.smartdring.R;
 
-public class SmartRingDB {
+public class SmartDringDB {
 
     private final Context mContext;
 
@@ -25,26 +25,26 @@ public class SmartRingDB {
     private final SQLiteDatabase mDatabase;
 
     // Singleton
-    private static SmartRingDB singleton;
+    private static SmartDringDB singleton;
 
     // Data base definition
     private final static int DB_VERSION = 1;
-    private final static String DB_NAME = "smartring_database";
+    private final static String DB_NAME = "smartdring_database";
     private final static String DB_FILE_NAME = DB_NAME + ".db";
 
     private final static String DB_TABLE_PROFILES = "Profiles";
     private final static String DB_TABLE_PLACES = "Places";
 
-    private SmartRingDB(Activity pActivity) {
+    private SmartDringDB(Context pContext) {
 
-        mContext = pActivity.getApplicationContext();
+        mContext = pContext.getApplicationContext();
         mOpenHelper = new DataBaseOpenHelper(mContext);
         mDatabase = mOpenHelper.getWritableDatabase();
     }
 
-    public static void initializeDB(Activity pActivity) {
+    public static void initializeDB(Context pContext) {
         if (singleton == null) {
-            singleton = new SmartRingDB(pActivity);
+            singleton = new SmartDringDB(pContext);
         }
     }
 
@@ -55,7 +55,7 @@ public class SmartRingDB {
         }
     }
 
-    public static SmartRingDB getDatabase() {
+    public static SmartDringDB getDatabase() {
         return singleton;
     }
 
