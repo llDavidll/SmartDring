@@ -10,8 +10,8 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 
 import smartring.masterihm.enac.com.smartdring.R;
+import smartring.masterihm.enac.com.smartdring.SmartDringActivity;
 import smartring.masterihm.enac.com.smartdring.data.SmartDringPreferences;
-import smartring.masterihm.enac.com.smartdring.service.SmartDringService;
 
 /**
  * Created by David on 13/10/2014.
@@ -33,17 +33,7 @@ public class ActionFragment extends Fragment {
 
         Switch activationSwitch = (Switch) actionView.findViewById(R.id.fragment_action_switch_activation);
         activationSwitch.setChecked(SmartDringPreferences.getBooleanPreference(getActivity(), SmartDringPreferences.SMARTRING_STATE));
-        activationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                SmartDringPreferences.setBooleanPreference(getActivity(), SmartDringPreferences.SMARTRING_STATE, b);
-                if (b) {
-                    SmartDringService.startService(getActivity());
-                } else {
-                    SmartDringService.stopService(getActivity());
-                }
-            }
-        });
+        boundSwitchToPreference(activationSwitch, SmartDringPreferences.SMARTRING_STATE);
 
         activationSwitch = (Switch) actionView.findViewById(R.id.fragment_action_switch_phoneflip);
         boundSwitchToPreference(activationSwitch, SmartDringPreferences.PHONEFLIP_STATE);
@@ -78,7 +68,7 @@ public class ActionFragment extends Fragment {
         pSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                SmartDringPreferences.setBooleanPreference(getActivity(), pPreference, b);
+                SmartDringPreferences.setBooleanPreference((SmartDringActivity) getActivity(), pPreference, b);
             }
         });
     }

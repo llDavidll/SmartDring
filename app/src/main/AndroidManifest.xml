@@ -21,6 +21,7 @@
 
         <service
             android:name=".service.SmartDringService"
+            android:process=":smartdringservice"
             android:enabled="true"
             android:exported="false"/>
     </application>
