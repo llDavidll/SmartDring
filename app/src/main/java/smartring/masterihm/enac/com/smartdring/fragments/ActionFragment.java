@@ -13,8 +13,8 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 
 import smartring.masterihm.enac.com.smartdring.R;
-import smartring.masterihm.enac.com.smartdring.SmartRingActivity;
-import smartring.masterihm.enac.com.smartdring.data.SmartRingPreferences;
+import smartring.masterihm.enac.com.smartdring.SmartDringActivity;
+import smartring.masterihm.enac.com.smartdring.data.SmartDringPreferences;
 
 /**
  * Created by David on 13/10/2014.
@@ -52,14 +52,23 @@ public class ActionFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 // White list line clicked, open edit fragment
+                Fragment whiteFragment = ActionWhiteListFragment.getInstance();
                 FragmentManager fm = getChildFragmentManager();
                 Fragment existingFragment = fm.findFragmentByTag(ActionWhiteListFragment.TAG);
                 FragmentTransaction ft = fm.beginTransaction();
+                if (existingFragment != null) {
+                    ft = ft.remove(existingFragment);
+                    fm.popBackStack();
+                }
+                ft.setCustomAnimations(R.anim.fade_in, R.anim.fade_out,
+                        R.anim.fade_in, R.anim.fade_out)
+                        .add(R.id.fragment_action_whitelist_layout, whiteFragment, ActionWhiteListFragment.TAG)
+                        .addToBackStack(ActionWhiteListFragment.TAG)
+                        .commit();
                 fm.executePendingTransactions();
-            }
-        });
+        }});
 
-        View blackListView = actionView.findViewById(R.id.fragment_action_blacklist_layout);
+            View blackListView = actionView.findViewById(R.id.fragment_action_blacklist_layout);
         blackListView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
