@@ -16,7 +16,7 @@ import smartring.masterihm.enac.com.smartdring.types.MainPages;
  * <p/>
  * Adapter used to display the multiple tabs of the application.
  */
-public class SmartRingPagerAdapter extends FragmentPagerAdapter {
+public class SmartDringPagerAdapter extends FragmentPagerAdapter {
 
     private final MainPages[] mPages = new MainPages[]{
             MainPages.PROFILES,
@@ -25,7 +25,7 @@ public class SmartRingPagerAdapter extends FragmentPagerAdapter {
 
     private final Context mContext;
 
-    public SmartRingPagerAdapter(FragmentManager fm, Context context) {
+    public SmartDringPagerAdapter(FragmentManager fm, Context context) {
         super(fm);
         mContext = context;
     }

@@ -15,7 +15,7 @@ import android.widget.GridView;
 import smartring.masterihm.enac.com.smartdring.R;
 import smartring.masterihm.enac.com.smartdring.adapters.ProfilesAdapter;
 import smartring.masterihm.enac.com.smartdring.data.Profile;
-import smartring.masterihm.enac.com.smartdring.data.SmartRingDB;
+import smartring.masterihm.enac.com.smartdring.data.SmartDringDB;
 
 /**
  * Created by David on 13/10/2014.
@@ -38,7 +38,7 @@ public class ProfilesFragment extends Fragment implements AdapterView.OnItemClic
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mAdapter = new ProfilesAdapter(getActivity());
-        mAdapter.addAll(SmartRingDB.getDatabase().getProfiles());
+        mAdapter.addAll(SmartDringDB.getDatabase().getProfiles());
     }
 
     @Override

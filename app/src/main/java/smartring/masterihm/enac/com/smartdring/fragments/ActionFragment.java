@@ -35,16 +35,17 @@ public class ActionFragment extends Fragment {
         // Bound all the switches to their values in the shared preferences :
 
         Switch activationSwitch = (Switch) actionView.findViewById(R.id.fragment_action_switch_activation);
-        boundSwitchToPreference(activationSwitch, SmartRingPreferences.SMARTRING_STATE, true);
+        activationSwitch.setChecked(SmartDringPreferences.getBooleanPreference(getActivity(), SmartDringPreferences.SMARTRING_STATE));
+        boundSwitchToPreference(activationSwitch, SmartDringPreferences.SMARTRING_STATE);
 
         activationSwitch = (Switch) actionView.findViewById(R.id.fragment_action_switch_phoneflip);
-        boundSwitchToPreference(activationSwitch, SmartRingPreferences.PHONEFLIP_STATE, false);
+        boundSwitchToPreference(activationSwitch, SmartDringPreferences.PHONEFLIP_STATE);
 
         activationSwitch = (Switch) actionView.findViewById(R.id.fragment_action_switch_whitelist);
-        boundSwitchToPreference(activationSwitch, SmartRingPreferences.WHITELIST_STATE, false);
+        boundSwitchToPreference(activationSwitch, SmartDringPreferences.WHITELIST_STATE);
 
         activationSwitch = (Switch) actionView.findViewById(R.id.fragment_action_switch_blacklist);
-        boundSwitchToPreference(activationSwitch, SmartRingPreferences.BLACKLIST_STATE, false);
+        boundSwitchToPreference(activationSwitch, SmartDringPreferences.BLACKLIST_STATE);
 
         View whiteListView = actionView.findViewById(R.id.fragment_action_whitelist_layout);
         whiteListView.setOnClickListener(new View.OnClickListener() {
@@ -69,12 +70,12 @@ public class ActionFragment extends Fragment {
         return actionView;
     }
 
-    private void boundSwitchToPreference(final Switch pSwitch, final String pPreference, final boolean pDefault) {
-        pSwitch.setChecked(SmartRingPreferences.getBooleanPreference(getActivity(), pPreference, pDefault));
+    private void boundSwitchToPreference(final Switch pSwitch, final String pPreference) {
+        pSwitch.setChecked(SmartDringPreferences.getBooleanPreference(getActivity(), pPreference));
         pSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                SmartRingPreferences.setBooleanPreference(getActivity(), pPreference, b);
+                SmartDringPreferences.setBooleanPreference((SmartDringActivity) getActivity(), pPreference, b);
             }
         });
     }
