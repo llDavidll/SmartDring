@@ -16,7 +16,7 @@ import smartring.masterihm.enac.com.smartdring.data.Profile;
 public class ActionWhiteListFragment extends Fragment {
 
     public static final String TAG = "ActionWhiteListeFragmentTag";
-    private static final String PROFILE_KEY = "Whilte_List";
+    //private static final String PROFILE_KEY = "Whilte_List";
 
     public static ActionWhiteListFragment getInstance() {
 

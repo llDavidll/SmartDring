@@ -54,16 +54,17 @@ public class ActionFragment extends Fragment {
                 // White list line clicked, open edit fragment
                 Fragment whiteFragment = ActionWhiteListFragment.getInstance();
                 FragmentManager fm = getChildFragmentManager();
-                Fragment existingFragment = fm.findFragmentByTag(ActionWhiteListFragment.TAG);
                 FragmentTransaction ft = fm.beginTransaction();
+
+                Fragment existingFragment = fm.findFragmentByTag(ActionWhiteListFragment.TAG);
                 if (existingFragment != null) {
                     ft = ft.remove(existingFragment);
                     fm.popBackStack();
                 }
                 ft.setCustomAnimations(R.anim.fade_in, R.anim.fade_out,
                         R.anim.fade_in, R.anim.fade_out)
-                        .add(R.id.fragment_action_whitelist_layout, whiteFragment, ActionWhiteListFragment.TAG)
-                        .addToBackStack(ActionWhiteListFragment.TAG)
+                        .replace(R.id.fragment_action_container, whiteFragment, ActionWhiteListFragment.TAG)
+                        //.addToBackStack(ActionWhiteListFragment.TAG)
                         .commit();
                 fm.executePendingTransactions();
         }});
