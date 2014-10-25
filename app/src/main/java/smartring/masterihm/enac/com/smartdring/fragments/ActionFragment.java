@@ -1,8 +1,11 @@
 package smartring.masterihm.enac.com.smartdring.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +13,7 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 
 import smartring.masterihm.enac.com.smartdring.R;
+import smartring.masterihm.enac.com.smartdring.SmartRingActivity;
 import smartring.masterihm.enac.com.smartdring.data.SmartRingPreferences;
 
 /**
@@ -47,6 +51,10 @@ public class ActionFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 // White list line clicked, open edit fragment
+                FragmentManager fm = getChildFragmentManager();
+                Fragment existingFragment = fm.findFragmentByTag(ActionWhiteListFragment.TAG);
+                FragmentTransaction ft = fm.beginTransaction();
+                fm.executePendingTransactions();
             }
         });
 
