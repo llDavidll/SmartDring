@@ -56,15 +56,16 @@ public class ActionFragment extends Fragment {
                 FragmentManager fm = getChildFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
 
-                Fragment existingFragment = fm.findFragmentByTag(ActionWhiteListFragment.TAG);
+               /* Fragment existingFragment = fm.findFragmentByTag(ActionWhiteListFragment.TAG);
                 if (existingFragment != null) {
                     ft = ft.remove(existingFragment);
                     fm.popBackStack();
-                }
+                }*/
+
                 ft.setCustomAnimations(R.anim.fade_in, R.anim.fade_out,
                         R.anim.fade_in, R.anim.fade_out)
-                        .replace(R.id.fragment_action_container, whiteFragment, ActionWhiteListFragment.TAG)
-                        //.addToBackStack(ActionWhiteListFragment.TAG)
+                        .add(R.id.fragment_action_container, whiteFragment, ActionWhiteListFragment.TAG)
+                        .addToBackStack(ActionWhiteListFragment.TAG)
                         .commit();
                 fm.executePendingTransactions();
         }});
