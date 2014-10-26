@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.support.v4.app.NotificationCompat;
+import android.telephony.PhoneStateListener;
 import android.util.Log;
 
 import smartring.masterihm.enac.com.smartdring.R;
@@ -29,6 +30,8 @@ public class SmartDringService extends Service implements SensorDetector.PhoneSt
     // Sensor detector used to detect the phone flip.
     private SensorDetector mSensorDetector;
 
+    private IncallListener phoneListener;
+
     @Override
     public IBinder onBind(Intent intent) {
         return mBinder;
@@ -42,7 +45,7 @@ public class SmartDringService extends Service implements SensorDetector.PhoneSt
     @Override
     public void onCreate() {
         mSensorDetector = new SensorDetector(this, this);
-
+        phoneListener = new IncallListener();
         // Display a notification about us starting.  We put an icon in the status bar.
         showNotification();
 
