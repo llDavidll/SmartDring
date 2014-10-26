@@ -10,6 +10,7 @@ import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +50,7 @@ public class ActionWhiteListFragment extends Fragment {
                 Intent contactIntent = new Intent(Intent.ACTION_PICK, Uri.parse("content://contacts"));
                 contactIntent.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE);
                 startActivityForResult(contactIntent, PICK_CONTACT_REQUEST);
+                FragmentManager fm = getFragmentManager();
             }
         });
         return profilesView;
@@ -56,6 +58,7 @@ public class ActionWhiteListFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        nameText.setText("TOTO");
         if (requestCode == PICK_CONTACT_REQUEST){
             nameText.setText("TOTO");
             if (resultCode == Activity.RESULT_OK) {
