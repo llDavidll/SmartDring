@@ -38,7 +38,7 @@ public class ProfilesFragment extends Fragment implements AdapterView.OnItemClic
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mAdapter = new ProfilesAdapter(getActivity());
-        mAdapter.addAll(SmartDringDB.getDatabase().getProfiles());
+        mAdapter.addAll(SmartDringDB.getDatabase(SmartDringDB.APP_DB).getProfiles());
     }
 
     @Override

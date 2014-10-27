@@ -13,6 +13,7 @@ import android.util.Log;
 
 import smartring.masterihm.enac.com.smartdring.R;
 import smartring.masterihm.enac.com.smartdring.SmartDringActivity;
+import smartring.masterihm.enac.com.smartdring.data.SmartDringDB;
 import smartring.masterihm.enac.com.smartdring.data.SmartDringPreferences;
 
 public class SmartDringService extends Service implements SensorDetector.PhoneStateInterface {
@@ -44,6 +45,8 @@ public class SmartDringService extends Service implements SensorDetector.PhoneSt
 
     @Override
     public void onCreate() {
+        SmartDringDB.initializeDB(this, SmartDringDB.SERVICE_DB);
+
         mSensorDetector = new SensorDetector(this, this);
         phoneListener = new IncallListener();
         // Display a notification about us starting.  We put an icon in the status bar.
@@ -74,7 +77,7 @@ public class SmartDringService extends Service implements SensorDetector.PhoneSt
         mSensorDetector.stopDetection();
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         mNotificationManager.cancel(NOTIFICATION);
-
+        SmartDringDB.closeDB(SmartDringDB.SERVICE_DB);
         super.onDestroy();
     }
 
@@ -94,7 +97,7 @@ public class SmartDringService extends Service implements SensorDetector.PhoneSt
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.ic_launcher)
                         .setContentTitle("SmartDring")
-                        .setContentText("Profile activated")
+                        .setContentText("Profile activated : " + SmartDringDB.getDatabase(SmartDringDB.SERVICE_DB).getProfiles().get(0).getName())
                         .setOngoing(true)
                         .setContentIntent(pbIntent);
         Notification barNotif = bBuilder.build();

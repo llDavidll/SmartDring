@@ -11,6 +11,8 @@ public class Place implements Serializable {
 
     private int mId;
     private String mName;
+    private double mLatitude;
+    private double mLongitude;
     /**
      * Id of the associated profile. If <0, then no profile is associated to this place.
      */
@@ -19,30 +21,48 @@ public class Place implements Serializable {
     public Place() {
         mId = 0;
         mName = "";
+        mLatitude = 0;
+        mLongitude = 0;
         mAssociatedProfile = -1;
-    }
-
-    public void setId(int id) {
-        mId = id;
-    }
-
-    public void setName(String name) {
-        mName = name;
-    }
-
-    public void setAssociatedProfile(int associatedProfile) {
-        mAssociatedProfile = associatedProfile;
     }
 
     public int getId() {
         return mId;
     }
 
+    public void setId(int id) {
+        mId = id;
+    }
+
     public String getName() {
         return mName;
     }
 
+    public void setName(String name) {
+        mName = name;
+    }
+
+    public double getLatitude() {
+        return mLatitude;
+    }
+
+    public void setLatitude(double mLatitude) {
+        this.mLatitude = mLatitude;
+    }
+
+    public double getLongitude() {
+        return mLongitude;
+    }
+
+    public void setLongitude(double mLongitude) {
+        this.mLongitude = mLongitude;
+    }
+
     public int getAssociatedProfile() {
         return mAssociatedProfile;
+    }
+
+    public void setAssociatedProfile(int associatedProfile) {
+        mAssociatedProfile = associatedProfile;
     }
 }

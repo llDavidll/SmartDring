@@ -1,6 +1,5 @@
 package smartring.masterihm.enac.com.smartdring.data;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -18,45 +17,91 @@ import smartring.masterihm.enac.com.smartdring.R;
 
 public class SmartDringDB {
 
-    private final Context mContext;
-
-    // Connection to data base
-    private final DataBaseOpenHelper mOpenHelper;
-    private final SQLiteDatabase mDatabase;
-
-    // Singleton
-    private static SmartDringDB singleton;
-
+    public final static int APP_DB = 0;
+    public final static int SERVICE_DB = 1;
     // Data base definition
     private final static int DB_VERSION = 1;
     private final static String DB_NAME = "smartdring_database";
     private final static String DB_FILE_NAME = DB_NAME + ".db";
-
     private final static String DB_TABLE_PROFILES = "Profiles";
     private final static String DB_TABLE_PLACES = "Places";
+    // Singleton
+    private static SmartDringDB singleton_app;
+    private static SmartDringDB singleton_service;
+    private final Context mContext;
+    // Connection to data base
+    private final DataBaseOpenHelper mOpenHelper;
+    private final SQLiteDatabase mDatabase;
 
-    private SmartDringDB(Context pContext) {
+    private SmartDringDB(Context pContext, int db_type) {
 
         mContext = pContext.getApplicationContext();
         mOpenHelper = new DataBaseOpenHelper(mContext);
-        mDatabase = mOpenHelper.getWritableDatabase();
-    }
+        switch (db_type) {
+            case APP_DB:
+                mDatabase = mOpenHelper.getWritableDatabase();
+                break;
 
-    public static void initializeDB(Context pContext) {
-        if (singleton == null) {
-            singleton = new SmartDringDB(pContext);
+            case SERVICE_DB:
+                mDatabase = mOpenHelper.getReadableDatabase();
+                break;
+
+            default:
+                throw new IllegalArgumentException();
         }
     }
 
-    public static void closeDB() {
-        if (singleton != null) {
-            singleton.mOpenHelper.close();
-            singleton = null;
+    public static void initializeDB(Context pContext, int db_type) {
+        switch (db_type) {
+            case APP_DB:
+                if (singleton_app == null) {
+                    singleton_app = new SmartDringDB(pContext, db_type);
+                }
+                break;
+
+            case SERVICE_DB:
+                if (singleton_service == null) {
+                    singleton_service = new SmartDringDB(pContext, db_type);
+                }
+                break;
+
+            default:
+                throw new IllegalArgumentException();
         }
     }
 
-    public static SmartDringDB getDatabase() {
-        return singleton;
+    public static void closeDB(int db_type) {
+        switch (db_type) {
+            case APP_DB:
+                if (singleton_app != null) {
+                    singleton_app.mOpenHelper.close();
+                    singleton_app = null;
+                }
+                break;
+
+            case SERVICE_DB:
+                if (singleton_service != null) {
+                    singleton_service.mOpenHelper.close();
+                    singleton_service = null;
+                }
+                break;
+
+            default:
+                throw new IllegalArgumentException();
+        }
+    }
+
+    public static SmartDringDB getDatabase(int db_type) {
+        switch (db_type) {
+            case APP_DB:
+                return singleton_app;
+
+            case SERVICE_DB:
+                return singleton_service;
+
+            default:
+                throw new IllegalArgumentException();
+        }
     }
 
     /**

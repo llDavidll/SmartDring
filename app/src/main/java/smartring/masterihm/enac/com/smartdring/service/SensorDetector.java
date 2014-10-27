@@ -8,6 +8,8 @@ import android.hardware.SensorManager;
 
 /**
  * Created by David on 17/10/2014.
+ * <p/>
+ * Class used to access the sensors of the phone.
  */
 public class SensorDetector implements SensorEventListener {
 
@@ -62,7 +64,7 @@ public class SensorDetector implements SensorEventListener {
         yDegrees = Math.toDegrees(computedValues[2]);
 
         if (isPhoneFlipped) {
-            if (Math.abs(xDegrees) > 12 || Math.abs(yDegrees) < 168) {
+            if (Math.abs(xDegrees) > 20 || Math.abs(yDegrees) < 160) {
                 isPhoneFlipped = false;
                 mPhoneStateListener.phoneFlippedStateChanged(false);
             }
