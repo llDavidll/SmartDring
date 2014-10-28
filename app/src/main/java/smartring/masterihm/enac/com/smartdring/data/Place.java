@@ -65,4 +65,17 @@ public class Place implements Serializable {
     public void setAssociatedProfile(int associatedProfile) {
         mAssociatedProfile = associatedProfile;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if(o.getClass() == this.getClass()){
+            return ((Place)o).getId() == getId();
+        }
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return Integer.valueOf(getId()).hashCode();
+    }
 }

@@ -20,6 +20,8 @@ public class SensorDetector implements SensorEventListener {
     private double xDegrees;
     private double yDegrees;
 
+    private boolean isRunning;
+
     private boolean isPhoneFlipped;
 
     private PhoneStateInterface mPhoneStateListener;
@@ -36,13 +38,19 @@ public class SensorDetector implements SensorEventListener {
     }
 
     void startDetection() {
-        mSensorManager.registerListener(this, acceleroSensor, 500);
-        mSensorManager.registerListener(this, magneticSensor, 500);
+        if (!isRunning) {
+            mSensorManager.registerListener(this, acceleroSensor, 500);
+            mSensorManager.registerListener(this, magneticSensor, 500);
+            isRunning = true;
+        }
     }
 
     void stopDetection() {
-        mSensorManager.unregisterListener(this, acceleroSensor);
-        mSensorManager.unregisterListener(this, magneticSensor);
+        if (isRunning) {
+            mSensorManager.unregisterListener(this, acceleroSensor);
+            mSensorManager.unregisterListener(this, magneticSensor);
+            isRunning = false;
+        }
     }
 
     @Override

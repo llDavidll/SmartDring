@@ -8,21 +8,22 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.support.v4.app.NotificationCompat;
-import android.telephony.PhoneStateListener;
 import android.util.Log;
+import android.widget.Toast;
 
 import smartring.masterihm.enac.com.smartdring.R;
 import smartring.masterihm.enac.com.smartdring.SmartDringActivity;
+import smartring.masterihm.enac.com.smartdring.data.Place;
 import smartring.masterihm.enac.com.smartdring.data.SmartDringDB;
 import smartring.masterihm.enac.com.smartdring.data.SmartDringPreferences;
 
-public class SmartDringService extends Service implements SensorDetector.PhoneStateInterface {
+public class SmartDringService extends Service implements SensorDetector.PhoneStateInterface, GpsDetector.GpsDetectorInterface {
 
     // Binder used by the activity to communicate with the service.
     private final IServiceCommunication.Stub mBinder = new IServiceCommunication.Stub() {
         @Override
         public void preferencesUpdated() throws RemoteException {
-            initService();
+            updateService();
         }
     };
     // Unique Identification Number for the Notification.
@@ -30,6 +31,12 @@ public class SmartDringService extends Service implements SensorDetector.PhoneSt
     private int NOTIFICATION = R.string.local_service_started;
     // Sensor detector used to detect the phone flip.
     private SensorDetector mSensorDetector;
+
+    // Register for gps proximity alerts
+    private GpsDetector mGpsDetector;
+
+    private NotificationCompat.Builder mNotifBuilder;
+    private NotificationManager mNotifManager;
 
     private IncallListener phoneListener;
 
@@ -45,38 +52,46 @@ public class SmartDringService extends Service implements SensorDetector.PhoneSt
 
     @Override
     public void onCreate() {
+        // Init data and notification
         SmartDringDB.initializeDB(this, SmartDringDB.SERVICE_DB);
-
-        mSensorDetector = new SensorDetector(this, this);
-        phoneListener = new IncallListener();
-        // Display a notification about us starting.  We put an icon in the status bar.
+        mNotifBuilder = new NotificationCompat.Builder(this);
+        mNotifManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         showNotification();
 
+        // Init context detection
+        mSensorDetector = new SensorDetector(this, this);
+        mGpsDetector = new GpsDetector(this, this);
+        phoneListener = new IncallListener();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        initService();
-
+        if (SmartDringPreferences.getBooleanPreference(this, SmartDringPreferences.PHONEFLIP_STATE)) {
+            mSensorDetector.startDetection();
+        } else {
+            mSensorDetector.stopDetection();
+        }
+        mGpsDetector.startDetection();
         return Service.START_STICKY;
     }
 
     /**
      * Initialize the service behaviour.
      */
-    private void initService() {
+    private void updateService() {
         if (SmartDringPreferences.getBooleanPreference(this, SmartDringPreferences.PHONEFLIP_STATE)) {
             mSensorDetector.startDetection();
         } else {
             mSensorDetector.stopDetection();
         }
+        mGpsDetector.refreshLocations(this);
     }
 
     @Override
     public void onDestroy() {
         mSensorDetector.stopDetection();
-        NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        mNotificationManager.cancel(NOTIFICATION);
+        mGpsDetector.stopDetection(this);
+        mNotifManager.cancel(NOTIFICATION);
         SmartDringDB.closeDB(SmartDringDB.SERVICE_DB);
         super.onDestroy();
     }
@@ -86,22 +101,43 @@ public class SmartDringService extends Service implements SensorDetector.PhoneSt
         Log.d("Phone state : ", isPhoneFlipped ? "Phone flipped" : "Nothing special");
     }
 
+    @Override
+    public void currentPlaceChanged(Place currentPlace) {
+        mNotifBuilder.setContentText(getNotifText(currentPlace));
+        mNotifManager.notify(NOTIFICATION, mNotifBuilder.build());
+        if (currentPlace == null) {
+            Toast.makeText(this, "Outdorr", Toast.LENGTH_SHORT).show();
+
+        } else {
+            Toast.makeText(this, currentPlace.getName(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private String getNotifText(Place place) {
+        String result = "Profile activated : ";
+        result += SmartDringDB.getDatabase(SmartDringDB.SERVICE_DB).getProfiles().get(0).getName();
+        result += " Place : ";
+        if (place == null) {
+            result += "Outdoor";
+        } else {
+            result += place.getName();
+        }
+        return result;
+    }
+
     /**
      * Show a notification while this service is running.
      */
     private void showNotification() {
         Intent bIntent = new Intent(SmartDringService.this, SmartDringActivity.class);
         PendingIntent pbIntent = PendingIntent.getActivity(SmartDringService.this, 0, bIntent, 0);
-
-        NotificationCompat.Builder bBuilder =
-                new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.drawable.ic_launcher)
-                        .setContentTitle("SmartDring")
-                        .setContentText("Profile activated : " + SmartDringDB.getDatabase(SmartDringDB.SERVICE_DB).getProfiles().get(0).getName())
-                        .setOngoing(true)
-                        .setContentIntent(pbIntent);
-        Notification barNotif = bBuilder.build();
-        this.startForeground(NOTIFICATION, barNotif);
+        mNotifBuilder.setSmallIcon(R.drawable.ic_launcher)
+                .setContentTitle("SmartDring")
+                .setContentText(getNotifText(null))
+                .setOngoing(true)
+                .setContentIntent(pbIntent);
+        Notification barNotif = mNotifBuilder.build();
+        mNotifManager.notify(NOTIFICATION, barNotif);
     }
 }
 

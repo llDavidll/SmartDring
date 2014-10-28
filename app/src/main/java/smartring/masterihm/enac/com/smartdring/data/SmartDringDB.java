@@ -145,7 +145,7 @@ public class SmartDringDB {
      * @return a list of all the places.
      */
     public List<Place> getPlaces() {
-        String[] columns = {"placeId", "placeName", "profileId"};
+        String[] columns = {"placeId", "placeName", "placeLatitude", "placeLongitude", "profileId"};
 
         // Get the place names from the data base
         Cursor cursor = mDatabase.query(DB_TABLE_PLACES, columns, null, null,
@@ -162,7 +162,9 @@ public class SmartDringDB {
                 place = new Place();
                 place.setId(cursor.getInt(0));
                 place.setName(cursor.getString(1));
-                place.setAssociatedProfile(cursor.getInt(2));
+                place.setLatitude(cursor.getDouble(2));
+                place.setLongitude(cursor.getDouble(3));
+                place.setAssociatedProfile(cursor.getInt(4));
 
                 places.add(place);
 
