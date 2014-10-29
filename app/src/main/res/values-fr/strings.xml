@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">SmartDring</string>
+
+    <string name="places_default_outdoor">Extérieur</string>
+
+    <string name="notification_current_place">Lieu actuel : </string>
+    <string name="notification_no_profile">Inactif</string>
+
+    <string name="fragment_title_profile">Profils</string>
+    <string name="fragment_title_auto">Auto</string>
+    <string name="fragment_title_action">Action</string>
+
+    <string name="fragment_auto_switchplaces">Lieux</string>
+    <string name="fragment_auto_switchtime">Temps</string>
+
+    <string name="fragment_action_phoneflip">Ecran posé</string>
+
+    <string name="item_profile_special_add_new">Nouveau</string>
+    <string name="item_profile_special_plus">+</string>
+    <string name="frament_action_whitelist">Liste blanche</string>
+    <string name="fragment_action_blacklist">Liste noire</string>
+
+</resources>

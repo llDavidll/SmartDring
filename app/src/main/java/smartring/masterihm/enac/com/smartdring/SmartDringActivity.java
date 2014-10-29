@@ -28,7 +28,7 @@ public class SmartDringActivity extends FragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        SmartDringDB.initializeDB(this);
+        SmartDringDB.initializeDB(this, SmartDringDB.APP_DB);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_smartdring);
         initView();
@@ -71,7 +71,7 @@ public class SmartDringActivity extends FragmentActivity {
 
     @Override
     protected void finalize() throws Throwable {
-        SmartDringDB.closeDB();
+        SmartDringDB.closeDB(SmartDringDB.APP_DB);
         super.finalize();
     }
 
