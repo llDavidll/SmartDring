@@ -110,7 +110,7 @@ public class SmartDringDB {
      * @return a list of all the profiles.
      */
     public List<Profile> getProfiles() {
-        String[] columns = {"profileId", "profileName", "profileColor"};
+        String[] columns = {"profileId", "isDefault", "profileName", "profileColor"};
 
         // Get the profile names from the data base
         Cursor cursor = mDatabase.query(DB_TABLE_PROFILES, columns, null, null,
@@ -126,8 +126,9 @@ public class SmartDringDB {
 
                 profile = new Profile();
                 profile.setId(cursor.getInt(0));
-                profile.setName(cursor.getString(1));
-                profile.setColor(Color.parseColor(cursor.getString(2)));
+                profile.setDefault(cursor.getInt(1) > 0);
+                profile.setName(cursor.getString(2));
+                profile.setColor(Color.parseColor(cursor.getString(3)));
 
                 profiles.add(profile);
 
@@ -145,7 +146,7 @@ public class SmartDringDB {
      * @return a list of all the places.
      */
     public List<Place> getPlaces() {
-        String[] columns = {"placeId", "placeName", "placeLatitude", "placeLongitude", "profileId"};
+        String[] columns = {"placeId", "isDefault", "placeName", "placeLatitude", "placeLongitude", "profileId"};
 
         // Get the place names from the data base
         Cursor cursor = mDatabase.query(DB_TABLE_PLACES, columns, null, null,
@@ -161,10 +162,11 @@ public class SmartDringDB {
 
                 place = new Place();
                 place.setId(cursor.getInt(0));
-                place.setName(cursor.getString(1));
-                place.setLatitude(cursor.getDouble(2));
-                place.setLongitude(cursor.getDouble(3));
-                place.setAssociatedProfile(cursor.getInt(4));
+                place.setDefault(cursor.getInt(1) > 0);
+                place.setName(cursor.getString(2));
+                place.setLatitude(cursor.getDouble(3));
+                place.setLongitude(cursor.getDouble(4));
+                place.setAssociatedProfile(cursor.getInt(5));
 
                 places.add(place);
 

@@ -10,6 +10,7 @@ import java.io.Serializable;
 public class Place implements Serializable {
 
     private int mId;
+    private boolean mIsDefault;
     private String mName;
     private double mLatitude;
     private double mLongitude;
@@ -20,6 +21,7 @@ public class Place implements Serializable {
 
     public Place() {
         mId = 0;
+        mIsDefault = false;
         mName = "";
         mLatitude = 0;
         mLongitude = 0;
@@ -32,6 +34,14 @@ public class Place implements Serializable {
 
     public void setId(int id) {
         mId = id;
+    }
+
+    public boolean isDefault() {
+        return mIsDefault;
+    }
+
+    public void setDefault(boolean isDefault) {
+        mIsDefault = isDefault;
     }
 
     public String getName() {
@@ -68,8 +78,8 @@ public class Place implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if(o.getClass() == this.getClass()){
-            return ((Place)o).getId() == getId();
+        if (o.getClass() == this.getClass()) {
+            return ((Place) o).getId() == getId();
         }
         return super.equals(o);
     }
