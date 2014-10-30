@@ -53,7 +53,9 @@ public class SmartDringActivity extends FragmentActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.toto);
-        fragment.onActivityResult(requestCode, resultCode, data);
+        if (fragment != null){
+            fragment.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     /**
