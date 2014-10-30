@@ -1,8 +1,10 @@
 package smartring.masterihm.enac.com.smartdring;
 
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
@@ -26,12 +28,16 @@ public class SmartDringActivity extends FragmentActivity {
 
     private ServiceManagement mServiceManagment = new ServiceManagement();
 
+    public static FragmentActivity mainActivity = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SmartDringDB.initializeDB(this, SmartDringDB.APP_DB);
         super.onCreate(savedInstanceState);
+        AudioManager am = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
         setContentView(R.layout.activity_smartdring);
         initView();
+        mainActivity = this;
     }
 
     @Override
