@@ -9,7 +9,8 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Edit test" />
+        android:text="Edit test"
+        android:id="@+id/soundLevelTxt"/>
 
     <LinearLayout
         android:orientation="horizontal"
