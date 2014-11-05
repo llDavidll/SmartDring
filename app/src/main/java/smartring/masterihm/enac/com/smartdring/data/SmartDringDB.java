@@ -135,7 +135,7 @@ public class SmartDringDB {
                 profile.setId(cursor.getInt(0));
                 profile.setDefault(cursor.getInt(1) > 0);
                 profile.setName(cursor.getString(2));
-                profile.setColor(Color.parseColor(cursor.getString(3)));
+                profile.setColor(cursor.getInt(3));
                 profile.setmPhoneLvl(cursor.getInt(4));
                 profile.setmNotifLvl(cursor.getInt(5));
                 profile.setmMediaLvl(cursor.getInt(6));
