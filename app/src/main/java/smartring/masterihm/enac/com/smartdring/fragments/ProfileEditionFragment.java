@@ -53,13 +53,13 @@ public class ProfileEditionFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_profile_edition, container, false);
 
-        FragmentActivity fa = SmartDringActivity.mainActivity;
+        FragmentActivity fa = (SmartDringActivity)getActivity();
         am = (AudioManager)fa.getSystemService(Context.AUDIO_SERVICE);
         mp = MediaPlayer.create(SmartDringActivity.mainActivity, R.raw.fart);
         currentAudioMedia = am.getStreamVolume(STREAM_MUSIC);
 
         prepareMediaPlayer();
-       prepareSeekBars(v);
+        prepareSeekBars(v);
 
         return v;
     }

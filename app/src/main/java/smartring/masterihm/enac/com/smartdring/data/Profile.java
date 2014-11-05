@@ -16,11 +16,23 @@ public class Profile implements Serializable {
     private String mName;
     private int mColor;
 
+    private int mPhoneLvl;
+    private int mNotifLvl;
+    private int mMediaLvl;
+    private int mCallLvl;
+    private int mAlarmLvl;
+
     public Profile() {
         mId = 0;
         mIsDefault = false;
         mName = "";
         mColor = Color.WHITE;
+        mPhoneLvl = 3;
+        mNotifLvl = 3;
+        mMediaLvl = 3;
+        mCallLvl = 3;
+        mAlarmLvl = 3;
+        
     }
 
     public boolean isDefault() {
@@ -53,5 +65,45 @@ public class Profile implements Serializable {
 
     public void setColor(int color) {
         mColor = color;
+    }
+
+    public int getmPhoneLvl() {
+        return mPhoneLvl;
+    }
+
+    public void setmPhoneLvl(int mPhoneLvl) {
+        this.mPhoneLvl = mPhoneLvl;
+    }
+
+    public int getmNotifLvl() {
+        return mNotifLvl;
+    }
+
+    public void setmNotifLvl(int mNotifLvl) {
+        this.mNotifLvl = mNotifLvl;
+    }
+
+    public int getmMediaLvl() {
+        return mMediaLvl;
+    }
+
+    public void setmMediaLvl(int mMediaLvl) {
+        this.mMediaLvl = mMediaLvl;
+    }
+
+    public int getmCallLvl() {
+        return mCallLvl;
+    }
+
+    public void setmCallLvl(int mCallLvl) {
+        this.mCallLvl = mCallLvl;
+    }
+
+    public int getmAlarmLvl() {
+        return mAlarmLvl;
+    }
+
+    public void setmAlarmLvl(int mAlarmLvl) {
+        this.mAlarmLvl = mAlarmLvl;
     }
 }

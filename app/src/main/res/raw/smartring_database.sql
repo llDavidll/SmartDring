@@ -5,7 +5,12 @@ CREATE TABLE [Profiles] (
 	"profileId"		    integer 	PRIMARY KEY,
 	"isDefault"         integer,
 	"profileName"       nvarchar	UNIQUE,
-	"profileColor"      nvarchar
+	"profileColor"      nvarchar,
+	"profilePhoneLvl"   integer,
+	"profileNotifLvl"   integer,
+	"profileMediaLvl"   integer,
+	"profileCallLvl"    integer,
+	"profileAlarmLvl"   integer
 	);
 
 CREATE TABLE [Places] (
@@ -17,8 +22,8 @@ CREATE TABLE [Places] (
 	"profileId"         integer
 	);
 
-insert into Profiles values (1, 1, "Home", "#FF33B5E5");
-insert into Profiles values (2, 1, "Work", "#FFFF8800");
+insert into Profiles values (1, 1, "Home", "#FF33B5E5", 7,7,7,7,7);
+insert into Profiles values (2, 1, "Work", "#FFFF8800",2,2,2,2,2);
 
 insert into Places values (1, 1, "", 0, 0, 1);
 insert into Places values (2, 0, "Enac", 43.565659, 1.481337, 1);
