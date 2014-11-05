@@ -22,5 +22,6 @@
     <string name="frament_action_whitelist">Contact white list</string>
     <string name="fragment_action_blacklist">Contact black list</string>
     <string name="local_service_started">service_started_id</string>
+    <string name="fragment_place_edition_validate">Valider</string>
 
 </resources>

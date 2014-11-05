@@ -7,7 +7,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.graphics.Color;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -195,11 +194,17 @@ public class SmartDringDB {
      *
      * @return a list of all the places.
      */
-    public List<Place> getPlaces() {
+    public List<Place> getPlaces(boolean includeDefault) {
 
         // Get the place names from the data base
-        Cursor cursor = mDatabase.query(DB_TABLE_PLACES, PLACES_COLUMNS, null, null,
-                null, null, null);
+        Cursor cursor;
+        if (includeDefault) {
+            cursor = mDatabase.query(DB_TABLE_PLACES, PLACES_COLUMNS, null, null,
+                    null, null, null);
+        } else {
+            cursor = mDatabase.query(DB_TABLE_PLACES, PLACES_COLUMNS, "isDefault = ?", new String[]{"0"},
+                    null, null, null);
+        }
 
         // Store into a list
         ArrayList<Place> places = new ArrayList<Place>();
