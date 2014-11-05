@@ -17,7 +17,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import smartring.masterihm.enac.com.smartdring.R;
+import smartring.masterihm.enac.com.smartdring.SmartDringActivity;
 import smartring.masterihm.enac.com.smartdring.data.Profile;
+
+import static android.provider.ContactsContract.CommonDataKinds.*;
 
 /**
  * Created by arnaud on 18/10/2014.
@@ -43,12 +46,13 @@ public class ActionWhiteListFragment extends Fragment {
         View profilesView = inflater.inflate(R.layout.fragment_action_whitelist, container, false);
         nameText = (TextView) profilesView.findViewById(R.id.phoneText);
         View button = profilesView.findViewById(R.id.button);
+        final Fragment f = this;
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                nameText.setText("TiTi");
+                SmartDringActivity.setFragActivityResult(f);
                 Intent contactIntent = new Intent(Intent.ACTION_PICK, Uri.parse("content://contacts"));
-                contactIntent.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE);
+                contactIntent.setType(Phone.CONTENT_TYPE);
                 startActivityForResult(contactIntent, PICK_CONTACT_REQUEST);
                 FragmentManager fm = getFragmentManager();
             }
@@ -58,14 +62,21 @@ public class ActionWhiteListFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        nameText.setText("TOTO");
-        if (requestCode == PICK_CONTACT_REQUEST){
-            nameText.setText("TOTO");
-            if (resultCode == Activity.RESULT_OK) {
-                String name = data.getStringExtra("name");
-                nameText.setText(name);
-            }
-        }
+        nameText.setText("request : " + requestCode + " - result : " + resultCode);
+
+        String number = getContactInfo(data, Phone.NUMBER);
+        String name = getContactInfo(data, ContactsContract.Profile.DISPLAY_NAME);
+        nameText.setText(number + " - " + name);
+    }
+
+    private String getContactInfo(Intent data, String kind) {
+        Uri contactUri = data.getData();
+        String[] projection = {kind};
+        Cursor cursor = (Cursor) getActivity().getContentResolver()
+                .query(contactUri, projection, null, null, null);
+        cursor.moveToFirst();
+        int column = cursor.getColumnIndex(kind);
+        return cursor.getString(column);
     }
 }
 

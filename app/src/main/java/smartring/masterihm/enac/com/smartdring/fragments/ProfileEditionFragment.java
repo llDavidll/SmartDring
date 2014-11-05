@@ -55,7 +55,7 @@ public class ProfileEditionFragment extends Fragment {
 
         FragmentActivity fa = (SmartDringActivity)getActivity();
         am = (AudioManager)fa.getSystemService(Context.AUDIO_SERVICE);
-        mp = MediaPlayer.create(SmartDringActivity.mainActivity, R.raw.fart);
+        mp = MediaPlayer.create(fa, R.raw.fart);
         currentAudioMedia = am.getStreamVolume(STREAM_MUSIC);
 
         prepareMediaPlayer();
@@ -70,7 +70,7 @@ public class ProfileEditionFragment extends Fragment {
         int maxsystem = am.getStreamMaxVolume(streamSystem);
         int after = am.getStreamVolume(streamSystem) * maxmedia / maxsystem;
         am.setStreamVolume(STREAM_MUSIC,after,0);
-        MediaPlayer mediaPlayer = MediaPlayer.create(SmartDringActivity.mainActivity, R.raw.fart);
+        MediaPlayer mediaPlayer = MediaPlayer.create((SmartDringActivity)getActivity(), R.raw.fart);
         mediaPlayer.start();
     }
 

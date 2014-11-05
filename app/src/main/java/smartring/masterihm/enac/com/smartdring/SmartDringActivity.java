@@ -18,6 +18,7 @@ import com.astuetz.PagerSlidingTabStrip;
 import smartring.masterihm.enac.com.smartdring.adapters.SmartDringPagerAdapter;
 import smartring.masterihm.enac.com.smartdring.data.SmartDringDB;
 import smartring.masterihm.enac.com.smartdring.data.SmartDringPreferences;
+import smartring.masterihm.enac.com.smartdring.fragments.ActionWhiteListFragment;
 import smartring.masterihm.enac.com.smartdring.service.IServiceCommunication;
 import smartring.masterihm.enac.com.smartdring.service.SmartDringService;
 
@@ -28,7 +29,11 @@ public class SmartDringActivity extends FragmentActivity {
 
     private ServiceManagement mServiceManagment = new ServiceManagement();
 
-    public static FragmentActivity mainActivity = null;
+    private static Fragment fragActivityResult = null;
+
+    public static void setFragActivityResult(Fragment fragActivityResult) {
+        SmartDringActivity.fragActivityResult = fragActivityResult;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +42,6 @@ public class SmartDringActivity extends FragmentActivity {
         AudioManager am = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
         setContentView(R.layout.activity_smartdring);
         initView();
-        mainActivity = this;
     }
 
     @Override
@@ -58,9 +62,9 @@ public class SmartDringActivity extends FragmentActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.toto);
-        if (fragment != null){
-            fragment.onActivityResult(requestCode, resultCode, data);
+        ActionWhiteListFragment f = (ActionWhiteListFragment) getSupportFragmentManager().findFragmentByTag(ActionWhiteListFragment.TAG);
+        if (fragActivityResult != null){
+            fragActivityResult.onActivityResult(requestCode, resultCode, data);
         }
     }
 
