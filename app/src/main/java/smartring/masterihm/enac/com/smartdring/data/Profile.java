@@ -23,7 +23,7 @@ public class Profile implements Serializable {
     private int mAlarmLvl;
 
     public Profile() {
-        mId = 0;
+        mId = -1;
         mIsDefault = false;
         mName = "";
         mColor = Color.WHITE;

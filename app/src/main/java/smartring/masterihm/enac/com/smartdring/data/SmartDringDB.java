@@ -1,11 +1,12 @@
 package smartring.masterihm.enac.com.smartdring.data;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.graphics.Color;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -23,8 +24,14 @@ public class SmartDringDB {
     private final static int DB_VERSION = 1;
     private final static String DB_NAME = "smartdring_database";
     private final static String DB_FILE_NAME = DB_NAME + ".db";
+
     private final static String DB_TABLE_PROFILES = "Profiles";
+    String[] PROFILES_COLUMNS = {"profileId", "isDefault", "profileName", "profileColor", "profilePhoneLvl",
+            "profileNotifLvl", "profileMediaLvl", "profileCallLvl", "profileAlarmLvl"};
+
     private final static String DB_TABLE_PLACES = "Places";
+    String[] PLACES_COLUMNS = {"placeId", "isDefault", "placeName", "placeLatitude", "placeLongitude", "profileId"};
+
     // Singleton
     private static SmartDringDB singleton_app;
     private static SmartDringDB singleton_service;
@@ -110,10 +117,9 @@ public class SmartDringDB {
      * @return a list of all the profiles.
      */
     public List<Profile> getProfiles() {
-        String[] columns = {"profileId", "isDefault", "profileName", "profileColor"};
 
         // Get the profile names from the data base
-        Cursor cursor = mDatabase.query(DB_TABLE_PROFILES, columns, null, null,
+        Cursor cursor = mDatabase.query(DB_TABLE_PROFILES, PROFILES_COLUMNS, null, null,
                 null, null, null);
 
         // Store into a list
@@ -128,8 +134,12 @@ public class SmartDringDB {
                 profile.setId(cursor.getInt(0));
                 profile.setDefault(cursor.getInt(1) > 0);
                 profile.setName(cursor.getString(2));
-                profile.setColor(Color.parseColor(cursor.getString(3)));
-
+                profile.setColor(cursor.getInt(3));
+                profile.setmPhoneLvl(cursor.getInt(4));
+                profile.setmNotifLvl(cursor.getInt(5));
+                profile.setmMediaLvl(cursor.getInt(6));
+                profile.setmCallLvl(cursor.getInt(7));
+                profile.setmAlarmLvl(cursor.getInt(8));
                 profiles.add(profile);
 
             } while (cursor.moveToNext());
@@ -141,16 +151,60 @@ public class SmartDringDB {
     }
 
     /**
+     * Save a profile i the database.
+     *
+     * @param profile the profile to save.
+     */
+    public void saveProfile(Profile profile) {
+
+        boolean saved = false;
+
+        // Create the user data
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("isDefault", profile.isDefault());
+        contentValues.put("profileName", profile.getName());
+        contentValues.put("profileColor", profile.getColor());
+        contentValues.put("profilePhoneLvl", profile.getmPhoneLvl());
+        contentValues.put("profileNotifLvl", profile.getmNotifLvl());
+        contentValues.put("profileMediaLvl", profile.getmMediaLvl());
+        contentValues.put("profileCallLvl", profile.getmCallLvl());
+        contentValues.put("profileAlarmLvl", profile.getmAlarmLvl());
+
+        if (profile.getId() > -1) {
+            try {
+                saved = mDatabase.update(DB_TABLE_PROFILES, contentValues,
+                        "profileId = ?",
+                        new String[]{Integer.toString(profile.getId())}) > 0;
+            } catch (SQLiteConstraintException ex) {
+                return;
+            }
+        }
+
+        if (!saved) {
+            try {
+                // Try to insert a new user in the database
+                mDatabase.insert(DB_TABLE_PROFILES, null, contentValues);
+            } catch (SQLiteConstraintException ignored) {
+            }
+        }
+    }
+
+    /**
      * Retrieve all the places from the database.
      *
      * @return a list of all the places.
      */
-    public List<Place> getPlaces() {
-        String[] columns = {"placeId", "isDefault", "placeName", "placeLatitude", "placeLongitude", "profileId"};
+    public List<Place> getPlaces(boolean includeDefault) {
 
         // Get the place names from the data base
-        Cursor cursor = mDatabase.query(DB_TABLE_PLACES, columns, null, null,
-                null, null, null);
+        Cursor cursor;
+        if (includeDefault) {
+            cursor = mDatabase.query(DB_TABLE_PLACES, PLACES_COLUMNS, null, null,
+                    null, null, null);
+        } else {
+            cursor = mDatabase.query(DB_TABLE_PLACES, PLACES_COLUMNS, "isDefault = ?", new String[]{"0"},
+                    null, null, null);
+        }
 
         // Store into a list
         ArrayList<Place> places = new ArrayList<Place>();
