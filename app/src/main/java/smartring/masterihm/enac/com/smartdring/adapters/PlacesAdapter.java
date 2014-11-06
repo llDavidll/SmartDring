@@ -87,7 +87,7 @@ public class PlacesAdapter extends ArrayAdapter<Place> {
     @Nullable
     Place getItem(int position) {
         if (position == getCount() - 1) {
-            return null;
+            return new Place();
         }
         return super.getItem(position);
     }

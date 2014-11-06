@@ -2,22 +2,24 @@ package smartring.masterihm.enac.com.smartdring.fragments;
 
 import android.location.Location;
 import android.os.Bundle;
-import android.provider.SyncStateContract;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import smartring.masterihm.enac.com.smartdring.R;
 import smartring.masterihm.enac.com.smartdring.data.Place;
+import smartring.masterihm.enac.com.smartdring.data.SmartDringDB;
 
 /**
  * Created by David on 14/10/2014.
@@ -31,7 +33,7 @@ public class PlaceEditionFragment extends Fragment {
 
     private Place mPlace;
 
-
+    private EditText mNameEditText;
     private MapView mMapView;
     private GoogleMap googleMap;
 
@@ -55,8 +57,8 @@ public class PlaceEditionFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View placeView = inflater.inflate(R.layout.fragment_place_edition, container, false);
 
-        TextView title = (TextView) placeView.findViewById(R.id.fragment_place_edition_title);
-        title.setText(mPlace.getName());
+        mNameEditText = (EditText) placeView.findViewById(R.id.fragment_place_edition_title);
+        mNameEditText.setText(mPlace.getName());
 
         mMapView = (MapView) placeView.findViewById(R.id.fragment_place_edition_mapView);
         mMapView.onCreate(savedInstanceState);
@@ -68,20 +70,68 @@ public class PlaceEditionFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         googleMap = mMapView.getMap();
-        googleMap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
+
+        configureMap();
+
+        Button updateButton = (Button) placeView.findViewById(R.id.fragment_place_edition_update);
+        updateButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onMyLocationChange(Location location) {
-                LatLng myLocation = new LatLng(location.getLatitude(),
-                        location.getLongitude());
-                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 14));
+            public void onClick(View view) {
+                LatLng mapPos = googleMap.getCameraPosition().target;
+                mPlace.setLatitude(mapPos.latitude);
+                mPlace.setLongitude(mapPos.longitude);
             }
         });
-        googleMap.setMyLocationEnabled(true);
 
+        Button deleteButton = (Button) placeView.findViewById(R.id.fragment_place_edition_delete);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getFragmentManager().beginTransaction()
+                        .remove(PlaceEditionFragment.this)
+                        .commit();
+                getFragmentManager().executePendingTransactions();
+                getFragmentManager().popBackStack();
+            }
+        });
+
+        Button saveButton = (Button) placeView.findViewById(R.id.fragment_place_edition_save);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                savePlace();
+                getFragmentManager().beginTransaction()
+                        .remove(PlaceEditionFragment.this)
+                        .commit();
+                getFragmentManager().executePendingTransactions();
+                getFragmentManager().popBackStack();
+            }
+        });
 
         return placeView;
+    }
+
+    private void configureMap() {
+        if (mPlace.getId() > -1) {
+            LatLng placeLocation = new LatLng(mPlace.getLatitude(), mPlace.getLongitude());
+            googleMap.addMarker(new MarkerOptions()
+                    .position(placeLocation)
+                    .title(mPlace.getName())
+                    .draggable(false));
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(placeLocation, 14));
+        } else {
+            googleMap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
+                @Override
+                public void onMyLocationChange(Location location) {
+                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
+                            new LatLng(location.getLatitude(), location.getLongitude()),
+                            14));
+                    googleMap.setOnMyLocationChangeListener(null);
+                }
+            });
+        }
+        googleMap.setMyLocationEnabled(true);
     }
 
     @Override
@@ -110,6 +160,7 @@ public class PlaceEditionFragment extends Fragment {
 
 
     private void savePlace() {
-
+        mPlace.setName(mNameEditText.getText().toString());
+        SmartDringDB.getDatabase(SmartDringDB.APP_DB).savePlace(mPlace);
     }
 }
