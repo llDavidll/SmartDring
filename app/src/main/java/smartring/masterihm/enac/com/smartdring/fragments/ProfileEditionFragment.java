@@ -1,7 +1,6 @@
 package smartring.masterihm.enac.com.smartdring.fragments;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -16,8 +15,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import smartring.masterihm.enac.com.smartdring.R;
 import smartring.masterihm.enac.com.smartdring.SmartDringActivity;
@@ -53,8 +50,10 @@ public class ProfileEditionFragment extends Fragment {
     private SeekBar soundLevelAlarm;
 
     private Button profileIcon;
-    private Button deleteButton;
     private EditText profileName;
+
+    private Button deleteButton;
+    private Button saveButton;
 
     public static ProfileEditionFragment getInstance(Profile profile) {
 
@@ -95,20 +94,7 @@ public class ProfileEditionFragment extends Fragment {
         profileName = (EditText) v.findViewById(R.id.fragment_profile_edition_name);
         profileName.setText(mProfile.getName());
 
-        profileName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                String txt = "";
-                try {
-                    txt = String.valueOf(profileName.getText());
-                } catch (Exception e) { }
-                mProfile.setName(txt);
-                saveProfile();
-                return true;
-            }
-        });
-
-        deleteButton = (Button) v.findViewById(R.id.fragment_profile_edition_delete_button);
+        deleteButton = (Button) v.findViewById(R.id.fragment_profile_edition_delete);
         if (mProfile.isDefault()){
             deleteButton.setEnabled(false);
             deleteButton.setVisibility(View.INVISIBLE);
@@ -117,6 +103,19 @@ public class ProfileEditionFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 // delete the profile & quit the editor
+            }
+        });
+
+        saveButton = (Button) v.findViewById(R.id.fragment_profile_edition_save);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                saveProfile();
+                getFragmentManager().beginTransaction()
+                        .remove(ProfileEditionFragment.this)
+                        .commit();
+                getFragmentManager().executePendingTransactions();
+                getFragmentManager().popBackStack();
             }
         });
     }
@@ -243,6 +242,7 @@ public class ProfileEditionFragment extends Fragment {
     }
 
     private void saveProfile() {
+        mProfile.setName(profileName.getText().toString());
         SmartDringDB.getDatabase(SmartDringDB.APP_DB).saveProfile(mProfile);
     }
 }
