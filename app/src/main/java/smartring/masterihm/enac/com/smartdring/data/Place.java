@@ -20,7 +20,7 @@ public class Place implements Serializable {
     private int mAssociatedProfile;
 
     public Place() {
-        mId = 0;
+        mId = -1;
         mIsDefault = false;
         mName = "";
         mLatitude = 0;

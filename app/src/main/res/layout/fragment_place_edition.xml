@@ -6,27 +6,56 @@
     android:background="@android:color/white"
     android:clickable="true">
 
-    <TextView
+    <EditText
         android:id="@+id/fragment_place_edition_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
+        android:layout_margin="10dp"
+        android:hint="@string/fragment_place_edition_namehint"
+        android:inputType="text"
+        android:singleLine="true"
         android:textColor="@color/text_gray" />
+
+    <Button
+        android:id="@+id/fragment_place_edition_update"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/fragment_place_edition_title"
+        android:layout_centerHorizontal="true"
+        android:text="@string/fragment_place_edition_update" />
 
     <com.google.android.gms.maps.MapView
         android:id="@+id/fragment_place_edition_mapView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/fragment_place_edition_validate"
-        android:layout_below="@id/fragment_place_edition_title"
-        android:layout_marginTop="20dp" />
+        android:layout_above="@+id/fragment_place_edition_bottomlayout"
+        android:layout_below="@id/fragment_place_edition_update"
+        android:layout_marginTop="10dp" />
 
-    <Button
-        android:id="@+id/fragment_place_edition_validate"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/fragment_place_edition_bottomlayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:text="@string/fragment_place_edition_validate" />
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <Button
+            android:id="@+id/fragment_place_edition_delete"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/fragment_place_edition_delete" />
+
+        <Button
+            android:id="@+id/fragment_place_edition_save"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/fragment_place_edition_save" />
+    </LinearLayout>
+
 </RelativeLayout>

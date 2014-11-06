@@ -151,7 +151,7 @@ public class SmartDringDB {
     }
 
     /**
-     * Save a profile i the database.
+     * Save a profile in the database.
      *
      * @param profile the profile to save.
      */
@@ -159,7 +159,7 @@ public class SmartDringDB {
 
         boolean saved = false;
 
-        // Create the user data
+        // Create the profile data
         ContentValues contentValues = new ContentValues();
         contentValues.put("isDefault", profile.isDefault());
         contentValues.put("profileName", profile.getName());
@@ -182,7 +182,7 @@ public class SmartDringDB {
 
         if (!saved) {
             try {
-                // Try to insert a new user in the database
+                // Try to insert a new profile in the database
                 mDatabase.insert(DB_TABLE_PROFILES, null, contentValues);
             } catch (SQLiteConstraintException ignored) {
             }
@@ -230,6 +230,42 @@ public class SmartDringDB {
         cursor.close();
 
         return places;
+    }
+
+    /**
+     * Save a place in the database.
+     *
+     * @param place the place to save.
+     */
+    public void savePlace(Place place) {
+
+        boolean saved = false;
+
+        // Create the place data
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("isDefault", place.isDefault());
+        contentValues.put("placeName", place.getName());
+        contentValues.put("placeLatitude", place.getLatitude());
+        contentValues.put("placeLongitude", place.getLongitude());
+        contentValues.put("profileId", place.getAssociatedProfile());
+
+        if (place.getId() > -1) {
+            try {
+                saved = mDatabase.update(DB_TABLE_PLACES, contentValues,
+                        "placeId = ?",
+                        new String[]{Integer.toString(place.getId())}) > 0;
+            } catch (SQLiteConstraintException ex) {
+                return;
+            }
+        }
+
+        if (!saved) {
+            try {
+                // Try to insert a new place in the database
+                mDatabase.insert(DB_TABLE_PLACES, null, contentValues);
+            } catch (SQLiteConstraintException ignored) {
+            }
+        }
     }
 
     @Override
