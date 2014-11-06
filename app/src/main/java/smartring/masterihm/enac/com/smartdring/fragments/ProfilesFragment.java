@@ -52,6 +52,11 @@ public class ProfilesFragment extends Fragment implements AdapterView.OnItemClic
         return profilesView;
     }
 
+    public final void updateAdapter() {
+        mAdapter.clear();
+        mAdapter.addAll(SmartDringDB.getDatabase(SmartDringDB.APP_DB).getProfiles());
+    }
+
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         if (mAdapter != null) {
@@ -62,7 +67,7 @@ public class ProfilesFragment extends Fragment implements AdapterView.OnItemClic
                 SmartDringDB.getDatabase(SmartDringDB.APP_DB).saveProfile(p);
                 mAdapter.add(p);
             }
-            Fragment editionFragment = ProfileEditionFragment.getInstance(p);
+            Fragment editionFragment = ProfileEditionFragment.getInstance(p,this );
             FragmentManager fm = getChildFragmentManager();
             Fragment existingFragment = fm.findFragmentByTag(ProfileEditionFragment.TAG);
             FragmentTransaction ft = fm.beginTransaction();
@@ -75,7 +80,6 @@ public class ProfilesFragment extends Fragment implements AdapterView.OnItemClic
                     .add(R.id.fragment_profiles_popup_container, editionFragment, ProfileEditionFragment.TAG)
                     .addToBackStack(ProfileEditionFragment.TAG)
                     .commit();
-
             fm.executePendingTransactions();
         }
     }

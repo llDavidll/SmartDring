@@ -189,6 +189,10 @@ public class SmartDringDB {
         }
     }
 
+    public void deleteProfile(Profile profile) {
+
+    }
+
     /**
      * Retrieve all the places from the database.
      *

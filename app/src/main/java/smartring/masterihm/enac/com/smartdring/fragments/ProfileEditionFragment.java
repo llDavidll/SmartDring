@@ -43,6 +43,8 @@ public class ProfileEditionFragment extends Fragment {
     private MediaPlayer mp;
     private int currentAudioMedia;
 
+    private ProfilesFragment profileFragment;
+
     private SeekBar soundLevelPhone;
     private SeekBar soundLevelNotif;
     private SeekBar soundLevelMedia;
@@ -55,14 +57,17 @@ public class ProfileEditionFragment extends Fragment {
     private Button deleteButton;
     private Button saveButton;
 
-    public static ProfileEditionFragment getInstance(Profile profile) {
-
-        ProfileEditionFragment fragment = new ProfileEditionFragment();
+    public static ProfileEditionFragment getInstance(Profile profile, ProfilesFragment pf) {
+        ProfileEditionFragment fragment = new ProfileEditionFragment(pf);
         Bundle args = new Bundle();
         args.putSerializable(PROFILE_KEY, profile);
         fragment.setArguments(args);
 
         return fragment;
+    }
+
+    public ProfileEditionFragment(ProfilesFragment pf){
+        profileFragment = pf;
     }
 
     @Override
@@ -103,6 +108,7 @@ public class ProfileEditionFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 // delete the profile & quit the editor
+                quitFragment();
             }
         });
 
@@ -111,13 +117,19 @@ public class ProfileEditionFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 saveProfile();
-                getFragmentManager().beginTransaction()
-                        .remove(ProfileEditionFragment.this)
-                        .commit();
-                getFragmentManager().executePendingTransactions();
-                getFragmentManager().popBackStack();
+                quitFragment();
+
             }
         });
+    }
+
+    private void quitFragment() {
+        getFragmentManager().beginTransaction()
+                .remove(ProfileEditionFragment.this)
+                .commit();
+        getFragmentManager().executePendingTransactions();
+        getFragmentManager().popBackStack();
+        profileFragment.updateAdapter();
     }
 
     private void playFeedBackSound(int stream, int lvl) {
