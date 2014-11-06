@@ -1,17 +1,23 @@
 package smartring.masterihm.enac.com.smartdring.fragments;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import smartring.masterihm.enac.com.smartdring.R;
 import smartring.masterihm.enac.com.smartdring.SmartDringActivity;
@@ -46,6 +52,10 @@ public class ProfileEditionFragment extends Fragment {
     private SeekBar soundLevelCall;
     private SeekBar soundLevelAlarm;
 
+    private Button profileIcon;
+    private Button deleteButton;
+    private EditText profileName;
+
     public static ProfileEditionFragment getInstance(Profile profile) {
 
         ProfileEditionFragment fragment = new ProfileEditionFragment();
@@ -73,15 +83,49 @@ public class ProfileEditionFragment extends Fragment {
 
         prepareMediaPlayer();
         prepareSeekBars(v);
+        prepareProfilePersonaliser(v);
 
         return v;
     }
 
-    private void playFeedBackSound(int streamSystem) {
+    private void prepareProfilePersonaliser(View v) {
+        profileIcon = (Button) v.findViewById(R.id.fragment_profile_edition_icon);
+        profileIcon.setBackgroundColor(mProfile.getColor());
+
+        profileName = (EditText) v.findViewById(R.id.fragment_profile_edition_name);
+        profileName.setText(mProfile.getName());
+
+        profileName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                String txt = "";
+                try {
+                    txt = String.valueOf(profileName.getText());
+                } catch (Exception e) { }
+                mProfile.setName(txt);
+                saveProfile();
+                return true;
+            }
+        });
+
+        deleteButton = (Button) v.findViewById(R.id.fragment_profile_edition_delete_button);
+        if (mProfile.isDefault()){
+            deleteButton.setEnabled(false);
+            deleteButton.setVisibility(View.INVISIBLE);
+        }
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // delete the profile & quit the editor
+            }
+        });
+    }
+
+    private void playFeedBackSound(int stream, int lvl) {
         currentAudioMedia = am.getStreamVolume(STREAM_MUSIC);
         int maxmedia = am.getStreamMaxVolume(STREAM_MUSIC);
-        int maxsystem = am.getStreamMaxVolume(streamSystem);
-        int after = am.getStreamVolume(streamSystem) * maxmedia / maxsystem;
+        int maxsystem = am.getStreamMaxVolume(stream);
+        int after = lvl * maxmedia / maxsystem;
         am.setStreamVolume(STREAM_MUSIC,after,0);
         MediaPlayer mediaPlayer = MediaPlayer.create((SmartDringActivity)getActivity(), R.raw.fart);
         mediaPlayer.start();
@@ -99,16 +143,13 @@ public class ProfileEditionFragment extends Fragment {
     private void prepareSeekBars(View v) {
 
         final TextView txt = (TextView) v.findViewById(R.id.soundLevelTxt);
-        soundLevelPhone = (SeekBar) v.findViewById(R.id.soundLevelPhone);
+        soundLevelPhone = (SeekBar) v.findViewById(R.id.fragment_profile_edition_soundLevelPhone);
         soundLevelPhone.setProgress(mProfile.getmPhoneLvl() * 100 / am.getStreamMaxVolume(STREAM_SYSTEM));
         soundLevelPhone.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 int scale = i * am.getStreamMaxVolume(STREAM_SYSTEM) / 100;
-                am.setStreamVolume(STREAM_SYSTEM, scale, 0);
                 mProfile.setmPhoneLvl(scale);
-                String r = "System : " + am.getStreamVolume(STREAM_SYSTEM);
-                txt.setText(r);
             }
 
             @Override
@@ -118,20 +159,17 @@ public class ProfileEditionFragment extends Fragment {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                playFeedBackSound(STREAM_SYSTEM);
+                playFeedBackSound(STREAM_SYSTEM, mProfile.getmPhoneLvl());
                 saveProfile();
             }
         });
-        soundLevelNotif = (SeekBar) v.findViewById(R.id.soundLevelNotif);
+        soundLevelNotif = (SeekBar) v.findViewById(R.id.fragment_profile_edition_soundLevelNotif);
         soundLevelNotif.setProgress(mProfile.getmNotifLvl() * 100 / am.getStreamMaxVolume(STREAM_NOTIFICATION));
         soundLevelNotif.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 int scale = i * am.getStreamMaxVolume(STREAM_NOTIFICATION) / 100;
-                am.setStreamVolume(STREAM_NOTIFICATION, scale, 0);
                 mProfile.setmNotifLvl(scale);
-                String r = "Notif : " + am.getStreamVolume(STREAM_NOTIFICATION);
-                txt.setText(r);
             }
 
             @Override
@@ -140,20 +178,17 @@ public class ProfileEditionFragment extends Fragment {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                playFeedBackSound(STREAM_NOTIFICATION);
+                playFeedBackSound(STREAM_NOTIFICATION, mProfile.getmNotifLvl());
                 saveProfile();
             }
         });
-        soundLevelMedia = (SeekBar) v.findViewById(R.id.soundLevelMedia);
+        soundLevelMedia = (SeekBar) v.findViewById(R.id.fragment_profile_edition_soundLevelMedia);
         soundLevelMedia.setProgress(mProfile.getmMediaLvl() * 100 / am.getStreamMaxVolume(STREAM_MUSIC));
         soundLevelMedia.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 int scale = i * am.getStreamMaxVolume(STREAM_MUSIC) / 100;
-                am.setStreamVolume(STREAM_MUSIC, scale, 0);
                 mProfile.setmMediaLvl(scale);
-                String r = "Media: " + am.getStreamVolume(STREAM_MUSIC);
-                txt.setText(r);
             }
 
             @Override
@@ -162,20 +197,17 @@ public class ProfileEditionFragment extends Fragment {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                playFeedBackSound(STREAM_MUSIC);
+                playFeedBackSound(STREAM_MUSIC, mProfile.getmMediaLvl());
                 saveProfile();
             }
         });
-        soundLevelCall = (SeekBar) v.findViewById(R.id.soundLevelCall);
+        soundLevelCall = (SeekBar) v.findViewById(R.id.fragment_profile_edition_soundLevelCall);
         soundLevelCall.setProgress(mProfile.getmCallLvl() * 100 / am.getStreamMaxVolume(STREAM_RING));
         soundLevelCall.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 int scale = i * am.getStreamMaxVolume(STREAM_RING) / 100;
-                am.setStreamVolume(STREAM_RING, scale, 0);
                 mProfile.setmCallLvl(scale);
-                String r = "CALL: " + am.getStreamVolume(STREAM_RING);
-                txt.setText(r);
             }
 
             @Override
@@ -184,20 +216,17 @@ public class ProfileEditionFragment extends Fragment {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                playFeedBackSound(STREAM_RING);
+                playFeedBackSound(STREAM_RING, mProfile.getmCallLvl());
                 saveProfile();
             }
         });
-        soundLevelAlarm = (SeekBar) v.findViewById(R.id.soundLevelAlarm);
+        soundLevelAlarm = (SeekBar) v.findViewById(R.id.fragment_profile_edition_soundLevelAlarm);
         soundLevelAlarm.setProgress(mProfile.getmAlarmLvl() * 100 / am.getStreamMaxVolume(STREAM_ALARM));
         soundLevelAlarm.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 int scale = i * am.getStreamMaxVolume(STREAM_ALARM) / 100;
-                am.setStreamVolume(STREAM_ALARM, scale, 0);
                 mProfile.setmAlarmLvl(scale);
-                String r = "Alarm: " + am.getStreamVolume(STREAM_ALARM);
-                txt.setText(r);
             }
 
             @Override
@@ -207,7 +236,7 @@ public class ProfileEditionFragment extends Fragment {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                playFeedBackSound(STREAM_ALARM);
+                playFeedBackSound(STREAM_ALARM, mProfile.getmAlarmLvl());
                 saveProfile();
             }
         });
