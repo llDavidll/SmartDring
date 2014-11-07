@@ -14,11 +14,19 @@ import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
+import android.widget.ListView;
 import android.widget.TextView;
+
+import java.util.List;
 
 import smartring.masterihm.enac.com.smartdring.R;
 import smartring.masterihm.enac.com.smartdring.SmartDringActivity;
+import smartring.masterihm.enac.com.smartdring.adapters.ContactsAdapter;
+import smartring.masterihm.enac.com.smartdring.adapters.ProfilesAdapter;
+import smartring.masterihm.enac.com.smartdring.data.Contact;
 import smartring.masterihm.enac.com.smartdring.data.Profile;
+import smartring.masterihm.enac.com.smartdring.data.SmartDringDB;
 
 import static android.provider.ContactsContract.CommonDataKinds.*;
 
@@ -30,6 +38,7 @@ public class ActionWhiteListFragment extends Fragment {
     public static final String TAG = "ActionWhiteListeFragmentTag";
     private TextView nameText;
     public static final int PICK_CONTACT_REQUEST = 1;
+    private ContactsAdapter mAdapter;
 
     public static ActionWhiteListFragment getInstance() {
 
@@ -42,8 +51,21 @@ public class ActionWhiteListFragment extends Fragment {
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mAdapter = new ContactsAdapter(getActivity());
+        mAdapter.add(new Contact("TOTO", "0683917453"));
+        mAdapter.add(new Contact("Taph", "068398153"));
+        mAdapter.add(new Contact("JEJ", "067887453"));
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View profilesView = inflater.inflate(R.layout.fragment_action_whitelist, container, false);
+
+        ListView lView = (ListView) profilesView.findViewById(R.id.fragment_whitelist_list);
+        lView.setAdapter(mAdapter);
+
         nameText = (TextView) profilesView.findViewById(R.id.phoneText);
         View button = profilesView.findViewById(R.id.button);
         final Fragment f = this;
