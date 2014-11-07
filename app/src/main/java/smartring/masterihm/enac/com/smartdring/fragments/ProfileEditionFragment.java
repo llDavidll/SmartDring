@@ -117,11 +117,7 @@ public class ProfileEditionFragment extends Fragment {
             public void onClick(View view) {
                 // delete the profile & quit the editor
                 SmartDringDB.getDatabase(SmartDringDB.APP_DB).delete(mProfile);
-                getFragmentManager().beginTransaction()
-                        .remove(ProfileEditionFragment.this)
-                        .commit();
-                getFragmentManager().executePendingTransactions();
-                getFragmentManager().popBackStack();
+                quitFragment();
             }
         });
 
