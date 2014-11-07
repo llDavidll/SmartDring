@@ -155,7 +155,7 @@ public class SmartDringDB {
      *
      * @param profile the profile to save.
      */
-    public void saveProfile(Profile profile) {
+    public int save(Profile profile) {
 
         boolean saved = false;
 
@@ -176,17 +176,44 @@ public class SmartDringDB {
                         "profileId = ?",
                         new String[]{Integer.toString(profile.getId())}) > 0;
             } catch (SQLiteConstraintException ex) {
-                return;
+                return profile.getId();
             }
         }
 
         if (!saved) {
             try {
                 // Try to insert a new profile in the database
-                mDatabase.insert(DB_TABLE_PROFILES, null, contentValues);
-            } catch (SQLiteConstraintException ignored) {
+                return (int) mDatabase.insert(DB_TABLE_PROFILES, null, contentValues);
+            } catch (SQLiteConstraintException ex) {
+                return -1;
             }
         }
+
+        return profile.getId();
+    }
+
+    /**
+     * Delete a profile from the database.
+     *
+     * @param profile the profile to delete.
+     */
+    public void delete(Profile profile) {
+        String whereClause = "profileId = ?";
+        String[] whereArgs = new String[]{Integer.toString(profile.getId())};
+
+        // Update the places referencing this profile
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("profileId", -1);
+        try {
+            mDatabase.update(DB_TABLE_PLACES, contentValues,
+                    "profileId = ?",
+                    new String[]{Integer.toString(profile.getId())});
+        } catch (SQLiteConstraintException ex) {
+            return;
+        }
+
+        // Delete from users levels
+        mDatabase.delete(DB_TABLE_PROFILES, whereClause, whereArgs);
     }
 
     public void deleteProfile(Profile profile) {
@@ -241,7 +268,7 @@ public class SmartDringDB {
      *
      * @param place the place to save.
      */
-    public void savePlace(Place place) {
+    public int save(Place place) {
 
         boolean saved = false;
 
@@ -258,18 +285,33 @@ public class SmartDringDB {
                 saved = mDatabase.update(DB_TABLE_PLACES, contentValues,
                         "placeId = ?",
                         new String[]{Integer.toString(place.getId())}) > 0;
-            } catch (SQLiteConstraintException ex) {
-                return;
+                return place.getId();
+            } catch (SQLiteConstraintException ignored) {
             }
         }
 
         if (!saved) {
             try {
                 // Try to insert a new place in the database
-                mDatabase.insert(DB_TABLE_PLACES, null, contentValues);
+                return (int) mDatabase.insert(DB_TABLE_PLACES, null, contentValues);
             } catch (SQLiteConstraintException ignored) {
+                return -1;
             }
         }
+        return place.getId();
+    }
+
+    /**
+     * Delete a place from the database.
+     *
+     * @param place the place to delete.
+     */
+    public void delete(Place place) {
+        String whereClause = "placeId = ?";
+        String[] whereArgs = new String[]{Integer.toString(place.getId())};
+
+        // Delete from users levels
+        mDatabase.delete(DB_TABLE_PLACES, whereClause, whereArgs);
     }
 
     @Override

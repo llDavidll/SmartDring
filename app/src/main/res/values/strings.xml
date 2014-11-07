@@ -12,6 +12,10 @@
     <string name="fragment_title_auto">Auto</string>
     <string name="fragment_title_action">Action</string>
 
+
+    <string name="fragment_profile_edition_save">Save</string>
+    <string name="fragment_profile_edition_delete">Delete</string>
+
     <string name="fragment_place_edition_save">Save</string>
     <string name="fragment_place_edition_delete">Delete</string>
     <string name="fragment_place_edition_update">Save place from map position</string>
@@ -27,6 +31,12 @@
     <string name="frament_action_whitelist">Contact white list</string>
     <string name="fragment_action_blacklist">Contact black list</string>
     <string name="local_service_started">service_started_id</string>
+    <string name="fragment_profile_edition_alarm">Alarm</string>
+    <string name="fragment_profile_edition_call">Call</string>
+    <string name="fragment_profile_edition_media">Media</string>
+    <string name="fragment_profile_edition_notif">Notification</string>
+    <string name="fragment_profile_edition_phone">Phone</string>
+    <string name="fragment_profile_edition_namehint">Profile name</string>
 
 
 </resources>

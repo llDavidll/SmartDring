@@ -4,7 +4,7 @@ DROP TABLE IF EXISTS "Places";
 CREATE TABLE [Profiles] (
 	"profileId"		    integer 	PRIMARY KEY,
 	"isDefault"         integer,
-	"profileName"       nvarchar	UNIQUE,
+	"profileName"       nvarchar,
 	"profileColor"      integer,
 	"profilePhoneLvl"   integer,
 	"profileNotifLvl"   integer,
@@ -16,7 +16,7 @@ CREATE TABLE [Profiles] (
 CREATE TABLE [Places] (
 	"placeId"		    integer 	PRIMARY KEY,
 	"isDefault"         integer,
-	"placeName"         nvarchar	UNIQUE,
+	"placeName"         nvarchar,
 	"placeLatitude"     real,
 	"placeLongitude"    real,
 	"profileId"         integer

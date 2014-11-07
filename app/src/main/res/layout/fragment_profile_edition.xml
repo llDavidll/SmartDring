@@ -1,158 +1,176 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
     android:clickable="true"
-    android:orientation="vertical">
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Edit test"
-        android:id="@+id/soundLevelTxt"/>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="10dp"
-        android:weightSum="1">
-
-        <Button
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginRight="40dp"
-            android:background="@color/wallet_holo_blue_light"
-            android:id="@+id/fragment_profile_edition_icon"
-            android:layout_weight="1.42"
-            android:text="tap to change color"
-            android:textColor="#ff4f4c4e"
-            android:textSize="10dp" />
-
-        <EditText
-            android:layout_width="180dp"
-            android:layout_height="wrap_content"
-            android:text="Profile name"
-            android:textSize="20dp"
-            android:id="@+id/fragment_profile_edition_name"
-            android:inputType="text"
-            android:singleLine="true"
-            android:layout_marginRight="20dp"></EditText>
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="40dp">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Phone"
-            android:textSize="20dp"
-            android:layout_marginRight="20dp"></TextView>
-        <SeekBar
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/fragment_profile_edition_soundLevelPhone" />
-    </LinearLayout>
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="40dp">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Notification"
-            android:textSize="20dp"
-            android:layout_marginRight="20dp"></TextView>
-        <SeekBar
-            android:layout_width="189dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/fragment_profile_edition_soundLevelNotif" />
-    </LinearLayout>
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="40dp">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Media"
-            android:textSize="20dp"
-            android:layout_marginRight="20dp" />
-        <SeekBar
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/fragment_profile_edition_soundLevelMedia" />
-    </LinearLayout>
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="40dp">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Call"
-            android:textSize="20dp"
-            android:layout_marginRight="20dp"></TextView>
-        <SeekBar
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/fragment_profile_edition_soundLevelCall" />
-    </LinearLayout>
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="40dp">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Alarm"
-            android:textSize="20dp"
-            android:layout_marginRight="20dp"></TextView>
-        <SeekBar
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/fragment_profile_edition_soundLevelAlarm" />
-    </LinearLayout>
+    android:paddingBottom="10dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:paddingTop="10dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:layout_marginTop="20dp"
-        android:weightSum="2">
+        android:orientation="vertical">
 
-        <Button
-            android:id="@+id/fragment_profile_edition_delete"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Delete profile"
-            android:layout_marginRight="40dp"
-            android:textColor="#ffffffff"
-            android:background="#ffff5b23"/>
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/fragment_profile_edition_save"
-            android:layout_width="0dp"
+            <Button
+                android:id="@+id/fragment_profile_edition_icon"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginRight="40dp"
+                android:background="@color/wallet_holo_blue_light" />
+
+            <EditText
+                android:id="@+id/fragment_profile_edition_name"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                android:hint="@string/fragment_profile_edition_namehint"
+                android:inputType="text"
+                android:singleLine="true"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Save Profile" />
+            android:layout_marginTop="40dp"
+            android:orientation="horizontal"
+            android:weightSum="10">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:text="@string/fragment_profile_edition_phone"
+                android:textSize="20sp" />
+
+            <SeekBar
+                android:id="@+id/fragment_profile_edition_soundLevelPhone"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="6" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:orientation="horizontal"
+            android:weightSum="10">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:text="@string/fragment_profile_edition_notif"
+                android:textSize="20sp" />
+
+            <SeekBar
+                android:id="@+id/fragment_profile_edition_soundLevelNotif"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="6" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:orientation="horizontal"
+            android:weightSum="10">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:text="@string/fragment_profile_edition_media"
+                android:textSize="20sp" />
+
+            <SeekBar
+                android:id="@+id/fragment_profile_edition_soundLevelMedia"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="6" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:orientation="horizontal"
+            android:weightSum="10">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:text="@string/fragment_profile_edition_call"
+                android:textSize="20sp" />
+
+            <SeekBar
+                android:id="@+id/fragment_profile_edition_soundLevelCall"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="6" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:orientation="horizontal"
+            android:weightSum="10">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:text="@string/fragment_profile_edition_alarm"
+                android:textSize="20sp" />
+
+            <SeekBar
+                android:id="@+id/fragment_profile_edition_soundLevelAlarm"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="6" />
+        </LinearLayout>
+
+        <LinearLayout
+            style="?android:attr/buttonBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <Button
+                android:id="@+id/fragment_profile_edition_delete"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/button_red_bg"
+                android:text="@string/fragment_profile_edition_delete"
+                android:textColor="#ffffffff" />
+
+            <Button
+                android:id="@+id/fragment_profile_edition_save"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/button_green_bg"
+                android:text="@string/fragment_profile_edition_save"
+                android:textColor="#ffffffff" />
+        </LinearLayout>
+
     </LinearLayout>
-
-</LinearLayout>
+</ScrollView>

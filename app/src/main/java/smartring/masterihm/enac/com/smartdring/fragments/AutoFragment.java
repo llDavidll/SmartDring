@@ -59,7 +59,7 @@ public class AutoFragment extends Fragment {
      * @param toDisplay the identifier of the fragment to display.
      */
     private void displayFragment(AutoFragments toDisplay) {
-        FragmentManager fm = getChildFragmentManager();
+        FragmentManager fm = getFragmentManager();
         final String tagToAdd;
         Fragment fragmentToAdd;
         // Get the right fragment tag and object.
@@ -87,7 +87,6 @@ public class AutoFragment extends Fragment {
                         R.anim.fade_in, R.anim.fade_out)
                 .replace(R.id.fragment_auto_container, fragmentToAdd, tagToAdd)
                 .commit();
-        fm.executePendingTransactions();
     }
 
     /**

@@ -59,6 +59,9 @@ public class PlaceEditionFragment extends Fragment {
 
         mNameEditText = (EditText) placeView.findViewById(R.id.fragment_place_edition_title);
         mNameEditText.setText(mPlace.getName());
+        if (mPlace.isDefault()) {
+            mNameEditText.setEnabled(false);
+        }
 
         mMapView = (MapView) placeView.findViewById(R.id.fragment_place_edition_mapView);
         mMapView.onCreate(savedInstanceState);
@@ -84,17 +87,23 @@ public class PlaceEditionFragment extends Fragment {
             }
         });
 
+
         Button deleteButton = (Button) placeView.findViewById(R.id.fragment_place_edition_delete);
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getFragmentManager().beginTransaction()
-                        .remove(PlaceEditionFragment.this)
-                        .commit();
-                getFragmentManager().executePendingTransactions();
-                getFragmentManager().popBackStack();
-            }
-        });
+        if (mPlace.isDefault()) {
+            deleteButton.setVisibility(View.GONE);
+        } else {
+            deleteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    SmartDringDB.getDatabase(SmartDringDB.APP_DB).delete(mPlace);
+                    getFragmentManager().beginTransaction()
+                            .remove(PlaceEditionFragment.this)
+                            .commit();
+                    getFragmentManager().executePendingTransactions();
+                    getFragmentManager().popBackStack();
+                }
+            });
+        }
 
         Button saveButton = (Button) placeView.findViewById(R.id.fragment_place_edition_save);
         saveButton.setOnClickListener(new View.OnClickListener() {
@@ -113,7 +122,7 @@ public class PlaceEditionFragment extends Fragment {
     }
 
     private void configureMap() {
-        if (mPlace.getId() > -1) {
+        if (mPlace.getLatitude() != 0 && mPlace.getLongitude() != 0) {
             LatLng placeLocation = new LatLng(mPlace.getLatitude(), mPlace.getLongitude());
             googleMap.addMarker(new MarkerOptions()
                     .position(placeLocation)
@@ -161,6 +170,6 @@ public class PlaceEditionFragment extends Fragment {
 
     private void savePlace() {
         mPlace.setName(mNameEditText.getText().toString());
-        SmartDringDB.getDatabase(SmartDringDB.APP_DB).savePlace(mPlace);
+        SmartDringDB.getDatabase(SmartDringDB.APP_DB).save(mPlace);
     }
 }

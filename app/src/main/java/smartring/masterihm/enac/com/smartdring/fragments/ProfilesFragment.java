@@ -61,14 +61,14 @@ public class ProfilesFragment extends Fragment implements AdapterView.OnItemClic
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         if (mAdapter != null) {
             Profile p = mAdapter.getItem(i);
-            if (p == null) {
-                p = new Profile();
+            if (p.getId() < 0) {
                 p.setDefault(false);
-                SmartDringDB.getDatabase(SmartDringDB.APP_DB).saveProfile(p);
+                p.setId(SmartDringDB.getDatabase(SmartDringDB.APP_DB).save(p));
                 mAdapter.add(p);
             }
+
             Fragment editionFragment = ProfileEditionFragment.getInstance(p,this );
-            FragmentManager fm = getChildFragmentManager();
+            FragmentManager fm = getFragmentManager();
             Fragment existingFragment = fm.findFragmentByTag(ProfileEditionFragment.TAG);
             FragmentTransaction ft = fm.beginTransaction();
             if (existingFragment != null) {
@@ -77,7 +77,7 @@ public class ProfilesFragment extends Fragment implements AdapterView.OnItemClic
             }
             ft.setCustomAnimations(R.anim.fade_in, R.anim.fade_out,
                     R.anim.fade_in, R.anim.fade_out)
-                    .add(R.id.fragment_profiles_popup_container, editionFragment, ProfileEditionFragment.TAG)
+                    .add(R.id.activity_topcontainer, editionFragment, ProfileEditionFragment.TAG)
                     .addToBackStack(ProfileEditionFragment.TAG)
                     .commit();
             fm.executePendingTransactions();

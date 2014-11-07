@@ -24,7 +24,11 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/fragment_place_edition_title"
         android:layout_centerHorizontal="true"
-        android:text="@string/fragment_place_edition_update" />
+        android:background="@drawable/button_green_bg"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:text="@string/fragment_place_edition_update"
+        android:textColor="#FFFFFFFF" />
 
     <com.google.android.gms.maps.MapView
         android:id="@+id/fragment_place_edition_mapView"
@@ -36,26 +40,33 @@
 
     <LinearLayout
         android:id="@+id/fragment_place_edition_bottomlayout"
+        style="?android:attr/buttonBarStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:gravity="center_vertical"
+        android:gravity="center"
         android:orientation="horizontal"
         android:weightSum="2">
 
         <Button
             android:id="@+id/fragment_place_edition_delete"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/fragment_place_edition_delete" />
+            android:background="@drawable/button_red_bg"
+            android:text="@string/fragment_place_edition_delete"
+            android:textColor="#FFFFFFFF" />
 
         <Button
             android:id="@+id/fragment_place_edition_save"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/fragment_place_edition_save" />
+            android:background="@drawable/button_green_bg"
+            android:text="@string/fragment_place_edition_save"
+            android:textColor="#FFFFFFFF" />
     </LinearLayout>
 
 </RelativeLayout>

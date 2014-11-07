@@ -3,4 +3,9 @@
     <color name="text_gray">#ff222222</color>
 
     <color name="dim_gray">#88222222</color>
+
+    <color name="red">#ffff5b23</color>
+    <color name="red_darker">#ffe15226</color>
+    <color name="green">#ff5ae16a</color>
+    <color name="green_darker">#ff53cd63</color>
 </resources>

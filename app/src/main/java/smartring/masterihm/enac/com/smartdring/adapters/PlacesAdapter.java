@@ -1,16 +1,16 @@
 package smartring.masterihm.enac.com.smartdring.adapters;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import java.util.List;
+
 import smartring.masterihm.enac.com.smartdring.R;
 import smartring.masterihm.enac.com.smartdring.data.Place;
-import smartring.masterihm.enac.com.smartdring.data.Profile;
 
 /**
  * Created by David on 13/10/2014.
@@ -83,9 +83,7 @@ public class PlacesAdapter extends ArrayAdapter<Place> {
     }
 
     @Override
-    public
-    @Nullable
-    Place getItem(int position) {
+    public Place getItem(int position) {
         if (position == getCount() - 1) {
             return new Place();
         }
@@ -97,5 +95,25 @@ public class PlacesAdapter extends ArrayAdapter<Place> {
      */
     private class ViewHolder {
         private TextView nameTV;
+    }
+
+    public void refresh(List<Place> pNewList) {
+        Place temp;
+        // Remove the places not in the database anymore.
+        for (int index = 0; index < super.getCount(); ) {
+            temp = super.getItem(index);
+            if (!pNewList.contains(temp)) {
+                super.remove(temp);
+            } else {
+                index++;
+            }
+        }
+
+        // Add the places from the database.
+        for (Place newPlace : pNewList) {
+            if (getPosition(newPlace) < 0) {
+                add(newPlace);
+            }
+        }
     }
 }
