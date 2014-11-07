@@ -26,7 +26,10 @@
             android:layout_marginRight="40dp"
             android:background="@color/wallet_holo_blue_light"
             android:id="@+id/fragment_profile_edition_icon"
-            android:layout_weight="1.42" />
+            android:layout_weight="1.42"
+            android:text="tap to change color"
+            android:textColor="#ff4f4c4e"
+            android:textSize="10dp" />
 
         <EditText
             android:layout_width="180dp"

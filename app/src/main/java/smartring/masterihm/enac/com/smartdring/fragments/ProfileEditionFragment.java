@@ -1,6 +1,7 @@
 package smartring.masterihm.enac.com.smartdring.fragments;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -52,10 +53,12 @@ public class ProfileEditionFragment extends Fragment {
     private SeekBar soundLevelAlarm;
 
     private Button profileIcon;
+    private int colorPicker = 0;
     private EditText profileName;
 
     private Button deleteButton;
     private Button saveButton;
+    private Color nextColor;
 
     public static ProfileEditionFragment getInstance(Profile profile, ProfilesFragment pf) {
         ProfileEditionFragment fragment = new ProfileEditionFragment(pf);
@@ -95,6 +98,14 @@ public class ProfileEditionFragment extends Fragment {
     private void prepareProfilePersonaliser(View v) {
         profileIcon = (Button) v.findViewById(R.id.fragment_profile_edition_icon);
         profileIcon.setBackgroundColor(mProfile.getColor());
+        profileIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int c = getNextColor();
+                mProfile.setColor(c);
+                profileIcon.setBackgroundColor(c);
+            }
+        });
 
         profileName = (EditText) v.findViewById(R.id.fragment_profile_edition_name);
         profileName.setText(mProfile.getName());
@@ -256,5 +267,25 @@ public class ProfileEditionFragment extends Fragment {
     private void saveProfile() {
         mProfile.setName(profileName.getText().toString());
         SmartDringDB.getDatabase(SmartDringDB.APP_DB).saveProfile(mProfile);
+    }
+
+    public int getNextColor() {
+        colorPicker = (colorPicker + 1) % 6;
+        int nextColor = 0;
+        switch (colorPicker){
+            case 0: nextColor = Color.CYAN;
+                break;
+            case 1: nextColor = Color.RED;
+                break;
+            case 2: nextColor = Color.GREEN;
+                break;
+            case 3: nextColor = Color.YELLOW;
+                break;
+            case 4: nextColor = Color.BLUE;
+                break;
+            case 5: colorPicker = Color.MAGENTA;
+                break;
+        }
+        return nextColor;
     }
 }
