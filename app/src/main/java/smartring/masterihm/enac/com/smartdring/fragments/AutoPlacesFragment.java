@@ -74,7 +74,7 @@ public class AutoPlacesFragment extends Fragment implements AdapterView.OnItemCl
             }
             ft.setCustomAnimations(R.anim.fade_in, R.anim.fade_out,
                     R.anim.fade_in, R.anim.fade_out)
-                    .add(R.id.fragment_auto_topcontainer, editionFragment, PlaceEditionFragment.TAG)
+                    .add(R.id.activity_topcontainer, editionFragment, PlaceEditionFragment.TAG)
                     .addToBackStack(PlaceEditionFragment.TAG)
                     .commit();
 
