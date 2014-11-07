@@ -25,7 +25,7 @@ public class Profile implements Serializable {
     public Profile() {
         mId = -1;
         mIsDefault = false;
-        mName = "New";
+        mName = "";
         mColor = Color.DKGRAY;
         mPhoneLvl = 3;
         mNotifLvl = 3;

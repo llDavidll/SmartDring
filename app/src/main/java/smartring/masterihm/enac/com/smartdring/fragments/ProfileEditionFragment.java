@@ -90,6 +90,12 @@ public class ProfileEditionFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 // delete the profile & quit the editor
+                SmartDringDB.getDatabase(SmartDringDB.APP_DB).delete(mProfile);
+                getFragmentManager().beginTransaction()
+                        .remove(ProfileEditionFragment.this)
+                        .commit();
+                getFragmentManager().executePendingTransactions();
+                getFragmentManager().popBackStack();
             }
         });
 
@@ -228,6 +234,6 @@ public class ProfileEditionFragment extends Fragment {
 
     private void saveProfile() {
         mProfile.setName(profileName.getText().toString());
-        SmartDringDB.getDatabase(SmartDringDB.APP_DB).saveProfile(mProfile);
+        SmartDringDB.getDatabase(SmartDringDB.APP_DB).save(mProfile);
     }
 }

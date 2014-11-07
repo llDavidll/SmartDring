@@ -56,10 +56,9 @@ public class ProfilesFragment extends Fragment implements AdapterView.OnItemClic
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         if (mAdapter != null) {
             Profile p = mAdapter.getItem(i);
-            if (p == null) {
-                p = new Profile();
+            if (p.getId() < 0) {
                 p.setDefault(false);
-                SmartDringDB.getDatabase(SmartDringDB.APP_DB).saveProfile(p);
+                p.setId(SmartDringDB.getDatabase(SmartDringDB.APP_DB).save(p));
                 mAdapter.add(p);
             }
             Fragment editionFragment = ProfileEditionFragment.getInstance(p);
