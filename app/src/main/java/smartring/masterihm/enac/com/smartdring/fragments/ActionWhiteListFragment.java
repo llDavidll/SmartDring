@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -59,12 +60,24 @@ public class ActionWhiteListFragment extends Fragment implements AdapterView.OnI
         lView.setAdapter(mAdapter);
         lView.setOnItemClickListener(this);
 
+        Button save = (Button) profilesView.findViewById(R.id.fragment_action_whitelist_savebutton);
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getFragmentManager().beginTransaction()
+                        .remove(ActionWhiteListFragment.this)
+                        .commit();
+                getFragmentManager().executePendingTransactions();
+                getFragmentManager().popBackStack();
+            }
+        });
+
         return profilesView;
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (lastContact != null) {
+        if (lastContact != null && data != null) {
             lastContact.setContactPhoneNumber(getContactInfo(data, Phone.NUMBER));
             lastContact.setContactName(getContactInfo(data, ContactsContract.Profile.DISPLAY_NAME));
             lastContact.setmId(SmartDringDB.getDatabase(SmartDringDB.APP_DB).saveWhite(lastContact));

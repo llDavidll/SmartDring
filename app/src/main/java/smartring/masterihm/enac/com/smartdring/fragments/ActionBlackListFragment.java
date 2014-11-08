@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -60,12 +61,24 @@ public class ActionBlackListFragment extends Fragment implements AdapterView.OnI
         lView.setAdapter(mAdapter);
         lView.setOnItemClickListener(this);
 
+        Button save = (Button) profilesView.findViewById(R.id.fragment_action_blacklist_savebutton);
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getFragmentManager().beginTransaction()
+                        .remove(ActionBlackListFragment.this)
+                        .commit();
+                getFragmentManager().executePendingTransactions();
+                getFragmentManager().popBackStack();
+            }
+        });
+
         return profilesView;
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (lastContact != null) {
+        if (lastContact != null && data != null) {
             lastContact.setContactPhoneNumber(getContactInfo(data, Phone.NUMBER));
             lastContact.setContactName(getContactInfo(data, ContactsContract.Profile.DISPLAY_NAME));
             lastContact.setmId(SmartDringDB.getDatabase(SmartDringDB.APP_DB).saveBlack(lastContact));
@@ -99,6 +112,15 @@ public class ActionBlackListFragment extends Fragment implements AdapterView.OnI
     public void updateAdapter() {
         mAdapter.clear();
         mAdapter.addAll(SmartDringDB.getDatabase(SmartDringDB.APP_DB).getcontactList(false));
+    }
+
+    private void quitFragment() {
+        getFragmentManager().beginTransaction()
+                .remove(ActionBlackListFragment.this)
+                .commit();
+        getFragmentManager().executePendingTransactions();
+        getFragmentManager().popBackStack();
+        updateAdapter();
     }
 }
 
