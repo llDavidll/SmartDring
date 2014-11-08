@@ -102,11 +102,11 @@ public class PlaceEditionFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
                     SmartDringDB.getDatabase(SmartDringDB.APP_DB).delete(mPlace);
-                    getFragmentManager().beginTransaction()
+                    getActivity().getSupportFragmentManager().beginTransaction()
                             .remove(PlaceEditionFragment.this)
                             .commit();
-                    getFragmentManager().executePendingTransactions();
-                    getFragmentManager().popBackStack();
+                    getActivity().getSupportFragmentManager().executePendingTransactions();
+                    getActivity().getSupportFragmentManager().popBackStack();
                     placeFragment.updateListView();
                 }
             });
@@ -117,11 +117,11 @@ public class PlaceEditionFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 savePlace();
-                getFragmentManager().beginTransaction()
+                getActivity().getSupportFragmentManager().beginTransaction()
                         .remove(PlaceEditionFragment.this)
                         .commit();
-                getFragmentManager().executePendingTransactions();
-                getFragmentManager().popBackStack();
+                getActivity().getSupportFragmentManager().executePendingTransactions();
+                getActivity().getSupportFragmentManager().popBackStack();
             }
         });
 

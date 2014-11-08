@@ -64,11 +64,11 @@ public class ActionWhiteListFragment extends Fragment implements AdapterView.OnI
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getFragmentManager().beginTransaction()
+                getActivity().getSupportFragmentManager().beginTransaction()
                         .remove(ActionWhiteListFragment.this)
                         .commit();
-                getFragmentManager().executePendingTransactions();
-                getFragmentManager().popBackStack();
+                getActivity().getSupportFragmentManager().executePendingTransactions();
+                getActivity().getSupportFragmentManager().popBackStack();
             }
         });
 
@@ -104,7 +104,6 @@ public class ActionWhiteListFragment extends Fragment implements AdapterView.OnI
             Intent contactIntent = new Intent(Intent.ACTION_PICK, Uri.parse("content://contacts"));
             contactIntent.setType(Phone.CONTENT_TYPE);
             startActivityForResult(contactIntent, PICK_CONTACT_REQUEST);
-            FragmentManager fm = getFragmentManager();
         }
     }
 

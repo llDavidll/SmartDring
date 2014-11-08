@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import java.util.List;
+
 import smartring.masterihm.enac.com.smartdring.R;
 import smartring.masterihm.enac.com.smartdring.data.Profile;
 
@@ -91,6 +93,11 @@ public class ProfilesAdapter extends ArrayAdapter<Profile> {
             return new Profile();
         }
         return super.getItem(position);
+    }
+
+    public void refresh(List<Profile> pNewList) {
+        clear();
+        addAll(pNewList);
     }
 
     /**

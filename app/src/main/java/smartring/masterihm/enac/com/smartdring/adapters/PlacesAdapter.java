@@ -98,22 +98,7 @@ public class PlacesAdapter extends ArrayAdapter<Place> {
     }
 
     public void refresh(List<Place> pNewList) {
-        Place temp;
-        // Remove the places not in the database anymore.
-        for (int index = 0; index < super.getCount(); ) {
-            temp = super.getItem(index);
-            if (!pNewList.contains(temp)) {
-                super.remove(temp);
-            } else {
-                index++;
-            }
-        }
-
-        // Add the places from the database.
-        for (Place newPlace : pNewList) {
-            if (getPosition(newPlace) < 0) {
-                add(newPlace);
-            }
-        }
+        clear();
+        addAll(pNewList);
     }
 }

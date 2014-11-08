@@ -27,7 +27,7 @@ public class ProfilesFragment extends Fragment implements AdapterView.OnItemClic
     /**
      * Adapter holding the data for the grid.
      */
-    private ArrayAdapter<Profile> mAdapter;
+    private ProfilesAdapter mAdapter;
 
     public static ProfilesFragment getInstance() {
 
@@ -53,8 +53,7 @@ public class ProfilesFragment extends Fragment implements AdapterView.OnItemClic
     }
 
     public final void updateAdapter() {
-        mAdapter.clear();
-        mAdapter.addAll(SmartDringDB.getDatabase(SmartDringDB.APP_DB).getProfiles());
+        mAdapter.refresh(SmartDringDB.getDatabase(SmartDringDB.APP_DB).getProfiles());
     }
 
     @Override
@@ -67,13 +66,16 @@ public class ProfilesFragment extends Fragment implements AdapterView.OnItemClic
                 mAdapter.add(p);
             }
 
-            Fragment editionFragment = ProfileEditionFragment.getInstance(p,this );
-            FragmentManager fm = getFragmentManager();
+            Fragment editionFragment = ProfileEditionFragment.getInstance(p, this);
+            FragmentManager fm = getActivity().getSupportFragmentManager();
             Fragment existingFragment = fm.findFragmentByTag(ProfileEditionFragment.TAG);
             FragmentTransaction ft = fm.beginTransaction();
             if (existingFragment != null) {
                 ft = ft.remove(existingFragment);
+                ft.commit();
+                fm.executePendingTransactions();
                 fm.popBackStack();
+                ft = fm.beginTransaction();
             }
             ft.setCustomAnimations(R.anim.fade_in, R.anim.fade_out,
                     R.anim.fade_in, R.anim.fade_out)

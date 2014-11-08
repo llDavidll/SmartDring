@@ -59,7 +59,7 @@ public class AutoFragment extends Fragment {
      * @param toDisplay the identifier of the fragment to display.
      */
     private void displayFragment(AutoFragments toDisplay) {
-        FragmentManager fm = getFragmentManager();
+        FragmentManager fm = getActivity().getSupportFragmentManager();
         final String tagToAdd;
         Fragment fragmentToAdd;
         // Get the right fragment tag and object.

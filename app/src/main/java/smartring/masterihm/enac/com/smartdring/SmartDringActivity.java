@@ -10,7 +10,6 @@ import android.os.IBinder;
 import android.os.RemoteException;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 
 import com.astuetz.PagerSlidingTabStrip;
@@ -37,9 +36,10 @@ public class SmartDringActivity extends FragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        SmartDringDB.initializeDB(this, SmartDringDB.APP_DB);
+        if (SmartDringDB.getDatabase(SmartDringDB.APP_DB) == null) {
+            SmartDringDB.initializeDB(this, SmartDringDB.APP_DB);
+        }
         super.onCreate(savedInstanceState);
-        AudioManager am = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
         setContentView(R.layout.activity_smartdring);
         initView();
     }
@@ -63,7 +63,7 @@ public class SmartDringActivity extends FragmentActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         ActionWhiteListFragment f = (ActionWhiteListFragment) getSupportFragmentManager().findFragmentByTag(ActionWhiteListFragment.TAG);
-        if (fragActivityResult != null){
+        if (fragActivityResult != null) {
             fragActivityResult.onActivityResult(requestCode, resultCode, data);
         }
     }

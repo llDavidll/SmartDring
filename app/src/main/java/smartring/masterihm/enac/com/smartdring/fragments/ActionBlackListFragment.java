@@ -65,11 +65,11 @@ public class ActionBlackListFragment extends Fragment implements AdapterView.OnI
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getFragmentManager().beginTransaction()
+                getActivity().getSupportFragmentManager().beginTransaction()
                         .remove(ActionBlackListFragment.this)
                         .commit();
-                getFragmentManager().executePendingTransactions();
-                getFragmentManager().popBackStack();
+                getActivity().getSupportFragmentManager().executePendingTransactions();
+                getActivity().getSupportFragmentManager().popBackStack();
             }
         });
 
@@ -115,11 +115,11 @@ public class ActionBlackListFragment extends Fragment implements AdapterView.OnI
     }
 
     private void quitFragment() {
-        getFragmentManager().beginTransaction()
+        getActivity().getSupportFragmentManager().beginTransaction()
                 .remove(ActionBlackListFragment.this)
                 .commit();
-        getFragmentManager().executePendingTransactions();
-        getFragmentManager().popBackStack();
+        getActivity().getSupportFragmentManager().executePendingTransactions();
+        getActivity().getSupportFragmentManager().popBackStack();
         updateAdapter();
     }
 }

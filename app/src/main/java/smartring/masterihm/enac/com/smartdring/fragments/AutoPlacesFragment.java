@@ -54,12 +54,6 @@ public class AutoPlacesFragment extends Fragment implements AdapterView.OnItemCl
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        mAdapter.refresh(SmartDringDB.getDatabase(SmartDringDB.APP_DB).getPlaces(false));
-    }
-
-    @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         if (mAdapter != null) {
             Place p = mAdapter.getItem(i);
@@ -68,14 +62,19 @@ public class AutoPlacesFragment extends Fragment implements AdapterView.OnItemCl
                 p.setId(SmartDringDB.getDatabase(SmartDringDB.APP_DB).save(p));
                 mAdapter.add(p);
             }
+
             PlaceEditionFragment editionFragment = PlaceEditionFragment.getInstance(p);
             editionFragment.setPlaceFragment(this);
-            FragmentManager fm = getFragmentManager();
+            FragmentManager fm = getActivity().getSupportFragmentManager();
+
             Fragment existingFragment = fm.findFragmentByTag(PlaceEditionFragment.TAG);
             FragmentTransaction ft = fm.beginTransaction();
             if (existingFragment != null) {
                 ft = ft.remove(existingFragment);
+                ft.commit();
+                fm.executePendingTransactions();
                 fm.popBackStack();
+                ft = fm.beginTransaction();
             }
             ft.setCustomAnimations(R.anim.fade_in, R.anim.fade_out,
                     R.anim.fade_in, R.anim.fade_out)
@@ -88,7 +87,6 @@ public class AutoPlacesFragment extends Fragment implements AdapterView.OnItemCl
     }
 
     public void updateListView() {
-        mAdapter.clear();
-        mAdapter.addAll(SmartDringDB.getDatabase(SmartDringDB.APP_DB).getPlaces(false));
+        mAdapter.refresh(SmartDringDB.getDatabase(SmartDringDB.APP_DB).getPlaces(false));
     }
 }

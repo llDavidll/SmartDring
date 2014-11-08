@@ -133,11 +133,11 @@ public class ProfileEditionFragment extends Fragment {
     }
 
     private void quitFragment() {
-        getFragmentManager().beginTransaction()
+        getActivity().getSupportFragmentManager().beginTransaction()
                 .remove(ProfileEditionFragment.this)
                 .commit();
-        getFragmentManager().executePendingTransactions();
-        getFragmentManager().popBackStack();
+        getActivity().getSupportFragmentManager().executePendingTransactions();
+        getActivity().getSupportFragmentManager().popBackStack();
         profileFragment.updateAdapter();
     }
 

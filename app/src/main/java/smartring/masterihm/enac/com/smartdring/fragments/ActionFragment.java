@@ -53,7 +53,7 @@ public class ActionFragment extends Fragment {
             public void onClick(View view) {
                 // White list line clicked, open edit fragment
                 Fragment whiteFragment = ActionWhiteListFragment.getInstance();
-                FragmentManager fm = getChildFragmentManager();
+                FragmentManager fm = getActivity().getSupportFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
 
                /* Fragment existingFragment = fm.findFragmentByTag(ActionWhiteListFragment.TAG);
@@ -76,7 +76,7 @@ public class ActionFragment extends Fragment {
             public void onClick(View view) {
                 // Black list line clicked, open edit fragment
                 Fragment blackFragment = ActionBlackListFragment.getInstance();
-                FragmentManager fm = getChildFragmentManager();
+                FragmentManager fm = getActivity().getSupportFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
 
                /* Fragment existingFragment = fm.findFragmentByTag(ActionWhiteListFragment.TAG);
