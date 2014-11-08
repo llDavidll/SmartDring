@@ -68,7 +68,8 @@ public class AutoPlacesFragment extends Fragment implements AdapterView.OnItemCl
                 p.setId(SmartDringDB.getDatabase(SmartDringDB.APP_DB).save(p));
                 mAdapter.add(p);
             }
-            Fragment editionFragment = PlaceEditionFragment.getInstance(p);
+            PlaceEditionFragment editionFragment = PlaceEditionFragment.getInstance(p);
+            editionFragment.setPlaceFragment(this);
             FragmentManager fm = getFragmentManager();
             Fragment existingFragment = fm.findFragmentByTag(PlaceEditionFragment.TAG);
             FragmentTransaction ft = fm.beginTransaction();
@@ -84,5 +85,10 @@ public class AutoPlacesFragment extends Fragment implements AdapterView.OnItemCl
 
             fm.executePendingTransactions();
         }
+    }
+
+    public void updateListView() {
+        mAdapter.clear();
+        mAdapter.addAll(SmartDringDB.getDatabase(SmartDringDB.APP_DB).getPlaces(false));
     }
 }

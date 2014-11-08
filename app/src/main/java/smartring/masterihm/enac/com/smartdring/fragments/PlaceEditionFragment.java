@@ -37,6 +37,12 @@ public class PlaceEditionFragment extends Fragment {
     private MapView mMapView;
     private GoogleMap googleMap;
 
+    public void setPlaceFragment(AutoPlacesFragment placeFragment) {
+        this.placeFragment = placeFragment;
+    }
+
+    private AutoPlacesFragment placeFragment;
+
     public static PlaceEditionFragment getInstance(Place place) {
 
         PlaceEditionFragment fragment = new PlaceEditionFragment();
@@ -90,7 +96,7 @@ public class PlaceEditionFragment extends Fragment {
 
         Button deleteButton = (Button) placeView.findViewById(R.id.fragment_place_edition_delete);
         if (mPlace.isDefault()) {
-            deleteButton.setVisibility(View.GONE);
+            deleteButton.setVisibility(View.INVISIBLE);
         } else {
             deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -101,6 +107,7 @@ public class PlaceEditionFragment extends Fragment {
                             .commit();
                     getFragmentManager().executePendingTransactions();
                     getFragmentManager().popBackStack();
+                    placeFragment.updateListView();
                 }
             });
         }
