@@ -18,6 +18,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import smartring.masterihm.enac.com.smartdring.R;
+import smartring.masterihm.enac.com.smartdring.SmartDringActivity;
 import smartring.masterihm.enac.com.smartdring.data.Place;
 import smartring.masterihm.enac.com.smartdring.data.SmartDringDB;
 
@@ -101,7 +102,7 @@ public class PlaceEditionFragment extends Fragment {
             deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    SmartDringDB.getDatabase(SmartDringDB.APP_DB).delete(mPlace);
+                    ((SmartDringActivity)getActivity()).getDB().delete(mPlace);
                     getActivity().getSupportFragmentManager().beginTransaction()
                             .remove(PlaceEditionFragment.this)
                             .commit();
@@ -181,6 +182,6 @@ public class PlaceEditionFragment extends Fragment {
 
     private void savePlace() {
         mPlace.setName(mNameEditText.getText().toString());
-        SmartDringDB.getDatabase(SmartDringDB.APP_DB).save(mPlace);
+        ((SmartDringActivity)getActivity()).getDB().save(mPlace);
     }
 }

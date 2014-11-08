@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.GridView;
 
 import smartring.masterihm.enac.com.smartdring.R;
+import smartring.masterihm.enac.com.smartdring.SmartDringActivity;
 import smartring.masterihm.enac.com.smartdring.adapters.ProfilesAdapter;
 import smartring.masterihm.enac.com.smartdring.data.Profile;
 import smartring.masterihm.enac.com.smartdring.data.SmartDringDB;
@@ -38,7 +39,7 @@ public class ProfilesFragment extends Fragment implements AdapterView.OnItemClic
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mAdapter = new ProfilesAdapter(getActivity());
-        mAdapter.addAll(SmartDringDB.getDatabase(SmartDringDB.APP_DB).getProfiles());
+        mAdapter.addAll(((SmartDringActivity)getActivity()).getDB().getProfiles());
     }
 
     @Override
@@ -53,7 +54,7 @@ public class ProfilesFragment extends Fragment implements AdapterView.OnItemClic
     }
 
     public final void updateAdapter() {
-        mAdapter.refresh(SmartDringDB.getDatabase(SmartDringDB.APP_DB).getProfiles());
+        mAdapter.refresh(((SmartDringActivity)getActivity()).getDB().getProfiles());
     }
 
     @Override
@@ -62,7 +63,7 @@ public class ProfilesFragment extends Fragment implements AdapterView.OnItemClic
             Profile p = mAdapter.getItem(i);
             if (p.getId() < 0) {
                 p.setDefault(false);
-                p.setId(SmartDringDB.getDatabase(SmartDringDB.APP_DB).save(p));
+                p.setId(((SmartDringActivity)getActivity()).getDB().save(p));
                 mAdapter.add(p);
             }
 

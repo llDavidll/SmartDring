@@ -11,11 +11,7 @@ import android.widget.TextView;
 
 import smartring.masterihm.enac.com.smartdring.R;
 import smartring.masterihm.enac.com.smartdring.data.Contact;
-import smartring.masterihm.enac.com.smartdring.data.Profile;
-import smartring.masterihm.enac.com.smartdring.data.SmartDringDB;
 import smartring.masterihm.enac.com.smartdring.fragments.ActionBlackListFragment;
-import smartring.masterihm.enac.com.smartdring.fragments.ActionWhiteListFragment;
-import smartring.masterihm.enac.com.smartdring.fragments.ProfilesFragment;
 
 /**
  * Created by arnaud on 07/11/2014.
@@ -24,13 +20,16 @@ public class BlackContactsAdapter extends ArrayAdapter<Contact> {
 
     private final LayoutInflater mInflater;
 
+    private final BlackContactDelete mListener;
+
     public void setActionBlackListFragment(ActionBlackListFragment actionBlackListFragment) {
         this.actionBlackListFragment = actionBlackListFragment;
     }
     private ActionBlackListFragment actionBlackListFragment;
 
-    public BlackContactsAdapter(Context context) {
+    public BlackContactsAdapter(Context context, BlackContactDelete pListener) {
         super(context, android.R.layout.simple_list_item_1);
+        mListener = pListener;
         mInflater = LayoutInflater.from(context);
     }
 
@@ -66,7 +65,7 @@ public class BlackContactsAdapter extends ArrayAdapter<Contact> {
                 holder.deletebutton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        SmartDringDB.getDatabase(SmartDringDB.APP_DB).deleteBlack(item);
+                        mListener.deleteBlackContact(item);
                         actionBlackListFragment.updateAdapter();
                     }
                 });
@@ -111,5 +110,9 @@ public class BlackContactsAdapter extends ArrayAdapter<Contact> {
         private TextView name;
         private TextView phone;
         private Button deletebutton;
+    }
+
+    public interface BlackContactDelete {
+        void deleteBlackContact(Contact contact);
     }
 }

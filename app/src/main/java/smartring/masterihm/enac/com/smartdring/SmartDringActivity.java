@@ -26,6 +26,8 @@ public class SmartDringActivity extends FragmentActivity {
 
     private ServiceManagement mServiceManagment = new ServiceManagement();
 
+    private SmartDringDB mDatabase;
+
     private static Fragment fragActivityResult = null;
 
     public static void setFragActivityResult(Fragment fragActivityResult) {
@@ -34,9 +36,10 @@ public class SmartDringActivity extends FragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (SmartDringDB.getDatabase(SmartDringDB.APP_DB) == null) {
-            SmartDringDB.initializeDB(this, SmartDringDB.APP_DB);
+        if(mDatabase == null){
+            mDatabase = new SmartDringDB(this, SmartDringDB.APP_DB);
         }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_smartdring);
         initView();
@@ -81,8 +84,12 @@ public class SmartDringActivity extends FragmentActivity {
 
     @Override
     protected void finalize() throws Throwable {
-        SmartDringDB.closeDB(SmartDringDB.APP_DB);
+        mDatabase.closeDB();
         super.finalize();
+    }
+
+    public SmartDringDB getDB(){
+        return mDatabase;
     }
 
     public ServiceManagement getService() {

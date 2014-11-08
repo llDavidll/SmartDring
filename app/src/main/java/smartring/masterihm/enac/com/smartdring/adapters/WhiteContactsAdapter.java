@@ -11,11 +11,7 @@ import android.widget.TextView;
 
 import smartring.masterihm.enac.com.smartdring.R;
 import smartring.masterihm.enac.com.smartdring.data.Contact;
-import smartring.masterihm.enac.com.smartdring.data.Profile;
-import smartring.masterihm.enac.com.smartdring.data.SmartDringDB;
-import smartring.masterihm.enac.com.smartdring.fragments.ActionBlackListFragment;
 import smartring.masterihm.enac.com.smartdring.fragments.ActionWhiteListFragment;
-import smartring.masterihm.enac.com.smartdring.fragments.ProfilesFragment;
 
 /**
  * Created by arnaud on 07/11/2014.
@@ -23,6 +19,7 @@ import smartring.masterihm.enac.com.smartdring.fragments.ProfilesFragment;
 public class WhiteContactsAdapter extends ArrayAdapter<Contact> {
 
     private final LayoutInflater mInflater;
+    private final WhiteContactDelete mListener;
 
     public void setActionWhiteListFragment(ActionWhiteListFragment actionWhiteListFragment) {
         this.actionWhiteListFragment = actionWhiteListFragment;
@@ -30,8 +27,9 @@ public class WhiteContactsAdapter extends ArrayAdapter<Contact> {
 
     private ActionWhiteListFragment actionWhiteListFragment;
 
-    public WhiteContactsAdapter(Context context) {
+    public WhiteContactsAdapter(Context context, WhiteContactDelete pListener) {
         super(context, android.R.layout.simple_list_item_1);
+        mListener = pListener;
         mInflater = LayoutInflater.from(context);
     }
 
@@ -67,7 +65,7 @@ public class WhiteContactsAdapter extends ArrayAdapter<Contact> {
                 holder.deletebutton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        SmartDringDB.getDatabase(SmartDringDB.APP_DB).deleteWhite(item);
+                        mListener.deleteWhiteContact(item);
                         actionWhiteListFragment.updateAdapter();
                     }
                 });
@@ -106,6 +104,10 @@ public class WhiteContactsAdapter extends ArrayAdapter<Contact> {
             return new Contact();
         }
         return super.getItem(position);
+    }
+
+    public interface WhiteContactDelete {
+        void deleteWhiteContact(Contact contact);
     }
 
     private class ViewHolder {

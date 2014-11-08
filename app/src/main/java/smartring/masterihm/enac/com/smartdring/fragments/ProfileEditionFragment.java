@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.SeekBar;
 
 import smartring.masterihm.enac.com.smartdring.R;
+import smartring.masterihm.enac.com.smartdring.SmartDringActivity;
 import smartring.masterihm.enac.com.smartdring.data.Profile;
 import smartring.masterihm.enac.com.smartdring.data.SmartDringDB;
 
@@ -117,7 +118,7 @@ public class ProfileEditionFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 // delete the profile & quit the editor
-                SmartDringDB.getDatabase(SmartDringDB.APP_DB).delete(mProfile);
+                ((SmartDringActivity)getActivity()).getDB().delete(mProfile);
                 quitFragment();
             }
         });
@@ -263,7 +264,7 @@ public class ProfileEditionFragment extends Fragment {
 
     private void saveProfile() {
         mProfile.setName(profileName.getText().toString());
-        SmartDringDB.getDatabase(SmartDringDB.APP_DB).save(mProfile);
+        ((SmartDringActivity)getActivity()).getDB().save(mProfile);
     }
 
     public int getNextColor() {

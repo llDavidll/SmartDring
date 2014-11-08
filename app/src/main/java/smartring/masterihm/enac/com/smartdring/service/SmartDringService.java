@@ -23,6 +23,8 @@ public class SmartDringService extends Service {
         }
     };
 
+    private SmartDringDB mDatabase;
+
     // Context detector, creating notifications on context change.
     private ContextChangeDetector mContextDetector;
 
@@ -42,7 +44,7 @@ public class SmartDringService extends Service {
     @Override
     public void onCreate() {
         // Init database
-        SmartDringDB.initializeDB(this, SmartDringDB.SERVICE_DB);
+        mDatabase = new SmartDringDB(this, SmartDringDB.SERVICE_DB);
         // Create context handler
         mContextHandler = new ContextEventHandler(this);
         // Create context detector.
@@ -60,10 +62,12 @@ public class SmartDringService extends Service {
     public void onDestroy() {
         mContextHandler.stopContextHandle();
         mContextDetector.stopContextDetection(this);
-        SmartDringDB.closeDB(SmartDringDB.SERVICE_DB);
+        mDatabase.closeDB();
         super.onDestroy();
     }
 
-
+    public SmartDringDB getDB(){
+        return mDatabase;
+    }
 }
 

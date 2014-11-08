@@ -27,7 +27,7 @@ import static android.provider.ContactsContract.CommonDataKinds.*;
 /**
  * Created by arnaud on 18/10/2014.
  */
-public class ActionBlackListFragment extends Fragment implements AdapterView.OnItemClickListener {
+public class ActionBlackListFragment extends Fragment implements AdapterView.OnItemClickListener, BlackContactsAdapter.BlackContactDelete {
 
     public static final String TAG = "ActionBlackListeFragmentTag";
     private TextView nameText;
@@ -48,9 +48,9 @@ public class ActionBlackListFragment extends Fragment implements AdapterView.OnI
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAdapter = new BlackContactsAdapter(getActivity());
+        mAdapter = new BlackContactsAdapter(getActivity(), this);
         mAdapter.setActionBlackListFragment(this);
-        mAdapter.addAll(SmartDringDB.getDatabase(SmartDringDB.APP_DB).getcontactList(false));
+        mAdapter.addAll(((SmartDringActivity)getActivity()).getDB().getcontactList(false));
     }
 
     @Override
@@ -81,7 +81,7 @@ public class ActionBlackListFragment extends Fragment implements AdapterView.OnI
         if (lastContact != null && data != null) {
             lastContact.setContactPhoneNumber(getContactInfo(data, Phone.NUMBER));
             lastContact.setContactName(getContactInfo(data, ContactsContract.Profile.DISPLAY_NAME));
-            lastContact.setmId(SmartDringDB.getDatabase(SmartDringDB.APP_DB).saveBlack(lastContact));
+            lastContact.setmId(((SmartDringActivity)getActivity()).getDB().saveBlack(lastContact));
             mAdapter.add(lastContact);
         }
     }
@@ -111,7 +111,7 @@ public class ActionBlackListFragment extends Fragment implements AdapterView.OnI
 
     public void updateAdapter() {
         mAdapter.clear();
-        mAdapter.addAll(SmartDringDB.getDatabase(SmartDringDB.APP_DB).getcontactList(false));
+        mAdapter.addAll(((SmartDringActivity)getActivity()).getDB().getcontactList(false));
     }
 
     private void quitFragment() {
@@ -121,6 +121,11 @@ public class ActionBlackListFragment extends Fragment implements AdapterView.OnI
         getActivity().getSupportFragmentManager().executePendingTransactions();
         getActivity().getSupportFragmentManager().popBackStack();
         updateAdapter();
+    }
+
+    @Override
+    public void deleteBlackContact(Contact contact) {
+        ((SmartDringActivity)getActivity()).getDB().deleteBlack(contact);
     }
 }
 

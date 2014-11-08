@@ -38,15 +38,12 @@ public class SmartDringDB {
     private final static String DB_TABLE_PLACES = "Places";
     String[] PLACES_COLUMNS = {"placeId", "isDefault", "placeName", "placeLatitude", "placeLongitude", "profileId"};
 
-    // Singleton
-    private static SmartDringDB singleton_app;
-    private static SmartDringDB singleton_service;
     private final Context mContext;
     // Connection to data base
     private final DataBaseOpenHelper mOpenHelper;
     private final SQLiteDatabase mDatabase;
 
-    private SmartDringDB(Context pContext, int db_type) {
+    public SmartDringDB(Context pContext, int db_type) {
 
         mContext = pContext.getApplicationContext();
         mOpenHelper = new DataBaseOpenHelper(mContext);
@@ -64,57 +61,8 @@ public class SmartDringDB {
         }
     }
 
-    public static void initializeDB(Context pContext, int db_type) {
-        switch (db_type) {
-            case APP_DB:
-                if (singleton_app == null) {
-                    singleton_app = new SmartDringDB(pContext, db_type);
-                }
-                break;
-
-            case SERVICE_DB:
-                if (singleton_service == null) {
-                    singleton_service = new SmartDringDB(pContext, db_type);
-                }
-                break;
-
-            default:
-                throw new IllegalArgumentException();
-        }
-    }
-
-    public static void closeDB(int db_type) {
-        switch (db_type) {
-            case APP_DB:
-                if (singleton_app != null) {
-                    singleton_app.mOpenHelper.close();
-                    singleton_app = null;
-                }
-                break;
-
-            case SERVICE_DB:
-                if (singleton_service != null) {
-                    singleton_service.mOpenHelper.close();
-                    singleton_service = null;
-                }
-                break;
-
-            default:
-                throw new IllegalArgumentException();
-        }
-    }
-
-    public static SmartDringDB getDatabase(int db_type) {
-        switch (db_type) {
-            case APP_DB:
-                return singleton_app;
-
-            case SERVICE_DB:
-                return singleton_service;
-
-            default:
-                throw new IllegalArgumentException();
-        }
+    public void closeDB() {
+        mOpenHelper.close();
     }
 
     /**
@@ -220,10 +168,6 @@ public class SmartDringDB {
 
         // Delete from users levels
         mDatabase.delete(DB_TABLE_PROFILES, whereClause, whereArgs);
-    }
-
-    public void deleteProfile(Profile profile) {
-
     }
 
     /**

@@ -3,10 +3,9 @@ package smartring.masterihm.enac.com.smartdring.fragments;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
-import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,14 +18,13 @@ import smartring.masterihm.enac.com.smartdring.R;
 import smartring.masterihm.enac.com.smartdring.SmartDringActivity;
 import smartring.masterihm.enac.com.smartdring.adapters.WhiteContactsAdapter;
 import smartring.masterihm.enac.com.smartdring.data.Contact;
-import smartring.masterihm.enac.com.smartdring.data.SmartDringDB;
 
-import static android.provider.ContactsContract.CommonDataKinds.*;
+import static android.provider.ContactsContract.CommonDataKinds.Phone;
 
 /**
  * Created by arnaud on 18/10/2014.
  */
-public class ActionWhiteListFragment extends Fragment implements AdapterView.OnItemClickListener {
+public class ActionWhiteListFragment extends Fragment implements AdapterView.OnItemClickListener, WhiteContactsAdapter.WhiteContactDelete {
 
     public static final String TAG = "ActionWhiteListeFragmentTag";
     private TextView nameText;
@@ -47,9 +45,9 @@ public class ActionWhiteListFragment extends Fragment implements AdapterView.OnI
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAdapter = new WhiteContactsAdapter(getActivity());
+        mAdapter = new WhiteContactsAdapter(getActivity(), this);
         mAdapter.setActionWhiteListFragment(this);
-        mAdapter.addAll(SmartDringDB.getDatabase(SmartDringDB.APP_DB).getcontactList(true));
+        mAdapter.addAll(((SmartDringActivity) getActivity()).getDB().getcontactList(true));
     }
 
     @Override
@@ -80,7 +78,7 @@ public class ActionWhiteListFragment extends Fragment implements AdapterView.OnI
         if (lastContact != null && data != null) {
             lastContact.setContactPhoneNumber(getContactInfo(data, Phone.NUMBER));
             lastContact.setContactName(getContactInfo(data, ContactsContract.Profile.DISPLAY_NAME));
-            lastContact.setmId(SmartDringDB.getDatabase(SmartDringDB.APP_DB).saveWhite(lastContact));
+            lastContact.setmId(((SmartDringActivity) getActivity()).getDB().saveWhite(lastContact));
             mAdapter.add(lastContact);
         }
     }
@@ -88,7 +86,7 @@ public class ActionWhiteListFragment extends Fragment implements AdapterView.OnI
     private String getContactInfo(Intent data, String kind) {
         Uri contactUri = data.getData();
         String[] projection = {kind};
-        Cursor cursor = (Cursor) getActivity().getContentResolver()
+        Cursor cursor = getActivity().getContentResolver()
                 .query(contactUri, projection, null, null, null);
         cursor.moveToFirst();
         int column = cursor.getColumnIndex(kind);
@@ -109,7 +107,12 @@ public class ActionWhiteListFragment extends Fragment implements AdapterView.OnI
 
     public void updateAdapter() {
         mAdapter.clear();
-        mAdapter.addAll(SmartDringDB.getDatabase(SmartDringDB.APP_DB).getcontactList(true));
+        mAdapter.addAll(((SmartDringActivity) getActivity()).getDB().getcontactList(true));
+    }
+
+    @Override
+    public void deleteWhiteContact(Contact contact) {
+        ((SmartDringActivity) getActivity()).getDB().deleteWhite(contact);
     }
 }
 

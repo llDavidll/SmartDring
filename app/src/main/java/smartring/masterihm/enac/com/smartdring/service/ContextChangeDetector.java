@@ -20,7 +20,7 @@ public class ContextChangeDetector {
     private IncallListener phoneListener;
 
 
-    public ContextChangeDetector(Context context, ContextChangeInterface pListener) {
+    public ContextChangeDetector(SmartDringService context, ContextChangeInterface pListener) {
         // Init context detection
         mSensorDetector = new SensorDetector(context, pListener);
         mGpsDetector = new GpsDetector(context, pListener);
@@ -41,7 +41,7 @@ public class ContextChangeDetector {
         mGpsDetector.stopDetection(context);
     }
 
-    public void updateContextDetection(Context context) {
+    public void updateContextDetection(SmartDringService context) {
         if (SmartDringPreferences.getBooleanPreference(context, SmartDringPreferences.PHONEFLIP_STATE)) {
             mSensorDetector.startDetection();
         } else {

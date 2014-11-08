@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import smartring.masterihm.enac.com.smartdring.R;
+import smartring.masterihm.enac.com.smartdring.SmartDringActivity;
 import smartring.masterihm.enac.com.smartdring.adapters.PlacesAdapter;
 import smartring.masterihm.enac.com.smartdring.data.Place;
 import smartring.masterihm.enac.com.smartdring.data.SmartDringDB;
@@ -39,7 +40,7 @@ public class AutoPlacesFragment extends Fragment implements AdapterView.OnItemCl
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mAdapter = new PlacesAdapter(getActivity());
-        mAdapter.addAll(SmartDringDB.getDatabase(SmartDringDB.APP_DB).getPlaces(false));
+        mAdapter.addAll(((SmartDringActivity)getActivity()).getDB().getPlaces(false));
     }
 
     @Override
@@ -59,7 +60,7 @@ public class AutoPlacesFragment extends Fragment implements AdapterView.OnItemCl
             Place p = mAdapter.getItem(i);
             if (p.getId() < 0) {
                 p.setDefault(false);
-                p.setId(SmartDringDB.getDatabase(SmartDringDB.APP_DB).save(p));
+                p.setId(((SmartDringActivity)getActivity()).getDB().save(p));
                 mAdapter.add(p);
             }
 
@@ -87,6 +88,6 @@ public class AutoPlacesFragment extends Fragment implements AdapterView.OnItemCl
     }
 
     public void updateListView() {
-        mAdapter.refresh(SmartDringDB.getDatabase(SmartDringDB.APP_DB).getPlaces(false));
+        mAdapter.refresh(((SmartDringActivity) getActivity()).getDB().getPlaces(false));
     }
 }

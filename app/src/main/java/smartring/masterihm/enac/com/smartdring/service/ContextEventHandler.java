@@ -35,18 +35,18 @@ public class ContextEventHandler implements ContextChangeDetector.ContextChangeI
     private ContextCurrentState mState;
 
     // Context used to apply external context changes.
-    private Context mContext;
+    private SmartDringService mContext;
 
     /**
      * Create a context event handler.
      *
      * @param context the context used to apply the changes.
      */
-    public ContextEventHandler(Context context) {
+    public ContextEventHandler(SmartDringService context) {
         mContext = context;
         mState = new ContextCurrentState();
         // Find default place
-        for (Place place : SmartDringDB.getDatabase(SmartDringDB.SERVICE_DB).getPlaces(true)) {
+        for (Place place : mContext.getDB().getPlaces(true)) {
             if (place.isDefault()) {
                 mState.currentPlace = place;
                 mState.currentPlace.setName(context.getString(R.string.places_default_outdoor));
@@ -63,7 +63,7 @@ public class ContextEventHandler implements ContextChangeDetector.ContextChangeI
      *
      * @param context the context used to apply the changes.
      */
-    public void startContextHandle(Context context) {
+    public void startContextHandle(SmartDringService context) {
         mContext = context;
     }
 
@@ -85,7 +85,7 @@ public class ContextEventHandler implements ContextChangeDetector.ContextChangeI
 
     private void updateCurrentProfile() {
         if (mState.isFlipped) {
-            mState.currentProfile = SmartDringDB.getDatabase(SmartDringDB.SERVICE_DB).getProfiles().get(0);
+            mState.currentProfile = mContext.getDB().getProfiles().get(0);
         } else {
             mState.currentProfile = null;
         }

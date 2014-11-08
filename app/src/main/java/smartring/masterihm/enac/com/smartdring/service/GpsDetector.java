@@ -14,7 +14,6 @@ import java.util.Map;
 
 import smartring.masterihm.enac.com.smartdring.R;
 import smartring.masterihm.enac.com.smartdring.data.Place;
-import smartring.masterihm.enac.com.smartdring.data.SmartDringDB;
 
 /**
  * Created by David on 21/10/2014.
@@ -55,7 +54,7 @@ public class GpsDetector {
      * @param context  the context requesting the GpsDetector.
      * @param listener the listener requesting localisation updates.
      */
-    public GpsDetector(Context context, ContextChangeDetector.ContextChangeInterface listener) {
+    public GpsDetector(SmartDringService context, ContextChangeDetector.ContextChangeInterface listener) {
 
         mGpsDetectorListener = listener;
 
@@ -80,8 +79,8 @@ public class GpsDetector {
      *
      * @param context the context requesting the refresh.
      */
-    public void refreshLocations(Context context) {
-        List<Place> newList = SmartDringDB.getDatabase(SmartDringDB.SERVICE_DB).getPlaces(true);
+    public void refreshLocations(SmartDringService context) {
+        List<Place> newList = context.getDB().getPlaces(true);
         List<Place> oldList = new ArrayList<Place>(mLocations.keySet());
 
         // Set the default place
