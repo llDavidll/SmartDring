@@ -58,7 +58,8 @@ public class ProfileEditionFragment extends Fragment {
     private Color nextColor;
 
     public static ProfileEditionFragment getInstance(Profile profile, ProfilesFragment pf) {
-        ProfileEditionFragment fragment = new ProfileEditionFragment(pf);
+        ProfileEditionFragment fragment = new ProfileEditionFragment();
+        fragment.setProfilesFragment(pf);
         Bundle args = new Bundle();
         args.putSerializable(PROFILE_KEY, profile);
         fragment.setArguments(args);
@@ -66,7 +67,7 @@ public class ProfileEditionFragment extends Fragment {
         return fragment;
     }
 
-    public ProfileEditionFragment(ProfilesFragment pf){
+    public void setProfilesFragment(ProfilesFragment pf){
         profileFragment = pf;
     }
 

@@ -412,17 +412,6 @@ public class SmartDringDB {
         String whereClause = "ContactId = ?";
         String[] whereArgs = new String[]{Integer.toString(c.getmId())};
 
-        // Update the places referencing this profile
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("ContactId", -1);
-        try {
-            mDatabase.update(DB_TABLE_CONTACTWHITELIST, contentValues,
-                    "ContactId = ?",
-                    new String[]{Integer.toString(c.getmId())});
-        } catch (SQLiteConstraintException ex) {
-            return;
-        }
-
         // Delete from users levels
         mDatabase.delete(DB_TABLE_CONTACTWHITELIST, whereClause, whereArgs);
     }
@@ -430,17 +419,6 @@ public class SmartDringDB {
     public void deleteBlack(Contact c) {
         String whereClause = "ContactId = ?";
         String[] whereArgs = new String[]{Integer.toString(c.getmId())};
-
-        // Update the places referencing this profile
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("ContactId", -1);
-        try {
-            mDatabase.update(DB_TABLE_CONTACTBLACKLIST, contentValues,
-                    "ContactId = ?",
-                    new String[]{Integer.toString(c.getmId())});
-        } catch (SQLiteConstraintException ex) {
-            return;
-        }
 
         // Delete from users levels
         mDatabase.delete(DB_TABLE_CONTACTBLACKLIST, whereClause, whereArgs);

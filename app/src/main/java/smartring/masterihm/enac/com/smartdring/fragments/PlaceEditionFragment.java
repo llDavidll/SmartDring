@@ -165,13 +165,17 @@ public class PlaceEditionFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mMapView.onDestroy();
+        if (mMapView != null) {
+            mMapView.onDestroy();
+        }
     }
 
     @Override
     public void onLowMemory() {
         super.onLowMemory();
-        mMapView.onLowMemory();
+        if (mMapView != null) {
+            mMapView.onLowMemory();
+        }
     }
 
 
