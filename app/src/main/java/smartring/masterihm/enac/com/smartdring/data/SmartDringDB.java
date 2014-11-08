@@ -29,6 +29,12 @@ public class SmartDringDB {
     String[] PROFILES_COLUMNS = {"profileId", "isDefault", "profileName", "profileColor", "profilePhoneLvl",
             "profileNotifLvl", "profileMediaLvl", "profileCallLvl", "profileAlarmLvl"};
 
+    private final static String DB_TABLE_CONTACTWHITELIST = "ContactWhiteList";
+    String[] CONTACTWHITELIST_COLUMNS = {"ContactId", "ContactName", "ContactPhone"};
+
+    private final static String DB_TABLE_CONTACTBLACKLIST = "ContactBlackList";
+    String[] CONTACTBLACKLIST_COLUMNS = {"ContactId", "ContactName", "ContactPhone"};
+
     private final static String DB_TABLE_PLACES = "Places";
     String[] PLACES_COLUMNS = {"placeId", "isDefault", "placeName", "placeLatitude", "placeLongitude", "profileId"};
 
@@ -318,6 +324,130 @@ public class SmartDringDB {
     protected void finalize() throws Throwable {
         mOpenHelper.close();
         super.finalize();
+    }
+
+    public int saveWhite(Contact c) {
+        boolean saved = false;
+        // Create the profile data
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("ContactName", c.getContactName());
+        contentValues.put("contactPhone", c.getContactPhoneNumber());
+
+        if (c.getmId() > -1) {
+            try {
+                saved = mDatabase.update(DB_TABLE_CONTACTWHITELIST, contentValues,
+                        "ContactId = ?",
+                        new String[]{Integer.toString(c.getmId())}) > 0;
+            } catch (SQLiteConstraintException ex) {
+                return c.getmId();
+            }
+        }
+        if (!saved) {
+            try {
+                // Try to insert a new profile in the database
+                return (int) mDatabase.insert(DB_TABLE_CONTACTWHITELIST, null, contentValues);
+            } catch (SQLiteConstraintException ex) {
+                return -1;
+            }
+        }
+        return c.getmId();
+    }
+
+    public int saveBlack(Contact c) {
+        boolean saved = false;
+        // Create the profile data
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("ContactName", c.getContactName());
+        contentValues.put("contactPhone", c.getContactPhoneNumber());
+
+        if (c.getmId() > -1) {
+            try {
+                saved = mDatabase.update(DB_TABLE_CONTACTBLACKLIST, contentValues,
+                        "ContactId = ?",
+                        new String[]{Integer.toString(c.getmId())}) > 0;
+            } catch (SQLiteConstraintException ex) {
+                return c.getmId();
+            }
+        }
+        if (!saved) {
+            try {
+                // Try to insert a new profile in the database
+                return (int) mDatabase.insert(DB_TABLE_CONTACTBLACKLIST, null, contentValues);
+            } catch (SQLiteConstraintException ex) {
+                return -1;
+            }
+        }
+        return c.getmId();
+    }
+
+    public List<Contact> getcontactWhiteList(boolean iswhitelist) {
+        // Get the place names from the data base
+        Cursor cursor;
+        if (iswhitelist) {
+            cursor = mDatabase.query(DB_TABLE_CONTACTWHITELIST, CONTACTWHITELIST_COLUMNS, null, null,
+                    null, null, null);
+        } else {
+            cursor = mDatabase.query(DB_TABLE_CONTACTBLACKLIST, CONTACTBLACKLIST_COLUMNS, null, null,
+                    null, null, null);
+        }
+
+        // Store into a list
+        ArrayList<Contact> contacts = new ArrayList<Contact>();
+
+        if (cursor.moveToFirst()) {
+
+            Contact contact;
+            do {
+                contact = new Contact();
+                contact.setmId(cursor.getInt(0));
+                contact.setContactName(cursor.getString(1));
+                contact.setContactPhoneNumber(cursor.getString(2));
+                contacts.add(contact);
+
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+
+        return contacts;
+    }
+
+    public void deleteWhite(Contact c) {
+        String whereClause = "ContactId = ?";
+        String[] whereArgs = new String[]{Integer.toString(c.getmId())};
+
+        // Update the places referencing this profile
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("ContactId", -1);
+        try {
+            mDatabase.update(DB_TABLE_CONTACTWHITELIST, contentValues,
+                    "ContactId = ?",
+                    new String[]{Integer.toString(c.getmId())});
+        } catch (SQLiteConstraintException ex) {
+            return;
+        }
+
+        // Delete from users levels
+        mDatabase.delete(DB_TABLE_CONTACTWHITELIST, whereClause, whereArgs);
+    }
+
+    public void deleteBlack(Contact c) {
+        String whereClause = "ContactId = ?";
+        String[] whereArgs = new String[]{Integer.toString(c.getmId())};
+
+        // Update the places referencing this profile
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("ContactId", -1);
+        try {
+            mDatabase.update(DB_TABLE_CONTACTBLACKLIST, contentValues,
+                    "ContactId = ?",
+                    new String[]{Integer.toString(c.getmId())});
+        } catch (SQLiteConstraintException ex) {
+            return;
+        }
+
+        // Delete from users levels
+        mDatabase.delete(DB_TABLE_CONTACTBLACKLIST, whereClause, whereArgs);
     }
 
     /**

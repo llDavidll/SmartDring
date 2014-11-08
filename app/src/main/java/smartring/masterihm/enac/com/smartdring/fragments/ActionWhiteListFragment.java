@@ -11,9 +11,11 @@ import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -25,6 +27,7 @@ import smartring.masterihm.enac.com.smartdring.SmartDringActivity;
 import smartring.masterihm.enac.com.smartdring.adapters.ContactsAdapter;
 import smartring.masterihm.enac.com.smartdring.adapters.ProfilesAdapter;
 import smartring.masterihm.enac.com.smartdring.data.Contact;
+import smartring.masterihm.enac.com.smartdring.data.Place;
 import smartring.masterihm.enac.com.smartdring.data.Profile;
 import smartring.masterihm.enac.com.smartdring.data.SmartDringDB;
 
@@ -33,12 +36,13 @@ import static android.provider.ContactsContract.CommonDataKinds.*;
 /**
  * Created by arnaud on 18/10/2014.
  */
-public class ActionWhiteListFragment extends Fragment {
+public class ActionWhiteListFragment extends Fragment implements AdapterView.OnItemClickListener {
 
     public static final String TAG = "ActionWhiteListeFragmentTag";
     private TextView nameText;
     public static final int PICK_CONTACT_REQUEST = 1;
     private ContactsAdapter mAdapter;
+    private Contact lastContact = null;
 
     public static ActionWhiteListFragment getInstance() {
 
@@ -54,9 +58,8 @@ public class ActionWhiteListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mAdapter = new ContactsAdapter(getActivity());
-        mAdapter.add(new Contact("TOTO", "0683917453"));
-        mAdapter.add(new Contact("Taph", "068398153"));
-        mAdapter.add(new Contact("JEJ", "067887453"));
+        mAdapter.setActionWhiteListFragment(this);
+        mAdapter.addAll(SmartDringDB.getDatabase(SmartDringDB.APP_DB).getcontactWhiteList(true));
     }
 
     @Override
@@ -65,30 +68,19 @@ public class ActionWhiteListFragment extends Fragment {
 
         ListView lView = (ListView) profilesView.findViewById(R.id.fragment_whitelist_list);
         lView.setAdapter(mAdapter);
+        lView.setOnItemClickListener(this);
 
-        nameText = (TextView) profilesView.findViewById(R.id.phoneText);
-        View button = profilesView.findViewById(R.id.button);
-        final Fragment f = this;
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SmartDringActivity.setFragActivityResult(f);
-                Intent contactIntent = new Intent(Intent.ACTION_PICK, Uri.parse("content://contacts"));
-                contactIntent.setType(Phone.CONTENT_TYPE);
-                startActivityForResult(contactIntent, PICK_CONTACT_REQUEST);
-                FragmentManager fm = getFragmentManager();
-            }
-        });
         return profilesView;
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        nameText.setText("request : " + requestCode + " - result : " + resultCode);
-
-        String number = getContactInfo(data, Phone.NUMBER);
-        String name = getContactInfo(data, ContactsContract.Profile.DISPLAY_NAME);
-        nameText.setText(number + " - " + name);
+        if (lastContact != null) {
+            lastContact.setContactPhoneNumber(getContactInfo(data, Phone.NUMBER));
+            lastContact.setContactName(getContactInfo(data, ContactsContract.Profile.DISPLAY_NAME));
+            lastContact.setmId(SmartDringDB.getDatabase(SmartDringDB.APP_DB).saveWhite(lastContact));
+            mAdapter.add(lastContact);
+        }
     }
 
     private String getContactInfo(Intent data, String kind) {
@@ -99,6 +91,24 @@ public class ActionWhiteListFragment extends Fragment {
         cursor.moveToFirst();
         int column = cursor.getColumnIndex(kind);
         return cursor.getString(column);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        if (mAdapter != null) {
+            Contact c = mAdapter.getItem(i);
+            lastContact = c;
+            SmartDringActivity.setFragActivityResult(this);
+            Intent contactIntent = new Intent(Intent.ACTION_PICK, Uri.parse("content://contacts"));
+            contactIntent.setType(Phone.CONTENT_TYPE);
+            startActivityForResult(contactIntent, PICK_CONTACT_REQUEST);
+            FragmentManager fm = getFragmentManager();
+        }
+    }
+
+    public void updateAdapter() {
+        mAdapter.clear();
+        mAdapter.addAll(SmartDringDB.getDatabase(SmartDringDB.APP_DB).getcontactWhiteList(true));
     }
 }
 

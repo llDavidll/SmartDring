@@ -32,5 +32,6 @@
         android:id="@+id/textView"
         android:layout_weight="0.90"
         android:layout_marginLeft="20dp"
-        android:textSize="32dp" />
+        android:textSize="18dp"
+        android:textColor="#ff5e5e5e" />
 </LinearLayout>

@@ -7,12 +7,14 @@ import java.io.Serializable;
  */
 public class Contact implements Serializable {
 
+    private int mId;
     private String contactName;
     private String contactPhoneNumber;
 
-    public Contact(String contactName, String contactPhoneNumber) {
-        this.contactName = contactName;
-        this.contactPhoneNumber = contactPhoneNumber;
+    public Contact() {
+        this.mId = -1;
+        this.contactName = "";
+        this.contactPhoneNumber = "";
     }
 
     public String getContactName() {
@@ -29,5 +31,13 @@ public class Contact implements Serializable {
 
     public void setContactPhoneNumber(String contactPhoneNumber) {
         this.contactPhoneNumber = contactPhoneNumber;
+    }
+
+    public int getmId() {
+        return mId;
+    }
+
+    public void setmId(int mId) {
+        this.mId = mId;
     }
 }

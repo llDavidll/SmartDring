@@ -1,5 +1,7 @@
 DROP TABLE IF EXISTS "Profiles";
 DROP TABLE IF EXISTS "Places";
+DROP TABLE IF EXISTS "ContactBlackList";
+DROP TABLE IF EXISTS "ContactWhiteList";
 
 CREATE TABLE [Profiles] (
 	"profileId"		    integer 	PRIMARY KEY,
@@ -21,6 +23,18 @@ CREATE TABLE [Places] (
 	"placeLongitude"    real,
 	"profileId"         integer
 	);
+
+CREATE TABLE [ContactWhiteList] (
+    "contactId"		    integer 	PRIMARY KEY,
+    "ContactName"       nvarchar,
+    "contactPhone"      nvarchar
+    );
+
+CREATE TABLE [ContactBlackList] (
+    "contactID"		    integer 	PRIMARY KEY,
+    "ContactName"       nvarchar,
+    "contactPhone"      nvarchar
+    );
 
 insert into Profiles values (1, 1, "Home", '0xFF33B5E5', 7,7,7,7,7);
 insert into Profiles values (2, 1, "Work", '0xFFFF8800',2,2,2,2,2);

@@ -7,16 +7,17 @@
     android:weightSum="1">
 
     <ImageView
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:id="@+id/imageView"
         android:src="@drawable/iconwhitecontact" />
 
     <LinearLayout
         android:layout_marginLeft="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:orientation="vertical">
+        android:layout_width="wrap_content"
+        android:layout_height="70dp"
+        android:orientation="vertical"
+        android:gravity="center_vertical">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -24,7 +25,7 @@
             android:text="Name"
             android:id="@+id/fragment_action_whitelist_name"
             android:layout_gravity="center_horizontal"
-            android:textSize="36dp" />
+            android:textSize="22dp" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -36,10 +37,21 @@
             android:textColor="#ff787878" />
         </LinearLayout>
 
-    <Button
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:text="New Button"
-        android:id="@+id/button2" />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="80dp"
+        android:gravity="center_vertical|right">
+        <Button
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:text="X"
+            android:layout_marginRight="10dp"
+            android:id="@+id/fragment_action_whitelist_deletebutton"
+            android:background="#ffff2b24"
+            android:textColor="#ffffffff"
+            android:textSize="18dp"
+            android:gravity="center" />
+        </LinearLayout>
+
 
 </LinearLayout>
