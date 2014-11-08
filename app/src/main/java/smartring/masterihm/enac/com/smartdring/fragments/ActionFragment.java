@@ -75,6 +75,22 @@ public class ActionFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 // Black list line clicked, open edit fragment
+                Fragment blackFragment = ActionBlackListFragment.getInstance();
+                FragmentManager fm = getChildFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+
+               /* Fragment existingFragment = fm.findFragmentByTag(ActionWhiteListFragment.TAG);
+                if (existingFragment != null) {
+                    ft = ft.remove(existingFragment);
+                    fm.popBackStack();
+                }*/
+
+                ft.setCustomAnimations(R.anim.fade_in, R.anim.fade_out,
+                        R.anim.fade_in, R.anim.fade_out)
+                        .add(R.id.fragment_action_container, blackFragment, ActionBlackListFragment.TAG)
+                        .addToBackStack(ActionBlackListFragment.TAG)
+                        .commit();
+                fm.executePendingTransactions();
             }
         });
 

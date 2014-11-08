@@ -13,13 +13,14 @@ import smartring.masterihm.enac.com.smartdring.R;
 import smartring.masterihm.enac.com.smartdring.data.Contact;
 import smartring.masterihm.enac.com.smartdring.data.Profile;
 import smartring.masterihm.enac.com.smartdring.data.SmartDringDB;
+import smartring.masterihm.enac.com.smartdring.fragments.ActionBlackListFragment;
 import smartring.masterihm.enac.com.smartdring.fragments.ActionWhiteListFragment;
 import smartring.masterihm.enac.com.smartdring.fragments.ProfilesFragment;
 
 /**
  * Created by arnaud on 07/11/2014.
  */
-public class ContactsAdapter extends ArrayAdapter<Contact> {
+public class WhiteContactsAdapter extends ArrayAdapter<Contact> {
 
     private final LayoutInflater mInflater;
 
@@ -29,7 +30,7 @@ public class ContactsAdapter extends ArrayAdapter<Contact> {
 
     private ActionWhiteListFragment actionWhiteListFragment;
 
-    public ContactsAdapter(Context context) {
+    public WhiteContactsAdapter(Context context) {
         super(context, android.R.layout.simple_list_item_1);
         mInflater = LayoutInflater.from(context);
     }

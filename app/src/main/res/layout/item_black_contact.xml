@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="10dp"
+    android:weightSum="1">
+
+    <ImageView
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:id="@+id/imageView"
+        android:src="@drawable/iconblackcontact" />
+
+    <LinearLayout
+        android:layout_marginLeft="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="70dp"
+        android:orientation="vertical"
+        android:gravity="center_vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:text="Name"
+            android:id="@+id/fragment_action_blacklist_name"
+            android:layout_gravity="center_horizontal"
+            android:textSize="22dp" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:text="Phone Number"
+            android:id="@+id/fragment_action_blacklist_phone"
+            android:layout_gravity="center_horizontal"
+            android:textSize="24dp"
+            android:textColor="#ff787878" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="80dp"
+        android:gravity="center_vertical|right">
+        <Button
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:text="X"
+            android:layout_marginRight="10dp"
+            android:id="@+id/fragment_action_blacklist_deletebutton"
+            android:background="#ffff2b24"
+            android:textColor="#ffffffff"
+            android:textSize="18dp"
+            android:gravity="center" />
+    </LinearLayout>
+
+
+</LinearLayout>

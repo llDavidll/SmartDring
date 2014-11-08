@@ -380,7 +380,7 @@ public class SmartDringDB {
         return c.getmId();
     }
 
-    public List<Contact> getcontactWhiteList(boolean iswhitelist) {
+    public List<Contact> getcontactList(boolean iswhitelist) {
         // Get the place names from the data base
         Cursor cursor;
         if (iswhitelist) {
@@ -390,10 +390,8 @@ public class SmartDringDB {
             cursor = mDatabase.query(DB_TABLE_CONTACTBLACKLIST, CONTACTBLACKLIST_COLUMNS, null, null,
                     null, null, null);
         }
-
         // Store into a list
         ArrayList<Contact> contacts = new ArrayList<Contact>();
-
         if (cursor.moveToFirst()) {
 
             Contact contact;
@@ -406,9 +404,7 @@ public class SmartDringDB {
 
             } while (cursor.moveToNext());
         }
-
         cursor.close();
-
         return contacts;
     }
 
