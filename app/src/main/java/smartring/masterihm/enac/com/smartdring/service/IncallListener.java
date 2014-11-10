@@ -19,8 +19,12 @@ public class IncallListener extends PhoneStateListener {
         mPhoneStateListener = pListener;
     }
 
-    public void start() {
+    public void startDetection() {
         mTelephonyManager.listen(this, LISTEN_CALL_STATE);
+    }
+
+    public void stopDetection() {
+        mTelephonyManager.listen(this, LISTEN_NONE);
     }
 
     public void onCallStateChanged(int state, String incomingNumber) {
@@ -31,12 +35,5 @@ public class IncallListener extends PhoneStateListener {
         else if (state == TelephonyManager.CALL_STATE_OFFHOOK || state == TelephonyManager.CALL_STATE_IDLE) {
             mPhoneStateListener.phoneCallStateChanged("", false);
         }
-        //CALL_STATE_RINGING
-            // if incomingNumber is in white list, load special LOUD profile
-            // else if incomingNumber is in black list, load special SILENCE profile
-            // else change nothing
-
-        //CALL_STATE_OFFHOOK
-            // restore the previous profile or the awaited profile
     }
 }

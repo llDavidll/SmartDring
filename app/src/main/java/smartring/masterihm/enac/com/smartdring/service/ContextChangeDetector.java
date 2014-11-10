@@ -33,8 +33,15 @@ public class ContextChangeDetector {
         } else {
             mSensorDetector.stopDetection();
         }
+
         mGpsDetector.startDetection();
-        phoneListener.start();
+
+        if (SmartDringPreferences.getBooleanPreference(context, SmartDringPreferences.WHITELIST_STATE) ||
+            SmartDringPreferences.getBooleanPreference(context, SmartDringPreferences.BLACKLIST_STATE) ) {
+            phoneListener.startDetection();
+        } else {
+            phoneListener.stopDetection();
+        }
     }
 
     public void stopContextDetection(Context context) {
@@ -47,6 +54,12 @@ public class ContextChangeDetector {
             mSensorDetector.startDetection();
         } else {
             mSensorDetector.stopDetection();
+        }
+        if (SmartDringPreferences.getBooleanPreference(context, SmartDringPreferences.WHITELIST_STATE) ||
+                SmartDringPreferences.getBooleanPreference(context, SmartDringPreferences.BLACKLIST_STATE) ) {
+            phoneListener.startDetection();
+        } else {
+            phoneListener.stopDetection();
         }
         mGpsDetector.refreshLocations(context);
     }

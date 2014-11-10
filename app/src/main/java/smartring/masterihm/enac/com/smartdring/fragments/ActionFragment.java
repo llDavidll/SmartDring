@@ -42,9 +42,11 @@ public class ActionFragment extends Fragment {
         boundSwitchToPreference(activationSwitch, SmartDringPreferences.PHONEFLIP_STATE);
 
         activationSwitch = (Switch) actionView.findViewById(R.id.fragment_action_switch_whitelist);
+        activationSwitch.setChecked(SmartDringPreferences.getBooleanPreference(getActivity(), SmartDringPreferences.WHITELIST_STATE));
         boundSwitchToPreference(activationSwitch, SmartDringPreferences.WHITELIST_STATE);
 
         activationSwitch = (Switch) actionView.findViewById(R.id.fragment_action_switch_blacklist);
+        activationSwitch.setChecked(SmartDringPreferences.getBooleanPreference(getActivity(), SmartDringPreferences.BLACKLIST_STATE));
         boundSwitchToPreference(activationSwitch, SmartDringPreferences.BLACKLIST_STATE);
 
         View whiteListView = actionView.findViewById(R.id.fragment_action_whitelist_layout);

@@ -17,6 +17,9 @@ import smartring.masterihm.enac.com.smartdring.SmartDringActivity;
  */
 public class Profile implements Serializable {
 
+    public static final int SILENCE_MOD = 0;
+    public static final int LOUD_MOD = 1;
+
     private int mId;
     private boolean mIsDefault;
     private String mName;
@@ -53,6 +56,23 @@ public class Profile implements Serializable {
         mMediaLvl = am.getStreamVolume(AudioManager.STREAM_MUSIC);
         mCallLvl = am.getStreamVolume(AudioManager.STREAM_RING);
         mAlarmLvl = am.getStreamVolume(AudioManager.STREAM_ALARM);
+    }
+
+    public Profile(int mod) {
+        if (mod == SILENCE_MOD) {
+            mPhoneLvl = 0;
+            mNotifLvl = 0;
+            mMediaLvl = 0;
+            mCallLvl = 0;
+            mAlarmLvl = 0;
+        }
+        else if (mod == LOUD_MOD) {
+            mPhoneLvl = 7;
+            mNotifLvl = 7;
+            mMediaLvl = 15;
+            mCallLvl = 7;
+            mAlarmLvl = 7;
+        }
     }
 
 

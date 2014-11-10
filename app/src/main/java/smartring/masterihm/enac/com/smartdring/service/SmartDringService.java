@@ -67,5 +67,6 @@ public class SmartDringService extends Service {
     public SmartDringDB getDB(){
         return mDatabase;
     }
+
 }
 

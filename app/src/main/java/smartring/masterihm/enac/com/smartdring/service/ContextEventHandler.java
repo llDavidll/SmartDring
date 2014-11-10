@@ -7,13 +7,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 import smartring.masterihm.enac.com.smartdring.R;
 import smartring.masterihm.enac.com.smartdring.SmartDringActivity;
+import smartring.masterihm.enac.com.smartdring.data.Contact;
 import smartring.masterihm.enac.com.smartdring.data.Place;
 import smartring.masterihm.enac.com.smartdring.data.Profile;
 import smartring.masterihm.enac.com.smartdring.data.SmartDringDB;
+import smartring.masterihm.enac.com.smartdring.data.SmartDringPreferences;
 
 /**
  * Created by David on 29/10/2014.
@@ -23,7 +28,7 @@ import smartring.masterihm.enac.com.smartdring.data.SmartDringDB;
 public class ContextEventHandler implements ContextChangeDetector.ContextChangeInterface {
 
     // Unique Identification Number for the Notification.
-    // We use it on Notification start, and to cancel it.
+    // We use it on Notification startDetection, and to cancel it.
     private int NOTIFICATION = R.string.local_service_started;
 
     // Notification builder used to update the notification.
@@ -150,14 +155,47 @@ public class ContextEventHandler implements ContextChangeDetector.ContextChangeI
     @Override
     public void phoneCallStateChanged(String number, boolean ring) {
         if (ring) {
-            // 1 - enregistrer les paramaetre sonore en tant que profile actuel
-            // 2 - Appliquer un parametre sonore adapate (white ou black)
-            //      2.1 - Verifier si les white ou blakc est activé (switch)
-            //      2.2 - Chercher si numéro correspondant (en verifiant les +336 et 06)
+            Profile currentp = new Profile(mContext);
+
+            if (isInWhiteList(number)){
+                // APPLY LOUD PROFILE
+                Profile pSilence = new Profile(Profile.LOUD_MOD);
+            }
+            else if (isInBlackList(number)) {
+                // APPLY SILENCE PROFILE
+                Profile pSilence = new Profile(Profile.SILENCE_MOD);
+            }
         } else {
             // 1 - verifié que les white ou black est activé (switch)
             // 2 - restauré le profil sonorre précédeement enregistré
         }
+    }
+
+
+    private boolean isInBlackList(String number) {
+        if (SmartDringPreferences.getBooleanPreference(mContext, SmartDringPreferences.BLACKLIST_STATE)) {
+            return false;
+        }
+        ArrayList<Contact> lc = (ArrayList<Contact>) mContext.getDB().getcontactList(false);
+        for (Contact c : lc) {
+            if (c.getContactPhoneNumber() == number) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isInWhiteList(String number) {
+        if (SmartDringPreferences.getBooleanPreference(mContext, SmartDringPreferences.WHITELIST_STATE)) {
+            return false;
+        }
+        ArrayList<Contact> lc = (ArrayList<Contact>) mContext.getDB().getcontactList(true);
+        for (Contact c : lc) {
+            if (c.getContactPhoneNumber() == number) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
