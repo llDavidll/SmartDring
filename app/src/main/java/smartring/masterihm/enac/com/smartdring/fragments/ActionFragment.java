@@ -56,11 +56,11 @@ public class ActionFragment extends Fragment {
                 FragmentManager fm = getActivity().getSupportFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
 
-               /* Fragment existingFragment = fm.findFragmentByTag(ActionWhiteListFragment.TAG);
+               Fragment existingFragment = fm.findFragmentByTag(ActionWhiteListFragment.TAG);
                 if (existingFragment != null) {
                     ft = ft.remove(existingFragment);
                     fm.popBackStack();
-                }*/
+                }
 
                 ft.setCustomAnimations(R.anim.fade_in, R.anim.fade_out,
                         R.anim.fade_in, R.anim.fade_out)
@@ -79,11 +79,11 @@ public class ActionFragment extends Fragment {
                 FragmentManager fm = getActivity().getSupportFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
 
-               /* Fragment existingFragment = fm.findFragmentByTag(ActionWhiteListFragment.TAG);
+               Fragment existingFragment = fm.findFragmentByTag(ActionBlackListFragment.TAG);
                 if (existingFragment != null) {
                     ft = ft.remove(existingFragment);
                     fm.popBackStack();
-                }*/
+                }
 
                 ft.setCustomAnimations(R.anim.fade_in, R.anim.fade_out,
                         R.anim.fade_in, R.anim.fade_out)

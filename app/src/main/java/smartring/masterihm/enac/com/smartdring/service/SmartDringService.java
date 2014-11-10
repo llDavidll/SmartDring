@@ -24,10 +24,8 @@ public class SmartDringService extends Service {
     };
 
     private SmartDringDB mDatabase;
-
     // Context detector, creating notifications on context change.
     private ContextChangeDetector mContextDetector;
-
     // Context handler, receiving and handling notification on context change.
     private ContextEventHandler mContextHandler;
 

@@ -24,7 +24,7 @@ public class ContextChangeDetector {
         // Init context detection
         mSensorDetector = new SensorDetector(context, pListener);
         mGpsDetector = new GpsDetector(context, pListener);
-        phoneListener = new IncallListener();
+        phoneListener = new IncallListener(context, pListener);
     }
 
     public void startContextDetection(Context context) {
@@ -34,6 +34,7 @@ public class ContextChangeDetector {
             mSensorDetector.stopDetection();
         }
         mGpsDetector.startDetection();
+        phoneListener.start();
     }
 
     public void stopContextDetection(Context context) {
@@ -67,5 +68,10 @@ public class ContextChangeDetector {
          * @param currentPlace the new place the user is in.
          */
         void currentPlaceChanged(Place currentPlace);
+
+        /**
+         * Called when the phone call state changes.
+         */
+        void phoneCallStateChanged(String number, boolean ring);
     }
 }

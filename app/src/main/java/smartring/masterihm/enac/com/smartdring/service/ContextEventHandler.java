@@ -147,6 +147,19 @@ public class ContextEventHandler implements ContextChangeDetector.ContextChangeI
         }
     }
 
+    @Override
+    public void phoneCallStateChanged(String number, boolean ring) {
+        if (ring) {
+            // 1 - enregistrer les paramaetre sonore en tant que profile actuel
+            // 2 - Appliquer un parametre sonore adapate (white ou black)
+            //      2.1 - Verifier si les white ou blakc est activé (switch)
+            //      2.2 - Chercher si numéro correspondant (en verifiant les +336 et 06)
+        } else {
+            // 1 - verifié que les white ou black est activé (switch)
+            // 2 - restauré le profil sonorre précédeement enregistré
+        }
+    }
+
     /**
      * Current state of the context.
      */
