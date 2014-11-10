@@ -1,8 +1,14 @@
 package smartring.masterihm.enac.com.smartdring.data;
 
+import android.app.Activity;
+import android.content.Context;
 import android.graphics.Color;
+import android.media.AudioManager;
+import android.support.v4.app.FragmentActivity;
 
 import java.io.Serializable;
+
+import smartring.masterihm.enac.com.smartdring.SmartDringActivity;
 
 /**
  * Created by David on 13/10/2014.
@@ -34,6 +40,21 @@ public class Profile implements Serializable {
         mAlarmLvl = 3;
         
     }
+
+    // create profile with current sound level of the phone
+    public Profile(Context c) {
+        mId = -1;
+        mIsDefault = false;
+        mName = "";
+        mColor = Color.DKGRAY;
+        AudioManager am = (AudioManager) c.getSystemService(Context.AUDIO_SERVICE);
+        mPhoneLvl = am.getStreamVolume(AudioManager.STREAM_SYSTEM);
+        mNotifLvl = am.getStreamVolume(AudioManager.STREAM_NOTIFICATION);
+        mMediaLvl = am.getStreamVolume(AudioManager.STREAM_MUSIC);
+        mCallLvl = am.getStreamVolume(AudioManager.STREAM_RING);
+        mAlarmLvl = am.getStreamVolume(AudioManager.STREAM_ALARM);
+    }
+
 
     public boolean isDefault() {
         return mIsDefault;

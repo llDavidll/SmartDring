@@ -90,7 +90,7 @@ public class ProfilesAdapter extends ArrayAdapter<Profile> {
     @Nullable
     Profile getItem(int position) {
         if (position == getCount() - 1) {
-            return new Profile();
+            return new Profile(getContext());
         }
         return super.getItem(position);
     }
