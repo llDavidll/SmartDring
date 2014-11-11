@@ -112,7 +112,7 @@ public class PlaceEditionFragment extends Fragment {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mPlace == null || mPlace.getName().length() == 0) {
+                if (mPlace == null || mNameEditText.getText().length() == 0) {
                     ((SmartDringActivity)getActivity()).getDB().delete(mPlace);
                 } else {
                     savePlace();
