@@ -22,7 +22,7 @@ import smartring.masterihm.enac.com.smartdring.data.SmartDringDB;
  * <p/>
  * Fragment displaying the places.
  */
-public class AutoPlacesFragment extends Fragment implements AdapterView.OnItemClickListener {
+public class AutoPlacesFragment extends Fragment implements AdapterView.OnItemClickListener, PlacesAdapter.PlaceSaver {
 
     public final static String TAG = "AutoPlacesFragmentTag";
 
@@ -39,7 +39,8 @@ public class AutoPlacesFragment extends Fragment implements AdapterView.OnItemCl
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAdapter = new PlacesAdapter(getActivity());
+        mAdapter = new PlacesAdapter(getActivity(), this);
+        mAdapter.setProfiles(((SmartDringActivity)getActivity()).getDB().getProfiles());
         mAdapter.addAll(((SmartDringActivity)getActivity()).getDB().getPlaces(false));
     }
 
@@ -88,6 +89,12 @@ public class AutoPlacesFragment extends Fragment implements AdapterView.OnItemCl
     }
 
     public void updateListView() {
+        mAdapter.setProfiles(((SmartDringActivity)getActivity()).getDB().getProfiles());
         mAdapter.refresh(((SmartDringActivity) getActivity()).getDB().getPlaces(false));
+    }
+
+    @Override
+    public void savePlace(Place place) {
+        ((SmartDringActivity) getActivity()).getDB().save(place);
     }
 }

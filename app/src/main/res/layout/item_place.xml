@@ -3,11 +3,37 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="20dp">
+    android:descendantFocusability="blocksDescendants"
+    android:paddingBottom="4dp"
+    android:paddingLeft="12dp"
+    android:paddingRight="12dp"
+    android:paddingTop="4dp">
 
     <TextView
         android:id="@android:id/text1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/item_place_middle"
+        android:singleLine="true"
+        android:text="Home"
+        android:textColor="@color/text_gray"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/item_place_middle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/text_gray" />
+        android:layout_centerInParent="true"
+        android:layout_margin="4dp"
+        android:text="->"
+        android:textSize="@dimen/text_big" />
+
+    <Spinner
+        android:id="@+id/item_place_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/item_place_middle"
+        android:spinnerMode="dropdown" />
 </RelativeLayout>

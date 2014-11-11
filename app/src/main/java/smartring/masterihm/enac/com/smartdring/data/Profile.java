@@ -147,4 +147,22 @@ public class Profile implements Serializable {
     public void setmAlarmLvl(int mAlarmLvl) {
         this.mAlarmLvl = mAlarmLvl;
     }
+
+    @Override
+    public String toString() {
+        return mName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o.getClass() == this.getClass()) {
+            return ((Profile) o).getId() == getId();
+        }
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return Integer.valueOf(getId()).hashCode();
+    }
 }

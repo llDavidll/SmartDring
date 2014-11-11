@@ -55,6 +55,11 @@ public class ProfilesFragment extends Fragment implements AdapterView.OnItemClic
 
     public final void updateAdapter() {
         mAdapter.refresh(((SmartDringActivity)getActivity()).getDB().getProfiles());
+        AutoPlacesFragment placesFragment = (AutoPlacesFragment) getActivity().getSupportFragmentManager()
+                .findFragmentByTag(AutoPlacesFragment.TAG);
+        if(placesFragment != null){
+            placesFragment.updateListView();
+        }
     }
 
     @Override

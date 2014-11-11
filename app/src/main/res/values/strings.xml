@@ -12,6 +12,7 @@
     <string name="fragment_title_auto">Auto</string>
     <string name="fragment_title_action">Action</string>
 
+    <string name="fragment_place_selectionnone">None</string>
 
     <string name="fragment_profile_edition_save">Save</string>
     <string name="fragment_profile_edition_delete">Delete</string>
@@ -23,6 +24,8 @@
 
     <string name="fragment_auto_switchplaces">Places</string>
     <string name="fragment_auto_switchtime">Time</string>
+
+    <string name="fragment_auto_time">Comming soon !</string>
 
     <string name="fragment_action_phoneflip">Phone flip</string>
 

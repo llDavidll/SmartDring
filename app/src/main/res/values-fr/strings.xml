@@ -12,6 +12,7 @@
     <string name="fragment_title_auto">Auto</string>
     <string name="fragment_title_action">Action</string>
 
+    <string name="fragment_place_selectionnone">Aucun</string>
 
     <string name="fragment_profile_edition_save">Enregistrer</string>
     <string name="fragment_profile_edition_delete">Supprimer</string>
@@ -23,6 +24,8 @@
 
     <string name="fragment_auto_switchplaces">Lieux</string>
     <string name="fragment_auto_switchtime">Temps</string>
+
+    <string name="fragment_auto_time">Fonctionnalité à venir !</string>
 
     <string name="fragment_action_phoneflip">Ecran posé</string>
 

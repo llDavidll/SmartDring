@@ -3,7 +3,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="20dp">
+    android:paddingBottom="4dp"
+    android:paddingLeft="12dp"
+    android:paddingRight="12dp"
+    android:paddingTop="4dp">
 
     <TextView
         android:id="@+id/item_profile_specialbg"

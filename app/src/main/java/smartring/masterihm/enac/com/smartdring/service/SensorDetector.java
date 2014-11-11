@@ -14,7 +14,7 @@ import android.hardware.SensorManager;
 public class SensorDetector implements SensorEventListener {
 
     // At which rate do we update the sensor data (ms)
-    private static final int SENSOR_REFRESH_DELAY = 600;
+    private static final int SENSOR_REFRESH_DELAY = 1200;
 
     // Is the sensor detector running.
     private boolean isRunning;
