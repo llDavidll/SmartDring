@@ -14,6 +14,8 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import smartring.masterihm.enac.com.smartdring.R;
 import smartring.masterihm.enac.com.smartdring.SmartDringActivity;
 import smartring.masterihm.enac.com.smartdring.adapters.WhiteContactsAdapter;
@@ -79,8 +81,29 @@ public class ActionWhiteListFragment extends Fragment implements AdapterView.OnI
             lastContact.setContactPhoneNumber(getContactInfo(data, Phone.NUMBER));
             lastContact.setContactName(getContactInfo(data, ContactsContract.Profile.DISPLAY_NAME));
             lastContact.setmId(((SmartDringActivity) getActivity()).getDB().saveWhite(lastContact));
-            mAdapter.add(lastContact);
+            if (isNotAllreadyExistWhiteList(lastContact)) {
+                mAdapter.add(lastContact);
+            }
         }
+    }
+
+    private boolean isNotAllreadyExistWhiteList(Contact contact) {
+        ArrayList<Contact> blc = (ArrayList<Contact>) ((SmartDringActivity) getActivity()).getDB().getcontactList(false);
+        ArrayList<Contact> wlc = new ArrayList<Contact>();
+        for (int i = 0; i < mAdapter.getCount(); ++i) {
+            wlc.add(mAdapter.getItem(i));
+        }
+        for (Contact c : blc) {
+            if (c.getContactName().contentEquals(contact.getContactName())) {
+                return false;
+            }
+        }
+        for (Contact c : wlc) {
+            if (c.getContactName().contentEquals(contact.getContactName())) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private String getContactInfo(Intent data, String kind) {

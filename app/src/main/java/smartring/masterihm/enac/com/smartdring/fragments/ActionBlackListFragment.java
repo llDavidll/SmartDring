@@ -15,12 +15,12 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import smartring.masterihm.enac.com.smartdring.R;
 import smartring.masterihm.enac.com.smartdring.SmartDringActivity;
 import smartring.masterihm.enac.com.smartdring.adapters.BlackContactsAdapter;
-import smartring.masterihm.enac.com.smartdring.adapters.WhiteContactsAdapter;
 import smartring.masterihm.enac.com.smartdring.data.Contact;
-import smartring.masterihm.enac.com.smartdring.data.SmartDringDB;
 
 import static android.provider.ContactsContract.CommonDataKinds.*;
 
@@ -82,8 +82,29 @@ public class ActionBlackListFragment extends Fragment implements AdapterView.OnI
             lastContact.setContactPhoneNumber(getContactInfo(data, Phone.NUMBER));
             lastContact.setContactName(getContactInfo(data, ContactsContract.Profile.DISPLAY_NAME));
             lastContact.setmId(((SmartDringActivity)getActivity()).getDB().saveBlack(lastContact));
-            mAdapter.add(lastContact);
+            if (isNotAllreadyExistBlackList(lastContact)) {
+                mAdapter.add(lastContact);
+            }
         }
+    }
+
+    private boolean isNotAllreadyExistBlackList(Contact contact) {
+        ArrayList<Contact> wlc = (ArrayList<Contact>) ((SmartDringActivity) getActivity()).getDB().getcontactList(true);
+        ArrayList<Contact> blc = new ArrayList<Contact>();
+        for (int i = 0; i < mAdapter.getCount(); ++i) {
+            blc.add(mAdapter.getItem(i));
+        }
+        for (Contact c : blc) {
+            if (c.getContactName().contentEquals(contact.getContactName())) {
+                return false;
+            }
+        }
+        for (Contact c : wlc) {
+            if (c.getContactName().contentEquals(contact.getContactName())) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private String getContactInfo(Intent data, String kind) {
