@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentActivity;
 import java.io.Serializable;
 
 import smartring.masterihm.enac.com.smartdring.SmartDringActivity;
+import smartring.masterihm.enac.com.smartdring.service.SmartDringService;
 
 /**
  * Created by David on 13/10/2014.
@@ -146,5 +147,14 @@ public class Profile implements Serializable {
 
     public void setmAlarmLvl(int mAlarmLvl) {
         this.mAlarmLvl = mAlarmLvl;
+    }
+
+    public void applySoundLevel(Context context) {
+        AudioManager am = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+        am.setStreamVolume(AudioManager.STREAM_SYSTEM, mPhoneLvl,0);
+        am.setStreamVolume(AudioManager.STREAM_NOTIFICATION, mNotifLvl,0);
+        am.setStreamVolume(AudioManager.STREAM_MUSIC, mMediaLvl,0);
+        am.setStreamVolume(AudioManager.STREAM_RING, mCallLvl,0);
+        am.setStreamVolume(AudioManager.STREAM_ALARM, mAlarmLvl,0);
     }
 }

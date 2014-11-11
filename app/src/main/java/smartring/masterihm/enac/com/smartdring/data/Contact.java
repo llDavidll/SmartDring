@@ -40,4 +40,16 @@ public class Contact implements Serializable {
     public void setmId(int mId) {
         this.mId = mId;
     }
+
+    public boolean isTheSamePhoneNumber(String number) {
+        String n1 = NormalizeNumber(this.contactPhoneNumber);
+        String n2 = NormalizeNumber(number);
+        return n1.contentEquals(n2);
+    }
+
+    private String NormalizeNumber(String number) {
+        String n = number.replace("+33","0");
+        n = n.replace(" ", "");
+        return n;
+    }
 }
