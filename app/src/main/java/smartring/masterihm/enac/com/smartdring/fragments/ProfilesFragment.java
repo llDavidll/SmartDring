@@ -9,14 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.GridView;
 
 import smartring.masterihm.enac.com.smartdring.R;
 import smartring.masterihm.enac.com.smartdring.SmartDringActivity;
 import smartring.masterihm.enac.com.smartdring.adapters.ProfilesAdapter;
 import smartring.masterihm.enac.com.smartdring.data.Profile;
-import smartring.masterihm.enac.com.smartdring.data.SmartDringDB;
 
 /**
  * Created by David on 13/10/2014.
@@ -39,7 +37,7 @@ public class ProfilesFragment extends Fragment implements AdapterView.OnItemClic
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mAdapter = new ProfilesAdapter(getActivity());
-        mAdapter.addAll(((SmartDringActivity)getActivity()).getDB().getProfiles());
+        mAdapter.addAll(((SmartDringActivity) getActivity()).getDB().getProfiles());
     }
 
     @Override
@@ -54,12 +52,13 @@ public class ProfilesFragment extends Fragment implements AdapterView.OnItemClic
     }
 
     public final void updateAdapter() {
-        mAdapter.refresh(((SmartDringActivity)getActivity()).getDB().getProfiles());
+        mAdapter.refresh(((SmartDringActivity) getActivity()).getDB().getProfiles());
         AutoPlacesFragment placesFragment = (AutoPlacesFragment) getActivity().getSupportFragmentManager()
                 .findFragmentByTag(AutoPlacesFragment.TAG);
-        if(placesFragment != null){
+        if (placesFragment != null) {
             placesFragment.updateListView();
         }
+        ((SmartDringActivity) getActivity()).getService().preferencesUpdated();
     }
 
     @Override
@@ -68,7 +67,7 @@ public class ProfilesFragment extends Fragment implements AdapterView.OnItemClic
             Profile p = mAdapter.getItem(i);
             if (p.getId() < 0) {
                 p.setDefault(false);
-                p.setId(((SmartDringActivity)getActivity()).getDB().save(p));
+                p.setId(((SmartDringActivity) getActivity()).getDB().save(p));
                 mAdapter.add(p);
             }
 

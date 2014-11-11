@@ -84,7 +84,7 @@ public class ProfileEditionFragment extends Fragment {
 
         FragmentActivity fa = getActivity();
         am = (AudioManager) fa.getSystemService(Context.AUDIO_SERVICE);
-        mp = MediaPlayer.create(fa, R.raw.fart);
+        mp = MediaPlayer.create(fa, R.raw.blop);
         currentAudioMedia = am.getStreamVolume(STREAM_MUSIC);
 
         prepareMediaPlayer();
@@ -127,7 +127,11 @@ public class ProfileEditionFragment extends Fragment {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                saveProfile();
+                if (mProfile == null || mProfile.getName().length() == 0) {
+                    ((SmartDringActivity)getActivity()).getDB().delete(mProfile);
+                } else {
+                    saveProfile();
+                }
                 quitFragment();
 
             }
@@ -149,7 +153,7 @@ public class ProfileEditionFragment extends Fragment {
         int maxsystem = am.getStreamMaxVolume(stream);
         int after = lvl * maxmedia / maxsystem;
         am.setStreamVolume(STREAM_MUSIC, after, 0);
-        MediaPlayer mediaPlayer = MediaPlayer.create(getActivity(), R.raw.fart);
+        MediaPlayer mediaPlayer = MediaPlayer.create(getActivity(), R.raw.blop);
         mediaPlayer.start();
     }
 
@@ -268,20 +272,22 @@ public class ProfileEditionFragment extends Fragment {
     }
 
     public int getNextColor() {
-        colorPicker = (colorPicker + 1) % 6;
+        colorPicker = (colorPicker + 1) % 7;
         int nextColor = 0;
-        switch (colorPicker){
-            case 0: nextColor = Color.CYAN;
+        switch (colorPicker){        
+            case 0: nextColor = Color.argb(255,51,181,229);
                 break;
-            case 1: nextColor = Color.RED;
+            case 1: nextColor = Color.argb(255,255,136,0);
                 break;
-            case 2: nextColor = Color.GREEN;
+            case 2: nextColor = Color.argb(255,229,65,65);
                 break;
-            case 3: nextColor = Color.YELLOW;
+            case 3: nextColor = Color.argb(255,238,244,65);
                 break;
-            case 4: nextColor = Color.BLUE;
+            case 4: nextColor = Color.argb(255,204,65,244);
                 break;
-            case 5: colorPicker = Color.MAGENTA;
+            case 5: nextColor = Color.argb(255,94,205,76);
+                break;
+            case 6: nextColor = Color.DKGRAY;
                 break;
         }
         return nextColor;

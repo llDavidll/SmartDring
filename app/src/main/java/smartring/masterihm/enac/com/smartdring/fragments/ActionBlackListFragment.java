@@ -112,6 +112,7 @@ public class ActionBlackListFragment extends Fragment implements AdapterView.OnI
     public void updateAdapter() {
         mAdapter.clear();
         mAdapter.addAll(((SmartDringActivity)getActivity()).getDB().getcontactList(false));
+        ((SmartDringActivity) getActivity()).getService().preferencesUpdated();
     }
 
     private void quitFragment() {
@@ -126,6 +127,7 @@ public class ActionBlackListFragment extends Fragment implements AdapterView.OnI
     @Override
     public void deleteBlackContact(Contact contact) {
         ((SmartDringActivity)getActivity()).getDB().deleteBlack(contact);
+        ((SmartDringActivity) getActivity()).getService().preferencesUpdated();
     }
 }
 

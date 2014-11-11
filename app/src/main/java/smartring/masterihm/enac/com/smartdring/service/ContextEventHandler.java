@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -17,7 +16,6 @@ import smartring.masterihm.enac.com.smartdring.SmartDringActivity;
 import smartring.masterihm.enac.com.smartdring.data.Contact;
 import smartring.masterihm.enac.com.smartdring.data.Place;
 import smartring.masterihm.enac.com.smartdring.data.Profile;
-import smartring.masterihm.enac.com.smartdring.data.SmartDringDB;
 import smartring.masterihm.enac.com.smartdring.data.SmartDringPreferences;
 
 /**
@@ -138,9 +136,21 @@ public class ContextEventHandler implements ContextChangeDetector.ContextChangeI
 
     @Override
     public void phoneFlippedStateChanged(boolean isPhoneFlipped) {
-        mState.isFlipped = isPhoneFlipped;
-        updateCurrentProfile();
-        Log.d("Phone state : ", mState.isFlipped ? "Phone flipped" : "Nothing special");
+        if (isPhoneFlipped) {
+            mState.isFlipped = true;
+            Profile currentp = new Profile(mContext);
+            mState.currentProfile = currentp;
+            Profile pSilence = new Profile(Profile.SILENCE_MOD);
+            pSilence.applySoundLevel(mContext);
+        } else {
+            Profile previousP = mState.currentProfile;
+            if (previousP != null && mState.isFlipped) {
+                mState.isFlipped = false;
+                previousP.applySoundLevel(mContext);
+            }
+        }
+        /*updateCurrentProfile();
+        Log.d("Phone state : ", mState.isFlipped ? "Phone flipped" : "Nothing special");*/
     }
 
     @Override
@@ -155,30 +165,38 @@ public class ContextEventHandler implements ContextChangeDetector.ContextChangeI
     @Override
     public void phoneCallStateChanged(String number, boolean ring) {
         if (ring) {
+            mState.isOnCall = true;
             Profile currentp = new Profile(mContext);
-
+            mState.currentProfile = currentp;
             if (isInWhiteList(number)){
                 // APPLY LOUD PROFILE
-                Profile pSilence = new Profile(Profile.LOUD_MOD);
+                Profile pLoud = new Profile(Profile.LOUD_MOD);
+                pLoud.applySoundLevel(mContext);
             }
             else if (isInBlackList(number)) {
                 // APPLY SILENCE PROFILE
                 Profile pSilence = new Profile(Profile.SILENCE_MOD);
+                pSilence.applySoundLevel(mContext);
             }
         } else {
-            // 1 - verifié que les white ou black est activé (switch)
-            // 2 - restauré le profil sonorre précédeement enregistré
+            Profile previousP = mState.currentProfile;
+            if (previousP != null && mState.isOnCall) {
+                mState.isOnCall = false;
+                previousP.applySoundLevel(mContext);
+            }
+
         }
     }
 
 
     private boolean isInBlackList(String number) {
-        if (SmartDringPreferences.getBooleanPreference(mContext, SmartDringPreferences.BLACKLIST_STATE)) {
+        boolean isActivated = SmartDringPreferences.getBooleanPreference(mContext, SmartDringPreferences.BLACKLIST_STATE);
+        if (!isActivated) {
             return false;
         }
         ArrayList<Contact> lc = (ArrayList<Contact>) mContext.getDB().getcontactList(false);
         for (Contact c : lc) {
-            if (c.getContactPhoneNumber() == number) {
+            if (c.isTheSamePhoneNumber(number)) {
                 return true;
             }
         }
@@ -186,12 +204,13 @@ public class ContextEventHandler implements ContextChangeDetector.ContextChangeI
     }
 
     private boolean isInWhiteList(String number) {
-        if (SmartDringPreferences.getBooleanPreference(mContext, SmartDringPreferences.WHITELIST_STATE)) {
+        boolean isActivated = SmartDringPreferences.getBooleanPreference(mContext, SmartDringPreferences.WHITELIST_STATE);
+        if (!isActivated) {
             return false;
         }
         ArrayList<Contact> lc = (ArrayList<Contact>) mContext.getDB().getcontactList(true);
         for (Contact c : lc) {
-            if (c.getContactPhoneNumber() == number) {
+            if (c.isTheSamePhoneNumber(number)) {
                 return true;
             }
         }
@@ -209,5 +228,7 @@ public class ContextEventHandler implements ContextChangeDetector.ContextChangeI
         private Place currentPlace;
         // Current position of the phone (by default: not flipped).
         private boolean isFlipped;
+        // On Call State
+        private boolean isOnCall;
     }
 }

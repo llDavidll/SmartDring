@@ -103,12 +103,7 @@ public class PlaceEditionFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
                     ((SmartDringActivity)getActivity()).getDB().delete(mPlace);
-                    getActivity().getSupportFragmentManager().beginTransaction()
-                            .remove(PlaceEditionFragment.this)
-                            .commit();
-                    getActivity().getSupportFragmentManager().executePendingTransactions();
-                    getActivity().getSupportFragmentManager().popBackStack();
-                    placeFragment.updateListView();
+                    quitEditor();
                 }
             });
         }
@@ -117,16 +112,25 @@ public class PlaceEditionFragment extends Fragment {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                savePlace();
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .remove(PlaceEditionFragment.this)
-                        .commit();
-                getActivity().getSupportFragmentManager().executePendingTransactions();
-                getActivity().getSupportFragmentManager().popBackStack();
+                if (mPlace == null || mNameEditText.getText().length() == 0) {
+                    ((SmartDringActivity)getActivity()).getDB().delete(mPlace);
+                } else {
+                    savePlace();
+                }
+                quitEditor();
             }
         });
 
         return placeView;
+    }
+
+    private void quitEditor() {
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .remove(PlaceEditionFragment.this)
+                .commit();
+        getActivity().getSupportFragmentManager().executePendingTransactions();
+        getActivity().getSupportFragmentManager().popBackStack();
+        placeFragment.updateListView();
     }
 
     private void configureMap() {
