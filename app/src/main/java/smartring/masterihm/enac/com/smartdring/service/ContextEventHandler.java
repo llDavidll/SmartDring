@@ -136,9 +136,21 @@ public class ContextEventHandler implements ContextChangeDetector.ContextChangeI
 
     @Override
     public void phoneFlippedStateChanged(boolean isPhoneFlipped) {
-        mState.isFlipped = isPhoneFlipped;
-        updateCurrentProfile();
-        Log.d("Phone state : ", mState.isFlipped ? "Phone flipped" : "Nothing special");
+        if (isPhoneFlipped) {
+            mState.isFlipped = true;
+            Profile currentp = new Profile(mContext);
+            mState.currentProfile = currentp;
+            Profile pSilence = new Profile(Profile.SILENCE_MOD);
+            pSilence.applySoundLevel(mContext);
+        } else {
+            Profile previousP = mState.currentProfile;
+            if (previousP != null && mState.isFlipped) {
+                mState.isFlipped = false;
+                previousP.applySoundLevel(mContext);
+            }
+        }
+        /*updateCurrentProfile();
+        Log.d("Phone state : ", mState.isFlipped ? "Phone flipped" : "Nothing special");*/
     }
 
     @Override
