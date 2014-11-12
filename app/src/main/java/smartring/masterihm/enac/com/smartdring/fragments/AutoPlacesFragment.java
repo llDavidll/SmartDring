@@ -40,7 +40,7 @@ public class AutoPlacesFragment extends Fragment implements AdapterView.OnItemCl
         super.onCreate(savedInstanceState);
         mAdapter = new PlacesAdapter(getActivity(), this);
         mAdapter.setProfiles(((SmartDringActivity) getActivity()).getDB().getProfiles());
-        mAdapter.addAll(((SmartDringActivity) getActivity()).getDB().getPlaces(false));
+        mAdapter.addAll(((SmartDringActivity)getActivity()).getDB().getPlaces());
     }
 
     @Override
@@ -64,6 +64,9 @@ public class AutoPlacesFragment extends Fragment implements AdapterView.OnItemCl
                 mAdapter.add(p);
             }
 
+            if(p.isDefault()){
+                return;
+            }
             PlaceEditionFragment editionFragment = PlaceEditionFragment.getInstance(p);
             editionFragment.setPlaceFragment(this);
             FragmentManager fm = getActivity().getSupportFragmentManager();
@@ -89,7 +92,7 @@ public class AutoPlacesFragment extends Fragment implements AdapterView.OnItemCl
 
     public void updateListView() {
         mAdapter.setProfiles(((SmartDringActivity) getActivity()).getDB().getProfiles());
-        mAdapter.refresh(((SmartDringActivity) getActivity()).getDB().getPlaces(false));
+        mAdapter.refresh(((SmartDringActivity) getActivity()).getDB().getPlaces());
     }
 
     @Override

@@ -80,7 +80,7 @@ public class GpsDetector {
      * @param context the context requesting the refresh.
      */
     public void refreshLocations(SmartDringService context) {
-        List<Place> newList = context.getDB().getPlaces(true);
+        List<Place> newList = context.getDB().getPlaces();
         List<Place> oldList = new ArrayList<Place>(mLocations.keySet());
 
         // Set the default place

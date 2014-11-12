@@ -49,7 +49,7 @@ public class ContextEventHandler implements ContextChangeDetector.ContextChangeI
         mContext = context;
         mState = new ContextCurrentState();
         // Find default place
-        for (Place place : mContext.getDB().getPlaces(true)) {
+        for (Place place : mContext.getDB().getPlaces()) {
             if (place.isDefault()) {
                 mState.currentPlace = place;
                 mState.currentPlace.setName(context.getString(R.string.places_default_outdoor));
@@ -84,15 +84,6 @@ public class ContextEventHandler implements ContextChangeDetector.ContextChangeI
      * @param context the context used to apply the changes.
      */
     public void updateContextHandler(Context context) {
-    }
-
-    private void updateCurrentProfile() {
-        if (mState.isFlipped) {
-            mState.currentProfile = mContext.getDB().getProfiles().get(0);
-        } else {
-            mState.currentProfile = null;
-        }
-        updateNotification();
     }
 
     /**
@@ -149,42 +140,44 @@ public class ContextEventHandler implements ContextChangeDetector.ContextChangeI
                 previousP.applySoundLevel(mContext);
             }
         }
-        /*updateCurrentProfile();
-        Log.d("Phone state : ", mState.isFlipped ? "Phone flipped" : "Nothing special");*/
+        updateNotification();
     }
 
     @Override
     public void currentPlaceChanged(Place currentPlace) {
         mState.currentPlace = currentPlace;
-        updateCurrentProfile();
-        if (currentPlace != null) {
-            Toast.makeText(mContext, mState.currentPlace.getName(), Toast.LENGTH_SHORT).show();
+        if(currentPlace != null){
+            Profile placeProfile = mContext.getDB().getProfile(currentPlace.getAssociatedProfile());
+            if (placeProfile != null) {
+                mState.currentProfile = placeProfile;
+            }
         }
+        updateNotification();
     }
 
     @Override
     public void phoneCallStateChanged(String number, boolean ring) {
         if (ring) {
             mState.isOnCall = true;
-            Profile currentp = new Profile(mContext);
-            mState.currentProfile = currentp;
             if (isInWhiteList(number)){
                 // APPLY LOUD PROFILE
-                Profile pLoud = new Profile(Profile.LOUD_MOD);
-                pLoud.applySoundLevel(mContext);
+                mState.savedProfile = new Profile(mContext);
+                mState.currentProfile = new Profile(Profile.LOUD_MOD);
+                mState.currentProfile.applySoundLevel(mContext);
             }
             else if (isInBlackList(number)) {
                 // APPLY SILENCE PROFILE
-                Profile pSilence = new Profile(Profile.SILENCE_MOD);
-                pSilence.applySoundLevel(mContext);
+                mState.savedProfile = new Profile(mContext);
+                mState.currentProfile = new Profile(Profile.SILENCE_MOD);
+                mState.currentProfile.applySoundLevel(mContext);
             }
         } else {
-            Profile previousP = mState.currentProfile;
-            if (previousP != null && mState.isOnCall) {
+            if (mState.savedProfile != null && mState.isOnCall) {
                 mState.isOnCall = false;
-                previousP.applySoundLevel(mContext);
+                mState.currentProfile = mState.savedProfile;
+                mState.savedProfile = null;
+                mState.currentProfile.applySoundLevel(mContext);
             }
-
         }
     }
 
@@ -223,6 +216,8 @@ public class ContextEventHandler implements ContextChangeDetector.ContextChangeI
     private static class ContextCurrentState {
         // Applied profile.
         private Profile currentProfile;
+        // Saved profile
+        private Profile savedProfile;
 
         // Current location of the device (if known).
         private Place currentPlace;

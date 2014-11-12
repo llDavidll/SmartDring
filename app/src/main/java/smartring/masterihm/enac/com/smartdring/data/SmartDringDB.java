@@ -105,6 +105,43 @@ public class SmartDringDB {
     }
 
     /**
+     * Retrieve the profiles from the database.
+     *
+     * @return a list of all the profiles.
+     */
+    public Profile getProfile(int profileId) {
+
+        String whereClause = "profileId = ?";
+        String[] whereArgs = new String[]{Integer.toString(profileId)};
+
+        // Get the profile names from the data base
+        Cursor cursor = mDatabase.query(DB_TABLE_PROFILES, PROFILES_COLUMNS, whereClause, whereArgs,
+                null, null, null);
+
+
+        // Store into a list
+        Profile profile = null;
+
+        if (cursor.moveToFirst()) {
+
+            profile = new Profile();
+            profile.setId(cursor.getInt(0));
+            profile.setDefault(cursor.getInt(1) > 0);
+            profile.setName(cursor.getString(2));
+            profile.setColor(cursor.getInt(3));
+            profile.setmPhoneLvl(cursor.getInt(4));
+            profile.setmNotifLvl(cursor.getInt(5));
+            profile.setmMediaLvl(cursor.getInt(6));
+            profile.setmCallLvl(cursor.getInt(7));
+            profile.setmAlarmLvl(cursor.getInt(8));
+        }
+
+        cursor.close();
+
+        return profile;
+    }
+
+    /**
      * Save a profile in the database.
      *
      * @param profile the profile to save.
@@ -175,17 +212,11 @@ public class SmartDringDB {
      *
      * @return a list of all the places.
      */
-    public List<Place> getPlaces(boolean includeDefault) {
+    public List<Place> getPlaces() {
 
         // Get the place names from the data base
-        Cursor cursor;
-        if (includeDefault) {
-            cursor = mDatabase.query(DB_TABLE_PLACES, PLACES_COLUMNS, null, null,
-                    null, null, null);
-        } else {
-            cursor = mDatabase.query(DB_TABLE_PLACES, PLACES_COLUMNS, "isDefault = ?", new String[]{"0"},
-                    null, null, null);
-        }
+        Cursor cursor = mDatabase.query(DB_TABLE_PLACES, PLACES_COLUMNS, null, null,
+                null, null, null);
 
         // Store into a list
         ArrayList<Place> places = new ArrayList<Place>();

@@ -44,19 +44,8 @@ public class ProfileEditionFragment extends Fragment {
 
     private ProfilesFragment profileFragment;
 
-    private SeekBar soundLevelPhone;
-    private SeekBar soundLevelNotif;
-    private SeekBar soundLevelMedia;
-    private SeekBar soundLevelCall;
-    private SeekBar soundLevelAlarm;
-
-    private Button profileIcon;
     private int colorPicker = 0;
     private EditText profileName;
-
-    private Button deleteButton;
-    private Button saveButton;
-    private Color nextColor;
 
     public static ProfileEditionFragment getInstance(Profile profile, ProfilesFragment pf) {
         ProfileEditionFragment fragment = new ProfileEditionFragment();
@@ -127,6 +116,7 @@ public class ProfileEditionFragment extends Fragment {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mProfile.setName(profileName.getText().toString());
                 if (mProfile == null || mProfile.getName().length() == 0) {
                     ((SmartDringActivity)getActivity()).getDB().delete(mProfile);
                 } else {
