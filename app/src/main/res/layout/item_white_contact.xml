@@ -1,57 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:paddingTop="10dp"
     android:weightSum="1">
 
     <ImageView
+        android:id="@+id/imageView"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        android:id="@+id/imageView"
+        android:layout_alignParentLeft="true"
         android:src="@drawable/iconwhitecontact" />
 
     <LinearLayout
-        android:layout_marginLeft="20dp"
         android:layout_width="wrap_content"
         android:layout_height="70dp"
-        android:orientation="vertical"
-        android:gravity="center_vertical">
+        android:layout_marginLeft="20dp"
+        android:layout_toLeftOf="@+id/item_white_contactdeletelayout"
+        android:layout_toRightOf="@+id/imageView"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
         <TextView
+            android:id="@+id/fragment_action_whitelist_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:inputType="textPersonName"
             android:text="Name"
-            android:id="@+id/fragment_action_whitelist_name"
-            android:layout_gravity="center_horizontal"
             android:textSize="22dp" />
+
         <TextView
+            android:id="@+id/fragment_action_whitelist_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:inputType="textPersonName"
             android:text="Phone Number"
-            android:id="@+id/fragment_action_whitelist_phone"
-            android:layout_gravity="center_horizontal"
-            android:textSize="24dp"
-            android:textColor="#ff787878" />
-        </LinearLayout>
+            android:textColor="#ff787878"
+            android:textSize="24dp" />
+    </LinearLayout>
 
     <LinearLayout
-        android:layout_width="fill_parent"
+        android:id="@+id/item_white_contactdeletelayout"
+        android:layout_width="wrap_content"
         android:layout_height="80dp"
+        android:layout_alignParentRight="true"
         android:gravity="center_vertical|right">
+
         <Button
+            android:id="@+id/fragment_action_whitelist_deletebutton"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:text="X"
             android:layout_marginRight="10dp"
-            android:id="@+id/fragment_action_whitelist_deletebutton"
             android:background="#ffff2b24"
+            android:gravity="center"
+            android:text="X"
             android:textColor="#ffffffff"
-            android:textSize="18dp"
-            android:gravity="center" />
-        </LinearLayout>
+            android:textSize="18dp" />
+    </LinearLayout>
 
 
-</LinearLayout>
+</RelativeLayout>

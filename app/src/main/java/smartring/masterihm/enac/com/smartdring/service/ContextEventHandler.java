@@ -53,6 +53,7 @@ public class ContextEventHandler implements ContextChangeDetector.ContextChangeI
             if (place.isDefault()) {
                 mState.currentPlace = place;
                 mState.currentPlace.setName(context.getString(R.string.places_default_outdoor));
+                mState.currentProfile = mContext.getDB().getProfile(mState.currentPlace.getAssociatedProfile());
                 break;
             }
         }
@@ -84,6 +85,10 @@ public class ContextEventHandler implements ContextChangeDetector.ContextChangeI
      * @param context the context used to apply the changes.
      */
     public void updateContextHandler(Context context) {
+        if(mState.currentProfile != null) {
+            mState.currentProfile = mContext.getDB().getProfile(mState.currentProfile.getId());
+        }
+        updateNotification();
     }
 
     /**

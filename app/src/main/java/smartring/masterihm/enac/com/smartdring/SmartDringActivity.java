@@ -146,7 +146,15 @@ public class SmartDringActivity extends FragmentActivity {
         public void preferencesUpdated() {
             if (service != null) {
                 try {
+                    boolean openDB = false;
+                    if(mDatabase != null){
+                        mDatabase.closeDB();
+                        openDB = true;
+                    }
                     service.preferencesUpdated();
+                    if(openDB){
+                        mDatabase = new SmartDringDB(SmartDringActivity.this, SmartDringDB.APP_DB);
+                    }
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }

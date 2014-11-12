@@ -17,6 +17,10 @@ public class SmartDringService extends Service {
     private final IServiceCommunication.Stub mBinder = new IServiceCommunication.Stub() {
         @Override
         public void preferencesUpdated() throws RemoteException {
+            if(mDatabase != null){
+                mDatabase.closeDB();
+                mDatabase = new SmartDringDB(SmartDringService.this, SmartDringDB.SERVICE_DB);
+            }
             // Update the service behaviour according to the current data.
             mContextHandler.updateContextHandler(SmartDringService.this);
             mContextDetector.updateContextDetection(SmartDringService.this);
