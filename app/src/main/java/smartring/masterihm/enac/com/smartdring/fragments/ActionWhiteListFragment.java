@@ -131,11 +131,17 @@ public class ActionWhiteListFragment extends Fragment implements AdapterView.OnI
     public void updateAdapter() {
         mAdapter.clear();
         mAdapter.addAll(((SmartDringActivity) getActivity()).getDB().getcontactList(true));
+        ((SmartDringActivity) getActivity()).getService().preferencesUpdated();
     }
 
     @Override
     public void deleteWhiteContact(Contact contact) {
         ((SmartDringActivity) getActivity()).getDB().deleteWhite(contact);
+
+        SmartDringActivity.ServiceManagement service = ((SmartDringActivity) getActivity()).getService();
+        if (service != null) {
+            service.preferencesUpdated();
+        }
     }
 }
 

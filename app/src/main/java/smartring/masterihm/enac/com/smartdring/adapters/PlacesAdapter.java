@@ -4,13 +4,16 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.List;
 
 import smartring.masterihm.enac.com.smartdring.R;
 import smartring.masterihm.enac.com.smartdring.data.Place;
+import smartring.masterihm.enac.com.smartdring.data.Profile;
 
 /**
  * Created by David on 13/10/2014.
@@ -24,9 +27,21 @@ public class PlacesAdapter extends ArrayAdapter<Place> {
      */
     private final LayoutInflater mInflater;
 
-    public PlacesAdapter(Context context) {
+    private final PlaceSaver mListener;
+
+    private final ArrayAdapter<Profile> mProfiles;
+
+    public PlacesAdapter(Context context, PlaceSaver pListener) {
         super(context, android.R.layout.simple_list_item_1);
         mInflater = LayoutInflater.from(context);
+        mListener = pListener;
+        mProfiles = new ProfileSpinnerAdapter(context);
+    }
+
+    public void setProfiles(List<Profile> profiles) {
+        mProfiles.clear();
+        mProfiles.addAll(profiles);
+        notifyDataSetChanged();
     }
 
     @Override
@@ -46,16 +61,33 @@ public class PlacesAdapter extends ArrayAdapter<Place> {
 
                 holder = new ViewHolder();
                 holder.nameTV = (TextView) convertView.findViewById(android.R.id.text1);
+                holder.spinner = (Spinner) convertView.findViewById(R.id.item_place_spinner);
 
                 convertView.setTag(holder);
             } else {
                 holder = (ViewHolder) convertView.getTag();
             }
 
-            Place item = getItem(position);
+            final Place item = getItem(position);
             if (item != null) {
                 holder.nameTV.setText(item.getName());
+                holder.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                        item.setAssociatedProfile(mProfiles.getItem(i).getId());
+                        mListener.savePlace(item);
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+
+                    }
+                });
             }
+            holder.spinner.setAdapter(mProfiles);
+            Profile temp = new Profile();
+            temp.setId(item.getAssociatedProfile());
+            holder.spinner.setSelection(mProfiles.getPosition(temp));
         }
 
         return convertView;
@@ -95,10 +127,45 @@ public class PlacesAdapter extends ArrayAdapter<Place> {
      */
     private class ViewHolder {
         private TextView nameTV;
+        private Spinner spinner;
     }
 
     public void refresh(List<Place> pNewList) {
         clear();
         addAll(pNewList);
+    }
+
+    private class ProfileSpinnerAdapter extends ArrayAdapter<Profile> {
+
+        public ProfileSpinnerAdapter(Context context) {
+            super(context, android.R.layout.simple_spinner_dropdown_item);
+        }
+
+        @Override
+        public int getCount() {
+            return super.getCount() + 1;
+        }
+
+        @Override
+        public Profile getItem(int position) {
+            if (position == 0) {
+                Profile p = new Profile();
+                p.setName(getContext().getString(R.string.fragment_place_selectionnone));
+                return p;
+            }
+            return super.getItem(position - 1);
+        }
+
+        @Override
+        public int getPosition(Profile item) {
+            if (item.getId() < 0) {
+                return 0;
+            }
+            return super.getPosition(item) + 1;
+        }
+    }
+
+    public interface PlaceSaver {
+        void savePlace(Place place);
     }
 }

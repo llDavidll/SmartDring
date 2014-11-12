@@ -149,6 +149,24 @@ public class Profile implements Serializable {
         this.mAlarmLvl = mAlarmLvl;
     }
 
+    @Override
+    public String toString() {
+        return mName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o.getClass() == this.getClass()) {
+            return ((Profile) o).getId() == getId();
+        }
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return Integer.valueOf(getId()).hashCode();
+    }
+
     public void applySoundLevel(Context context) {
         AudioManager am = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         am.setStreamVolume(AudioManager.STREAM_SYSTEM, mPhoneLvl,0);
